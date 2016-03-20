@@ -62,6 +62,8 @@ class ModDwdwetterHelper
 			$days[] = 3;
 		}
 
+		$data = array();
+
 		foreach ($days as $day)
 		{
 			// Get filedata
@@ -95,9 +97,6 @@ class ModDwdwetterHelper
 			$folder = '/gds/gds/specials/observations/tables/germany/';
 			$files  = self::$ftp->listNames($folder);
 			sort($files);
-
-			// Remove the HTML file
-			array_pop($files);
 
 			// Take the raw one
 			$file = array_pop($files);
@@ -137,14 +136,12 @@ class ModDwdwetterHelper
 
 	private static function parseFiledataCurrent($filedata)
 	{
-		$hour = date('G');
 		$filedata = html_entity_decode($filedata);
 
-		$pattern = self::getPattern();
-
-		$gliederung = '/Station (.*)/';
-		preg_match($gliederung, $filedata, $legende);
-		$glieder = str_word_count(trim($legende[1]), 1, '-öäü1234567890.,/');
+		preg_match_all('/<th (.*)/', $filedata, $glieder);
+		$glieder = $glieder[0];
+		$glieder = array_map('strip_tags', $glieder);
+		$glieder = array_map('trim', $glieder);
 
 		$k = 0;
 
@@ -163,7 +160,7 @@ class ModDwdwetterHelper
 				case 'Luftd.':
 					$position[1] = $k;
 					break;
-				case 'TT':
+				case 'Temp.':
 					$position[2] = $k;
 					break;
 				case 'RR1':
@@ -179,7 +176,7 @@ class ModDwdwetterHelper
 				case 'FX':
 					$position[6] = $k;
 					break;
-				case 'Wetter/Wolken':
+				case 'Wetter+Wolken':
 					$position[7] = $k;
 					$position[8] = $k + 1;
 					break;
@@ -188,8 +185,13 @@ class ModDwdwetterHelper
 			$k++;
 		}
 
-		preg_match($pattern, $filedata, $treffer);
-		$teile        = str_word_count(trim($treffer[1]), 1, '-öäü1234567890.,');
+		$needle = '<td>' . self::getPattern();
+
+		$treffer = strstr($filedata, $needle);
+		$treffer = strstr($treffer, '</tr>', true);
+		$treffer = trim(strip_tags($treffer));
+		$teile = explode("\r\n", $treffer);
+		$teile = array_map('trim', $teile);
 		$teile[20]    = '-';
 		$data['hohe'] = $teile[$position[0]] . ' m';
 		$data['luft'] = $teile[$position[1]] . ' hPa';
@@ -225,7 +227,7 @@ class ModDwdwetterHelper
 			$teile[$position[7]] = $teile[$position[7]] . ' ' . $teile[$position[8]];
 		}
 
-		$data['himmel'] = self::getIcon($teile[$position[7]], $hour);
+		$data['himmel'] = self::getIcon($teile[$position[7]], date('G'));
 
 		$data['beschreibung'] = $teile[$position[7]];
 
@@ -573,238 +575,238 @@ class ModDwdwetterHelper
 		switch (self::$params->get('daten', 13))
 		{
 			case '1':
-				$pattern = '/Nordseeboje II (.*)/';
+				$pattern = 'Nordseeboje II';
 				break;
 			case '2':
-				$pattern = '/Helgoland (.*)/';
+				$pattern = 'Helgoland';
 				break;
 			case '3':
-				$pattern = '/List\/Sylt (.*)/';
+				$pattern = 'List/Sylt';
 				break;
 			case '4':
-				$pattern = '/Schleswig (.*)/';
+				$pattern = 'Schleswig';
 				break;
 			case '5':
-				$pattern = '/Grosst. Fehmarnbelt (.*)/';
+				$pattern = 'Grosst. Fehmarnbelt';
 				break;
 			case '6':
-				$pattern = '/Leuchtturm Kiel (.*)/';
+				$pattern = 'Leuchtturm Kiel';
 				break;
 			case '7':
-				$pattern = '/[^Leuchtturm ]Kiel (.*)/';
+				$pattern = 'Kiel';
 				break;
 			case '8':
-				$pattern = '/Fehmarn (.*)/';
+				$pattern = 'Fehmarn';
 				break;
 			case '9':
-				$pattern = '/Arkona (.*)/';
+				$pattern = 'Arkona';
 				break;
 			case '10':
-				$pattern = '/Norderney (.*)/';
+				$pattern = 'Norderney';
 				break;
 			case '11':
-				$pattern = '/Leuchtt. Alte Weser (.*)/';
+				$pattern = 'Leuchtt. Alte Weser';
 				break;
 			case '12':
-				$pattern = '/Cuxhaven (.*)/';
+				$pattern = 'Cuxhaven';
 				break;
 			case '13':
-				$pattern = '/Hamburg-Flh. (.*)/';
+				$pattern = 'Hamburg-Flh.';
 				break;
 			case '14':
-				$pattern = '/Schwerin (.*)/';
+				$pattern = 'Schwerin';
 				break;
 			case '15':
-				$pattern = '/Rostock (.*)/';
+				$pattern = 'Rostock';
 				break;
 			case '16':
-				$pattern = '/Greifswald (.*)/';
+				$pattern = 'Greifswald';
 				break;
 			case '17':
-				$pattern = '/Emden (.*)/';
+				$pattern = 'Emden';
 				break;
 			case '18':
-				$pattern = '/Bremen-Flh. (.*)/';
+				$pattern = 'Bremen-Flh.';
 				break;
 			case '19':
-				$pattern = '/Marnitz (.*)/';
+				$pattern = 'Marnitz';
 				break;
 			case '20':
-				$pattern = '/Neuruppin (.*)/';
+				$pattern = 'Neuruppin';
 				break;
 			case '21':
-				$pattern = '/Angermünde (.*)/';
+				$pattern = 'Angermünde';
 				break;
 			case '22':
-				$pattern = '/Münster\/Osnabr.-Flh.(.*)/';
+				$pattern = 'Münster/Osnabr.-Flh.';
 				break;
 			case '23':
-				$pattern = '/Hannover-Flh. (.*)/';
+				$pattern = 'Hannover-Flh.';
 				break;
 			case '24':
-				$pattern = '/Magdeburg (.*)/';
+				$pattern = 'Magdeburg';
 				break;
 			case '25':
-				$pattern = '/Potsdam (.*)/';
+				$pattern = 'Potsdam';
 				break;
 			case '26':
-				$pattern = '/Berlin-Tegel (.*)/';
+				$pattern = 'Berlin-Tegel';
 				break;
 			case '27':
-				$pattern = '/Berlin-Tempelhof (.*)/';
+				$pattern = 'Berlin-Tempelhof';
 				break;
 			case '28':
-				$pattern = '/Lindenberg (.*)/';
+				$pattern = 'Lindenberg';
 				break;
 			case '29':
-				$pattern = '/Düsseldorf-Flh. (.*)/';
+				$pattern = 'Düsseldorf-Flh.';
 				break;
 			case '30':
-				$pattern = '/Kahler Asten (.*)/';
+				$pattern = 'Kahler Asten';
 				break;
 			case '31':
-				$pattern = '/Bad Lippspringe (.*)/';
+				$pattern = 'Bad Lippspringe';
 				break;
 			case '32':
-				$pattern = '/Kassel (.*)/';
+				$pattern = 'Kassel';
 				break;
 			case '33':
-				$pattern = '/Fritzlar (.*)/';
+				$pattern = 'Fritzlar';
 				break;
 			case '34':
-				$pattern = '/Brocken (.*)/';
+				$pattern = 'Brocken';
 				break;
 			case '35':
-				$pattern = '/Leipzig-Flh. (.*)/';
+				$pattern = 'Leipzig-Flh.';
 				break;
 			case '36':
-				$pattern = '/Dresden-Flh. (.*)/';
+				$pattern = 'Dresden-Flh.';
 				break;
 			case '37':
-				$pattern = '/Cottbus (.*)/';
+				$pattern = 'Cottbus';
 				break;
 			case '38':
-				$pattern = '/Görlitz  (.*)/';
+				$pattern = 'Görlitz ';
 				break;
 			case '39':
-				$pattern = '/Aachen-Orsbach (.*)/';
+				$pattern = 'Aachen-Orsbach';
 				break;
 			case '40':
-				$pattern = '/Nürburg (.*)/';
+				$pattern = 'Nürburg';
 				break;
 			case '41':
-				$pattern = '/Köln\/Bonn-Flh. (.*)/';
+				$pattern = 'Köln/Bonn-Flh.';
 				break;
 			case '42':
-				$pattern = '/Gießen\/Wettenberg (.*)/';
+				$pattern = 'Gießen/Wettenberg';
 				break;
 			case '43':
-				$pattern = '/Wasserkuppe (.*)/';
+				$pattern = 'Wasserkuppe';
 				break;
 			case '44':
-				$pattern = '/Meiningen (.*)/';
+				$pattern = 'Meiningen';
 				break;
 			case '45':
-				$pattern = '/Erfurt (.*)/';
+				$pattern = 'Erfurt';
 				break;
 			case '46':
-				$pattern = '/Gera (.*)/';
+				$pattern = 'Gera';
 				break;
 			case '47':
-				$pattern = '/Fichtelberg (.*)/';
+				$pattern = 'Fichtelberg';
 				break;
 			case '48':
-				$pattern = '/Trier  (.*)/';
+				$pattern = 'Trier ';
 				break;
 			case '49':
-				$pattern = '/Hahn-Flh. (.*)/';
+				$pattern = 'Hahn-Flh.';
 				break;
 			case '50':
-				$pattern = '/Frankfurt/M-Flh. (.*)/';
+				$pattern = 'Frankfurt/M-Flh.';
 				break;
 			case '51':
-				$pattern = '/OF-Wetterpark  (.*)/';
+				$pattern = 'OF-Wetterpark ';
 				break;
 			case '52':
-				$pattern = '/Würzburg (.*)/';
+				$pattern = 'Würzburg';
 				break;
 			case '53':
-				$pattern = '/Bamberg (.*)/';
+				$pattern = 'Bamberg';
 				break;
 			case '54':
-				$pattern = '/Hof (.*)/';
+				$pattern = 'Hof';
 				break;
 			case '55':
-				$pattern = '/Weiden (.*)/';
+				$pattern = 'Weiden';
 				break;
 			case '56':
-				$pattern = '/Saarbrücken-Flh. (.*)/';
+				$pattern = 'Saarbrücken-Flh.';
 				break;
 			case '57':
-				$pattern = '/Karlsruhe-Rheinst. (.*)/';
+				$pattern = 'Karlsruhe-Rheinst.';
 				break;
 			case '58':
-				$pattern = '/Mannheim (.*)/';
+				$pattern = 'Mannheim';
 				break;
 			case '59':
-				$pattern = '/Stuttgart-Flh. (.*)/';
+				$pattern = 'Stuttgart-Flh.';
 				break;
 			case '60':
-				$pattern = '/Öhringen (.*)/';
+				$pattern = 'Öhringen';
 				break;
 			case '61':
-				$pattern = '/Nürnberg-Flh. (.*)/';
+				$pattern = 'Nürnberg-Flh.';
 				break;
 			case '62':
-				$pattern = '/Regensburg (.*)/';
+				$pattern = 'Regensburg';
 				break;
 			case '63':
-				$pattern = '/Straubing (.*)/';
+				$pattern = 'Straubing';
 				break;
 			case '64':
-				$pattern = '/Grosser Arber (.*)/';
+				$pattern = 'Grosser Arber';
 				break;
 			case '65':
-				$pattern = '/Lahr (.*)/';
+				$pattern = 'Lahr';
 				break;
 			case '66':
-				$pattern = '/Freudenstadt (.*)/';
+				$pattern = 'Freudenstadt';
 				break;
 			case '67':
-				$pattern = '/Stötten (.*)/';
+				$pattern = 'Stötten';
 				break;
 			case '68':
-				$pattern = '/Augsburg (.*)/';
+				$pattern = 'Augsburg';
 				break;
 			case '69':
-				$pattern = '/München-Flh. (.*)/';
+				$pattern = 'München-Flh.';
 				break;
 			case '70':
-				$pattern = '/Fürstenzell (.*)/';
+				$pattern = 'Fürstenzell';
 				break;
 			case '71':
-				$pattern = '/Feldberg\/Schw. (.*)/';
+				$pattern = 'Feldberg/Schw.';
 				break;
 			case '72':
-				$pattern = '/Konstanz (.*)/';
+				$pattern = 'Konstanz';
 				break;
 			case '73':
-				$pattern = '/Kempten (.*)/';
+				$pattern = 'Kempten';
 				break;
 			case '74':
-				$pattern = '/Oberstdorf (.*)/';
+				$pattern = 'Oberstdorf';
 				break;
 			case '75':
-				$pattern = '/Zugspitze (.*)/';
+				$pattern = 'Zugspitze';
 				break;
 			case '76':
-				$pattern = '/Hohenpeissenberg (.*)/';
+				$pattern = 'Hohenpeissenberg';
 				break;
 			case '77':
-				$pattern = '/Wendelstein (.*)/';
+				$pattern = 'Wendelstein';
 				break;
 			default:
-				$pattern = '/Fehmarn (.*)/';
+				$pattern = 'Fehmarn';
 				break;
 		}
 
