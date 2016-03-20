@@ -1,0 +1,374 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<extension type="module" version="3.2" method="upgrade">
+	<name>DWD Wettermodul 3.0</name>
+	<author>Thomas Hunziker</author>
+	<creationDate>2013-12-20</creationDate>
+	<copyright>(C) 2013</copyright>
+	<authorEmail>admin@bakual.net</authorEmail>
+	<authorUrl>http://www.bakual.net</authorUrl>
+	<version>3.0</version>
+	<license>http://www.gnu.org/licenses/gpl.html</license>
+	<description>MOD_DWD_WETTERMODUL_XML_DESCRIPTION</description>
+	<files>
+		<filename module="mod_dwd_wettermodul">mod_dwd_wettermodul.php</filename>
+		<filename>helper.php</filename>
+		<filename>index.html</filename>
+		<folder>language</folder>
+		<folder>icons</folder>
+		<folder>tmpl</folder>
+	</files>
+	<config>
+		<fields name="params">
+			<fieldset name="basic">
+				<field
+					name="titel"
+					type="text"
+					label="Überschrift"
+					description="Geben Sie optional eine angezeigte Überschrift an."
+				/>
+				<field
+					name="user"
+					type="text"
+					label="DWD-FTP Nutzername"
+					description="Geben Sie den nach der Anmeldung vom DWD erhaltenen Nutzernamen ein."
+				/>
+				<field
+					name="passwort"
+					type="text"
+					label="DWD-FTP Passwort"
+					description="Geben Sie das nach der Anmeldung vom DWD erhaltene FTP Passwort ein."
+				/>
+				<field
+					name="daten"
+					type="list"
+					label="Aktuell/DWD Wetterstation"
+					description="Wählen Sie die nächstgelegene Wetterstation als Datenbasis. Diese Station liefert die Wetterinformationen für den aktuellen Wetterbericht."
+					default="13"
+					>
+					<option value="1">Nordseeboje II</option>
+					<option value="2">Helgoland</option>
+					<option value="3">List/Sylt</option>
+					<option value="4">Schleswig</option>
+					<option value="5">Grosst. Fehmarnbelt</option>
+					<option value="6">Leuchtturm Kiel</option>
+					<option value="7">Kiel</option>
+					<option value="8">Fehmarn</option>
+					<option value="9">Arkona</option>
+					<option value="10">Norderney</option>
+					<option value="11">Leuchtt. Alte Weser</option>
+					<option value="12">Cuxhaven</option>
+					<option value="13">Hamburg-Flh.</option>
+					<option value="14">Schwerin</option>
+					<option value="15">Rostock</option>
+					<option value="16">Greifswald</option>
+					<option value="17">Emden</option>
+					<option value="18">Bremen-Flh</option>
+					<option value="19">Marnitz</option>
+					<option value="20">Neuruppin</option>
+					<option value="21">Angermünde</option>
+					<option value="22">Münster/Osnabr.-Flh.</option>
+					<option value="23">Hannover-Flh.</option>
+					<option value="24">Magdeburg</option>
+					<option value="25">Potsdam</option>
+					<option value="26">Berlin-Tegel</option>
+					<option value="27">Berlin-Tempelhof</option>
+					<option value="28">Lindenberg</option>
+					<option value="29">Düsseldorf-Flh.</option>
+					<option value="30">Kahler Asten</option>
+					<option value="31">Bad Lippspringe</option>
+					<option value="32">Kassel</option>
+					<option value="33">Fritzlar</option>
+					<option value="34">Brocken</option>
+					<option value="35">Leipzig-Flh.</option>
+					<option value="36">Dresden-Flh.</option>
+					<option value="37">Cottbus</option>
+					<option value="38">Görlitz</option>
+					<option value="39">Aachen</option>
+					<option value="40">Nürburg</option>
+					<option value="41">Köln/Bonn-Flh.</option>
+					<option value="42">Gießen/Wettenberg</option>
+					<option value="43">Wasserkuppe</option>
+					<option value="44">Meiningen</option>
+					<option value="45">Erfurt</option>
+					<option value="46">Gera</option>
+					<option value="47">Fichtelberg</option>
+					<option value="48">Trier</option>
+					<option value="49">Hahn-Flh.</option>
+					<option value="50">Frankfurt/M-Flh.</option>
+					<option value="51">OF-Wetterpark</option>
+					<option value="52">Würzburg</option>
+					<option value="53">Bamberg</option>
+					<option value="54">Hof</option>
+					<option value="55">Weiden</option>
+					<option value="56">Saarbrücken-Flh.</option>
+					<option value="57">Karlsruhe-Rheinst.</option>
+					<option value="58">Mannheim </option>
+					<option value="59">Stuttgart-Flh.</option>
+					<option value="60">Öhringen</option>
+					<option value="61">Nürnberg-Flh.</option>
+					<option value="62">Regensburg</option>
+					<option value="63">Straubing</option>
+					<option value="64">Grosser Arber</option>
+					<option value="65">Lahr</option>
+					<option value="66">Freudenstadt </option>
+					<option value="67">Stötten</option>
+					<option value="68">Augsburg</option>
+					<option value="69">München-Flh</option>
+					<option value="70">Fürstenzell</option>
+					<option value="71">Feldberg/Schw.</option>
+					<option value="72">Konstanz</option>
+					<option value="73">Kempten</option>
+					<option value="74">Oberstdorf</option>
+					<option value="75">Zugspitze</option>
+					<option value="76">Hohenpeissenberg</option>
+					<option value="77">Wendelstein</option>
+				</field>
+				<field
+					name="datenvorhersage"
+					type="list"
+					label="Vorhersage/DWD Region"
+					description="Wählen Sie den nächstgelegenen Ort als Datenbasis. Anhang dieser Wahl wird die Vorhersage erstellt."
+					default="8"
+					>
+					<option value="1">List/Sylt</option>
+					<option value="2">Helgoland</option>
+					<option value="3">Schleswig</option>
+					<option value="4">Kiel</option>
+					<option value="5">Fehmarn</option>
+					<option value="6">Norderney</option>
+					<option value="7">Cuxhaven</option>
+					<option value="8">Hamburg</option>
+					<option value="9">Schwerin</option>
+					<option value="10">Emden</option>
+					<option value="11">Bremen</option>
+					<option value="12">Münster</option>
+					<option value="13">Hannover</option>
+					<option value="14">Bad Lippspringe</option>
+					<option value="15">Brocken</option>		
+					<option value="16">Magdeburg</option>
+					<option value="17">Cottbus</option>
+					<option value="18">Leipzig</option>
+					<option value="19">Dresden</option>
+					<option value="20">Görlitz</option>
+					<option value="21">Meiningen</option>
+					<option value="22">Erfurt</option>
+					<option value="23">Gera</option>
+					<option value="24">Fichtelberg</option>
+					<option value="25">Berlin</option>
+					<option value="26">Lindenberg</option>
+					<option value="27">Arkona</option>
+					<option value="28">Rostock</option>
+					<option value="29">Greifswald</option>
+					<option value="30">Schwerin</option>
+					<option value="31">Marnitz</option>
+					<option value="32">Neuruppin</option>
+					<option value="33">Angermünde</option>
+					<option value="34">Potsdam</option>
+					<option value="35">Düsseldorf</option>
+					<option value="36">Kahler Asten</option>
+					<option value="37">Fritzlar</option>
+					<option value="38">Köln</option>
+					<option value="39">Gießen</option>
+					<option value="40">Nürburg</option>
+					<option value="41">Wasserkuppe</option>
+					<option value="42">Trier</option>
+					<option value="43">Hahn</option>
+					<option value="44">Frankfurt</option>
+					<option value="45">Würzburg</option>
+					<option value="46">Mannheim</option>
+					<option value="47">Weinbiet</option>
+					<option value="48">Saarbrücken</option>
+					<option value="49">Karlsruhe</option>
+					<option value="50">Aachen</option>
+					<option value="51">Öhringen</option>
+					<option value="52">Stuttgart</option>
+					<option value="53">Stötten</option>
+					<option value="54">Lahr</option>
+					<option value="55">Freudenstadt</option>
+					<option value="56">Feldberg</option>
+					<option value="57">Konstanz</option>
+					<option value="58">Bamberg</option>
+					<option value="59">Hof</option>
+					<option value="60">Weiden</option>
+					<option value="61">Nürnberg</option>
+					<option value="62">Regensburg</option>
+					<option value="63">Straubing</option>
+					<option value="64">Grosser Arber</option>
+					<option value="65">Fürstenzell</option>
+					<option value="66">Augsburg </option>
+					<option value="67">München</option>
+					<option value="68">Kempten</option>
+					<option value="69">Oberstdorf</option>
+					<option value="70">Hohenpeissenberg</option>
+					<option value="71">Zugspitze</option>
+					<option value="72">Wendelstein</option>
+				</field>
+			</fieldset>
+			<fieldset name="weiteres" label="Weitere Einstellungen">
+				<field
+					name="farbe"
+					type="color"
+					label="Hauptfarbe"
+					description="Geben Sie einen Farbcode für die Temperatur etc. an."
+					default="#6699cc"
+				/>
+				<field
+					name="zweitfarbe"
+					type="color"
+					label="Textfarbe"
+					description="Geben Sie einen Farbcode für die Tage an."
+					default="#999999"
+				/>
+				<field
+					name="datumtitel"
+					type="radio"
+					label="Tagesbezeichnung anzeigen?"
+					description="Soll der Tag (Aktuell, Morgen, 12.03. etc.) als Text angezeigt werden?"
+					class="btn-group btn-group-yesno"
+					default="1"
+					>
+					<option value="1">JYES</option>
+					<option value="0">JNO</option>
+				</field>
+				<field
+					name="textausgabe"
+					type="radio"
+					label="Wetterbeschreibung anzeigen?"
+					description="Soll die Wetterbeschreibung (heiter, bewölkt etc.) als Text angezeigt werden?"
+					class="btn-group btn-group-yesno"
+					default="1"
+					>
+					<option value="1">JYES</option>
+					<option value="0">JNO</option>
+				</field>
+				<field
+					name="tag0"
+					type="radio"
+					label="Aktuelle Wetterdaten anzeigen?"
+					description="Sollen die aktuellen Wetterdaten angezeigt werden?"
+					class="btn-group btn-group-yesno"
+					default="1"
+					>
+					<option value="1">JYES</option>
+					<option value="0">JNO</option>
+				</field>
+				<field
+					name="heutehohe"
+					type="radio"
+					label="Höhe(m) über Normalnull anzeigen?"
+					class="btn-group btn-group-yesno"
+					default="0"
+					>
+					<option value="1">JYES</option>
+					<option value="0">JNO</option>
+				</field>
+				<field
+					name="heuteluft"
+					type="radio"
+					label="Luftdruck(hPa) anzeigen?"
+					class="btn-group btn-group-yesno"
+					default="1"
+					>
+					<option value="1">JYES</option>
+					<option value="0">JNO</option>
+				</field>
+
+				<field
+					name="heuteregen"
+					type="radio"
+					label="Niederschlag(mm/h) anzeigen?"
+					class="btn-group btn-group-yesno"
+					default="1"
+					>
+					<option value="1">JYES</option>
+					<option value="0">JNO</option>
+				</field>
+				<field
+					name="heutewindrichtung"
+					type="radio"
+					label="Windrichtung anzeigen?"
+					class="btn-group btn-group-yesno"
+					default="1"
+					>
+					<option value="1">JYES</option>
+					<option value="0">JNO</option>
+				</field>
+				<field
+					name="heutewind"
+					type="radio"
+					label="Windgeschwindigkeit(km/h) anzeigen?"
+					class="btn-group btn-group-yesno"
+					default="1"
+					>
+					<option value="1">JYES</option>
+					<option value="0">JNO</option>
+				</field>
+				<field
+					name="heutewindspitze"
+					type="radio"
+					label="Windspitze(km/h) anzeigen?"
+					class="btn-group btn-group-yesno"
+					default="0"
+					>
+					<option value="1">JYES</option>
+					<option value="0">JNO</option>
+				</field>
+				<field
+					name="tag1"
+					type="radio"
+					label="Wettervorhersage für Morgen?"
+					class="btn-group btn-group-yesno"
+					default="0"
+					>
+					<option value="1">JYES</option>
+					<option value="0">JNO</option>
+				</field>
+				<field
+					name="tag2"
+					type="radio"
+					label="Wettervorhersage für Übermorgen?"
+					class="btn-group btn-group-yesno"
+					default="0"
+					>
+					<option value="1">JYES</option>
+					<option value="0">JNO</option>
+				</field>
+				<field
+					name="tag3"
+					type="radio"
+					label="Wettervorhersage für 3 Tage?"
+					class="btn-group btn-group-yesno"
+					default="0"
+					>
+					<option value="1">JYES</option>
+					<option value="0">JNO</option>
+				</field>
+			</fieldset>
+			<fieldset name="advanced">
+				<field name="layout" type="modulelayout"
+					label="JFIELD_ALT_LAYOUT_LABEL"
+					description="JFIELD_ALT_MODULE_LAYOUT_DESC"
+					default="_:default" />
+				<field name="moduleclass_sfx" type="textarea"
+					label="COM_MODULES_FIELD_MODULECLASS_SFX_LABEL"
+					description="COM_MODULES_FIELD_MODULECLASS_SFX_DESC"
+					rows="3" />
+				<field name="cache" type="list"
+					label="COM_MODULES_FIELD_CACHING_LABEL"
+					description="COM_MODULES_FIELD_CACHING_DESC"
+					default="1">
+					<option value="1">JGLOBAL_USE_GLOBAL</option>
+					<option value="0">COM_MODULES_FIELD_VALUE_NOCACHING</option>
+				</field>
+				<field name="cache_time" type="text"
+					label="COM_MODULES_FIELD_CACHE_TIME_LABEL"
+					description="COM_MODULES_FIELD_CACHE_TIME_DESC"
+					default="900" />
+				<field name="cachemode" type="hidden"
+					default="static">
+					<option value="static"></option>
+				</field>
+			</fieldset>
+		</fields>
+	</config>
+</extension>
