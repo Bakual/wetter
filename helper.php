@@ -152,31 +152,31 @@ class ModDwdwetterHelper
 
 		foreach ($glieder as $j)
 		{
-			switch ($j)
+			switch (mb_strtolower($j))
 			{
-				case 'Höhe':
+				case 'höhe':
 					$position[0] = $k;
 					break;
-				case 'Luftd.':
+				case 'luftd.':
 					$position[1] = $k;
 					break;
-				case 'Temp.':
+				case 'temp.':
 					$position[2] = $k;
 					break;
-				case 'RR1':
-				case 'RR30':
+				case 'rr1':
+				case 'rr30':
 					$position[3] = $k;
 					break;
-				case 'DD':
+				case 'dd':
 					$position[4] = $k;
 					break;
-				case 'FF':
+				case 'ff':
 					$position[5] = $k;
 					break;
-				case 'FX':
+				case 'fx':
 					$position[6] = $k;
 					break;
-				case 'Wetter+Wolken':
+				case 'wetter+wolken':
 					$position[7] = $k;
 					$position[8] = $k + 1;
 					break;
