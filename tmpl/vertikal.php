@@ -2,7 +2,7 @@
 /**
  * @package     Wettermodul
  * @author      Thomas Hunziker <admin@bakual.net>
- * @copyright   (C) 2014 - Thomas Hunziker
+ * @copyright   (C) 2016 - T. Hunziker / M.Bollmann
  * @license     http://www.gnu.org/licenses/gpl.html
  **/
 
@@ -153,9 +153,9 @@ defined('_JEXEC') or die();
 		<?php endif;
 		// Bitte beachten: Die Entfernung der Copyrighthinweise stellt eine Urheberrechtsverletzung dar! ?>
 		<tr>
-			<td colspan="2" style="text-align: right; font-size: 11px; color:gray; border-top: 1px solid <?php echo $farbe; ?>;">
-				&copy; Deutscher Wetterdienst | <a title="Wetter Ostsee" href="http://www.wetter-ostsee.de">
-					<img alt="Wetter Ostsee" src="<?php echo JURI::base() . '/modules/mod_dwd_wettermodul/icons/icon.png'; ?>" width="10" height="10" style="border: none; vertical-align:middle;" />
+			<td colspan="2" style="text-align: right; font-size: 11px; color:gray; border-top: 1px solid <?php echo $farbe; ?>; nowrap;">
+				&copy; Deutscher Wetterdienst | <a title="Ferienhaus an der Ostsee" href="http://www.stranddorf.de">
+					<img alt="Ferienhaus Ostsee" src="<?php echo 'modules/mod_dwd_wettermodul/icons/icon.png'; ?>" width="10" height="10" style="border: none; vertical-align:middle; display: inline-block;" />
 				</a>
 			</td>
 		</tr>
