@@ -27,15 +27,31 @@ defined('_JEXEC') or die('Restricted access');
  */
 class ModDwdwetterHelper
 {
+	/**
+	 * @var \Joomla\Registry\Registry Module Params
+	 */
 	static $params;
+
+	/**
+	 * @var string  Region
+	 */
 	static $region;
+
+	/**
+	 * @var string  Search Pattern for location
+	 */
 	static $pattern;
 
 	/**
-	 * @var Holds the FTP connection
+	 * @var JClientFtp Holds the FTP connection
 	 */
 	static $ftp;
 
+	/**
+	 * @param $params \Joomla\Registry\Registry Module Params
+	 *
+	 * @return array
+	 */
 	public static function getList($params)
 	{
 		self::$params = $params;
@@ -87,7 +103,7 @@ class ModDwdwetterHelper
 	{
 		if (!self::$ftp)
 		{
-			$host = 'ftp-outgoing2.dwd.de';
+			$host      = 'ftp-outgoing2.dwd.de';
 			self::$ftp = JClientFtp::getInstance($host, 21, array(), self::$params->get('user'), self::$params->get('passwort'));
 		}
 
@@ -100,6 +116,11 @@ class ModDwdwetterHelper
 
 			// Take the raw one
 			$file = array_pop($files);
+
+			if (strpos($file, '_0645_') !== false)
+			{
+				$file = array_pop($files);
+			}
 
 			unset($files);
 		}
@@ -187,11 +208,11 @@ class ModDwdwetterHelper
 
 		$needle = '<td>' . self::getPattern();
 
-		$treffer = strstr($filedata, $needle);
-		$treffer = strstr($treffer, '</tr>', true);
-		$treffer = trim(strip_tags($treffer));
-		$teile = explode("\r\n", $treffer);
-		$teile = array_map('trim', $teile);
+		$treffer      = strstr($filedata, $needle);
+		$treffer      = strstr($treffer, '</tr>', true);
+		$treffer      = trim(strip_tags($treffer));
+		$teile        = explode("\r\n", $treffer);
+		$teile        = array_map('trim', $teile);
 		$teile[20]    = '-';
 		$data['hohe'] = $teile[$position[0]] . ' m';
 		$data['luft'] = $teile[$position[1]] . ' hPa';
