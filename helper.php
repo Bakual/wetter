@@ -206,7 +206,7 @@ class ModDwdwetterHelper
 			$k++;
 		}
 
-		$needle = '<td>' . self::getPattern();
+		$needle = trim('<td>' . self::getPattern(), ' .\t\n\r\0\x0B');
 
 		$treffer      = strstr($filedata, $needle);
 		$treffer      = strstr($treffer, '</tr>', true);
