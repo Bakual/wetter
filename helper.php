@@ -103,7 +103,7 @@ class ModDwdwetterHelper
 	{
 		if (!self::$ftp)
 		{
-			$host      = 'ftp-outgoing2.dwd.de';
+			$host = 'ftp-outgoing2.dwd.de';
 			self::$ftp = JClientFtp::getInstance($host, 21, array(), self::$params->get('user'), self::$params->get('passwort'));
 		}
 
@@ -111,7 +111,7 @@ class ModDwdwetterHelper
 		{
 
 			$folder = '/gds/gds/specials/observations/tables/germany/';
-			$files  = self::$ftp->listNames($folder);
+			$files = self::$ftp->listNames($folder);
 			sort($files);
 
 			// Take the raw one
@@ -133,7 +133,7 @@ class ModDwdwetterHelper
 			}
 
 			$folder = '/gds/gds/specials/forecasts/tables/germany/';
-			$file   = 'Daten_' . self::$region;
+			$file = 'Daten_Deutschland';
 
 			switch ($day)
 			{
@@ -147,6 +147,8 @@ class ModDwdwetterHelper
 					$file .= '_Tag4_spaet';
 					break;
 			}
+
+			$file .= '_HTML';
 		}
 
 		// Read file
@@ -208,12 +210,12 @@ class ModDwdwetterHelper
 
 		$needle = trim('<td>' . self::getPattern(), ' .\t\n\r\0\x0B');
 
-		$treffer      = strstr($filedata, $needle);
-		$treffer      = strstr($treffer, '</tr>', true);
-		$treffer      = trim(strip_tags($treffer));
-		$teile        = explode("\r\n", $treffer);
-		$teile        = array_map('trim', $teile);
-		$teile[20]    = '-';
+		$treffer = strstr($filedata, $needle);
+		$treffer = strstr($treffer, '</tr>', true);
+		$treffer = trim(strip_tags($treffer));
+		$teile = explode("\r\n", $treffer);
+		$teile = array_map('trim', $teile);
+		$teile[20] = '-';
 		$data['hohe'] = $teile[$position[0]] . ' m';
 		$data['luft'] = $teile[$position[1]] . ' hPa';
 		$data['temp'] = $teile[$position[2]] . ' &deg;C';
@@ -232,10 +234,10 @@ class ModDwdwetterHelper
 			$teile[$position[3]] = '0.0';
 		}
 
-		$data['regen']    = $teile[$position[3]] . ' mm';
+		$data['regen'] = $teile[$position[3]] . ' mm';
 		$data['richtung'] = $teile[$position[4]] . ' ';
-		$data['wind']     = $teile[$position[5]] . ' km/h';
-		$data['spitze']   = $teile[$position[6]] . ' km/h';
+		$data['wind'] = $teile[$position[5]] . ' km/h';
+		$data['spitze'] = $teile[$position[6]] . ' km/h';
 
 		if ($teile[$position[7]] == 'kein')
 		{
@@ -257,31 +259,50 @@ class ModDwdwetterHelper
 
 	private static function parseFiledataFuture($filedata)
 	{
-		preg_match(self::$pattern, $filedata, $treffer);
-		$teile = str_word_count(trim($treffer[1]), 1, '-öäü1234567890.,');
+		$filedata = trim($filedata);
+		$filedata = html_entity_decode($filedata);
 
-		if ($teile[0] !== null)
+		preg_match_all('/<th (.*)/', $filedata, $glieder);
+		$glieder = $glieder[0];
+		$glieder = array_map('strip_tags', $glieder);
+		$glieder = array_map('trim', $glieder);
+
+		$needle = trim('<td>' . self::$pattern, ' .\t\n\r\0\x0B');
+
+		$treffer = strstr($filedata, $needle);
+		$treffer = strstr($treffer, '</tr>', true);
+		$treffer = trim(strip_tags($treffer));
+
+		$treffer = htmlentities($treffer, null, 'utf-8');
+		$treffer = str_replace('&nbsp;', '', $treffer);
+		$treffer = html_entity_decode($treffer);
+
+		$teile = explode("\r\n", $treffer);
+		$teile = array_map('trim', $teile);
+
+		$dataFtp = array();
+
+		foreach ($glieder as $key => $value)
 		{
-			$data['temp'] = $teile[0] . ' &deg;C';
+			$dataFtp[$value] = $teile[$key];
+		}
+
+		if ($dataFtp['Tmax'] !== null)
+		{
+			$data['temp'] = $dataFtp['Tmax'] . ' &deg;C';
 		}
 		else
 		{
 			$data['temp'] = '-- &deg;C';
 		}
 
-		$check = array('leichter', 'starker', 'kräftiger', 'vereinzelt', 'in', 'schweres', 'starkes');
-		if (in_array($teile[1], $check))
+		if (!$dataFtp['Wetter/Wolken'])
 		{
-			$teile[1] = $teile[1] . ' ' . $teile[2];
+			$dataFtp['Wetter/Wolken'] = 'heiter';
 		}
 
-		if ($teile[1] == 'kein')
-		{
-			$teile[1] = 'heiter';
-		}
-
-		$data['himmel']       = self::getIcon($teile[1]);
-		$data['beschreibung'] = $teile[1];
+		$data['himmel'] = self::getIcon($dataFtp['Wetter/Wolken']);
+		$data['beschreibung'] = $dataFtp['Wetter/Wolken'];
 
 		return $data;
 	}
@@ -291,301 +312,301 @@ class ModDwdwetterHelper
 		switch (self::$params->get('datenvorhersage', 8))
 		{
 			case '1':
-				$pattern = '/List\/Sylt (.*)/';
-				$region  = 'Nordwest';
+				$pattern = 'List/Sylt';
+				$region = 'Nordwest';
 				break;
 			case '2':
-				$pattern = '/Helgoland (.*)/';
-				$region  = 'Nordwest';
+				$pattern = 'Helgoland';
+				$region = 'Nordwest';
 				break;
 			case '3':
-				$pattern = '/Schleswig (.*)/';
-				$region  = 'Nordwest';
+				$pattern = 'Schleswig';
+				$region = 'Nordwest';
 				break;
 			case '4':
-				$pattern = '/Kiel (.*)/';
-				$region  = 'Nordwest';
+				$pattern = 'Kiel';
+				$region = 'Nordwest';
 				break;
 			case '5':
-				$pattern = '/Fehmarn (.*)/';
-				$region  = 'Nordwest';
+				$pattern = 'Fehmarn';
+				$region = 'Nordwest';
 				break;
 			case '6':
-				$pattern = '/Norderney (.*)/';
-				$region  = 'Nordwest';
+				$pattern = 'Norderney';
+				$region = 'Nordwest';
 				break;
 			case '7':
-				$pattern = '/Cuxhaven (.*)/';
-				$region  = 'Nordwest';
+				$pattern = 'Cuxhaven';
+				$region = 'Nordwest';
 				break;
 			case '8':
-				$pattern = '/Hamburg (.*)/';
-				$region  = 'Nordwest';
+				$pattern = 'Hamburg-Flh.';
+				$region = 'Nordwest';
 				break;
 			case '9':
-				$pattern = '/Schwerin (.*)/';
-				$region  = 'Nordwest';
+				$pattern = 'Schwerin';
+				$region = 'Nordwest';
 				break;
 			case '10':
-				$pattern = '/Emden (.*)/';
-				$region  = 'Nordwest';
+				$pattern = 'Emden';
+				$region = 'Nordwest';
 				break;
 			case '11':
-				$pattern = '/Bremen (.*)/';
-				$region  = 'Nordwest';
+				$pattern = 'Bremen';
+				$region = 'Nordwest';
 				break;
 			case '12':
-				$pattern = '/Münster (.*)/';
-				$region  = 'Nordwest';
+				$pattern = 'Münster';
+				$region = 'Nordwest';
 				break;
 			case '13':
-				$pattern = '/Hannover (.*)/';
-				$region  = 'Nordwest';
+				$pattern = 'Hannover';
+				$region = 'Nordwest';
 				break;
 			case '14':
-				$pattern = '/Bad Lippspringe (.*)/';
-				$region  = 'Nordwest';
+				$pattern = 'Bad Lippspringe';
+				$region = 'Nordwest';
 				break;
 			case '15':
-				$pattern = '/Brocken (.*)/';
-				$region  = 'Nordwest';
+				$pattern = 'Brocken';
+				$region = 'Nordwest';
 				break;
 			case '16':
-				$pattern = '/Magdeburg (.*)/';
-				$region  = 'Ost';
+				$pattern = 'Magdeburg';
+				$region = 'Ost';
 				break;
 			case '17':
-				$pattern = '/Cottbus (.*)/';
-				$region  = 'Ost';
+				$pattern = 'Cottbus';
+				$region = 'Ost';
 				break;
 			case '18':
-				$pattern = '/Leipzig (.*)/';
-				$region  = 'Ost';
+				$pattern = 'Leipzig';
+				$region = 'Ost';
 				break;
 			case '19':
-				$pattern = '/Dresden (.*)/';
-				$region  = 'Ost';
+				$pattern = 'Dresden';
+				$region = 'Ost';
 				break;
 			case '20':
-				$pattern = '/Görlitz (.*)/';
-				$region  = 'Ost';
+				$pattern = 'Görlitz';
+				$region = 'Ost';
 				break;
 			case '21':
-				$pattern = '/Meiningen (.*)/';
-				$region  = 'Ost';
+				$pattern = 'Meiningen';
+				$region = 'Ost';
 				break;
 			case '22':
-				$pattern = '/Erfurt (.*)/';
-				$region  = 'Ost';
+				$pattern = 'Erfurt';
+				$region = 'Ost';
 				break;
 			case '23':
-				$pattern = '/Gera (.*)/';
-				$region  = 'Ost';
+				$pattern = 'Gera';
+				$region = 'Ost';
 				break;
 			case '24':
-				$pattern = '/Fichtelberg (.*)/';
-				$region  = 'Ost';
+				$pattern = 'Fichtelberg';
+				$region = 'Ost';
 				break;
 			case '25':
-				$pattern = '/Berlin (.*)/';
-				$region  = 'Ost';
+				$pattern = 'Berlin';
+				$region = 'Ost';
 				break;
 			case '26':
-				$pattern = '/Lindenberg (.*)/';
-				$region  = 'Ost';
+				$pattern = 'Lindenberg';
+				$region = 'Ost';
 				break;
 			case '27':
-				$pattern = '/Arkona (.*)/';
-				$region  = 'Nordost';
+				$pattern = 'Arkona';
+				$region = 'Nordost';
 				break;
 			case '28':
-				$pattern = '/Rostock (.*)/';
-				$region  = 'Nordost';
+				$pattern = 'Rostock';
+				$region = 'Nordost';
 				break;
 			case '29':
-				$pattern = '/Greifswald (.*)/';
-				$region  = 'Nordost';
+				$pattern = 'Greifswald';
+				$region = 'Nordost';
 				break;
 			case '30':
-				$pattern = '/Schwerin (.*)/';
-				$region  = 'Nordost';
+				$pattern = 'Schwerin';
+				$region = 'Nordost';
 				break;
 			case '31':
-				$pattern = '/Marnitz (.*)/';
-				$region  = 'Nordost';
+				$pattern = 'Marnitz';
+				$region = 'Nordost';
 				break;
 			case '32':
-				$pattern = '/Neuruppin (.*)/';
-				$region  = 'Nordost';
+				$pattern = 'Neuruppin';
+				$region = 'Nordost';
 				break;
 			case '33':
-				$pattern = '/Angermünde (.*)/';
-				$region  = 'Nordost';
+				$pattern = 'Angermünde';
+				$region = 'Nordost';
 				break;
 			case '34':
-				$pattern = '/Potsdam (.*)/';
-				$region  = 'Nordost';
+				$pattern = 'Potsdam';
+				$region = 'Nordost';
 				break;
 			case '35':
-				$pattern = '/Düsseldorf (.*)/';
-				$region  = 'Mitte';
+				$pattern = 'Düsseldorf';
+				$region = 'Mitte';
 				break;
 			case '36':
-				$pattern = '/Kahler Asten (.*)/';
-				$region  = 'Mitte';
+				$pattern = 'Kahler Asten';
+				$region = 'Mitte';
 				break;
 			case '37':
-				$pattern = '/Fritzlar (.*)/';
-				$region  = 'Mitte';
+				$pattern = 'Fritzlar';
+				$region = 'Mitte';
 				break;
 			case '38':
-				$pattern = '/Köln (.*)/';
-				$region  = 'Mitte';
+				$pattern = 'Köln';
+				$region = 'Mitte';
 				break;
 			case '39':
-				$pattern = '/Gießen (.*)/';
-				$region  = 'Mitte';
+				$pattern = 'Gießen';
+				$region = 'Mitte';
 				break;
 			case '40':
-				$pattern = '/Nürburg (.*)/';
-				$region  = 'Mitte';
+				$pattern = 'Nürburg';
+				$region = 'Mitte';
 				break;
 			case '41':
-				$pattern = '/Wasserkuppe (.*)/';
-				$region  = 'Mitte';
+				$pattern = 'Wasserkuppe';
+				$region = 'Mitte';
 				break;
 			case '42':
-				$pattern = '/Trier (.*)/';
-				$region  = 'Mitte';
+				$pattern = 'Trier';
+				$region = 'Mitte';
 				break;
 			case '43':
-				$pattern = '/Hahn (.*)/';
-				$region  = 'Mitte';
+				$pattern = 'Hahn';
+				$region = 'Mitte';
 				break;
 			case '44':
-				$pattern = '/Frankfurt (.*)/';
-				$region  = 'Mitte';
+				$pattern = 'Frankfurt';
+				$region = 'Mitte';
 				break;
 			case '45':
-				$pattern = '/Würzburg (.*)/';
-				$region  = 'Mitte';
+				$pattern = 'Würzburg';
+				$region = 'Mitte';
 				break;
 			case '46':
-				$pattern = '/Mannheim (.*)/';
-				$region  = 'Mitte';
+				$pattern = 'Mannheim';
+				$region = 'Mitte';
 				break;
 			case '47':
-				$pattern = '/Weinbiet (.*)/';
-				$region  = 'Mitte';
+				$pattern = 'Weinbiet';
+				$region = 'Mitte';
 				break;
 			case '48':
-				$pattern = '/Saarbrücken (.*)/';
-				$region  = 'Mitte';
+				$pattern = 'Saarbrücken';
+				$region = 'Mitte';
 				break;
 			case '49':
-				$pattern = '/Karlsruhe (.*)/';
-				$region  = 'Mitte';
+				$pattern = 'Karlsruhe';
+				$region = 'Mitte';
 				break;
 			case '50':
-				$pattern = '/Aachen (.*)/';
-				$region  = 'West';
+				$pattern = 'Aachen';
+				$region = 'West';
 				break;
 			case '51':
-				$pattern = '/Öhringen (.*)/';
-				$region  = 'Suedwest';
+				$pattern = 'Öhringen';
+				$region = 'Suedwest';
 				break;
 			case '52':
-				$pattern = '/Stuttgart (.*)/';
-				$region  = 'Suedwest';
+				$pattern = 'Stuttgart';
+				$region = 'Suedwest';
 				break;
 			case '53':
-				$pattern = '/Stötten (.*)/';
-				$region  = 'Suedwest';
+				$pattern = 'Stötten';
+				$region = 'Suedwest';
 				break;
 			case '54':
-				$pattern = '/Lahr (.*)/';
-				$region  = 'Suedwest';
+				$pattern = 'Lahr';
+				$region = 'Suedwest';
 				break;
 			case '55':
-				$pattern = '/Freudenstadt (.*)/';
-				$region  = 'Suedwest';
+				$pattern = 'Freudenstadt';
+				$region = 'Suedwest';
 				break;
 			case '56':
-				$pattern = '/Feldberg (.*)/';
-				$region  = 'Suedwest';
+				$pattern = 'Feldberg';
+				$region = 'Suedwest';
 				break;
 			case '57':
-				$pattern = '/Konstanz (.*)/';
-				$region  = 'Suedwest';
+				$pattern = 'Konstanz';
+				$region = 'Suedwest';
 				break;
 			case '58':
-				$pattern = '/Bamberg (.*)/';
-				$region  = 'Suedost';
+				$pattern = 'Bamberg';
+				$region = 'Suedost';
 				break;
 			case '59':
-				$pattern = '/Hof (.*)/';
-				$region  = 'Suedost';
+				$pattern = 'Hof';
+				$region = 'Suedost';
 				break;
 			case '60':
-				$pattern = '/Weiden (.*)/';
-				$region  = 'Suedost';
+				$pattern = 'Weiden';
+				$region = 'Suedost';
 				break;
 			case '61':
-				$pattern = '/Nürnberg (.*)/';
-				$region  = 'Suedost';
+				$pattern = 'Nürnberg';
+				$region = 'Suedost';
 				break;
 			case '62':
-				$pattern = '/Regensburg (.*)/';
-				$region  = 'Suedost';
+				$pattern = 'Regensburg';
+				$region = 'Suedost';
 				break;
 			case '63':
-				$pattern = '/Straubing (.*)/';
-				$region  = 'Suedost';
+				$pattern = 'Straubing';
+				$region = 'Suedost';
 				break;
 			case '64':
-				$pattern = '/Grosser Arber (.*)/';
-				$region  = 'Suedost';
+				$pattern = 'Grosser Arber';
+				$region = 'Suedost';
 				break;
 			case '65':
-				$pattern = '/Fürstenzell (.*)/';
-				$region  = 'Suedost';
+				$pattern = 'Fürstenzell';
+				$region = 'Suedost';
 				break;
 			case '66':
-				$pattern = '/Augsburg (.*)/';
-				$region  = 'Suedost';
+				$pattern = 'Augsburg';
+				$region = 'Suedost';
 				break;
 			case '67':
-				$pattern = '/München (.*)/';
-				$region  = 'Suedost';
+				$pattern = 'München';
+				$region = 'Suedost';
 				break;
 			case '68':
-				$pattern = '/Kempten (.*)/';
-				$region  = 'Suedost';
+				$pattern = 'Kempten';
+				$region = 'Suedost';
 				break;
 			case '69':
-				$pattern = '/Oberstdorf (.*)/';
-				$region  = 'Suedost';
+				$pattern = 'Oberstdorf';
+				$region = 'Suedost';
 				break;
 			case '70':
-				$pattern = '/Hohenpeissenberg (.*)/';
-				$region  = 'Suedost';
+				$pattern = 'Hohenpeissenberg';
+				$region = 'Suedost';
 				break;
 			case '71':
-				$pattern = '/Zugspitze (.*)/';
-				$region  = 'Suedost';
+				$pattern = 'Zugspitze';
+				$region = 'Suedost';
 				break;
 			case '72':
-				$pattern = '/Wendelstein (.*)/';
-				$region  = 'Suedost';
+				$pattern = 'Wendelstein';
+				$region = 'Suedost';
 				break;
 
 			default:
-				$pattern = '/Hamburg (.*)/';
-				$region  = 'Nordwest';
+				$pattern = 'Hamburg';
+				$region = 'Nordwest';
 				break;
 		}
 
-		self::$region  = $region;
+		self::$region = $region;
 		self::$pattern = $pattern;
 
 		return;
