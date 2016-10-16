@@ -17,14 +17,10 @@
 		<folder>icons</folder>
 		<folder>tmpl</folder>
 	</files>
-	
-	
 	<languages>
 		<language tag="en-GB">language/en-GB/en-GB.mod_dwd_wettermodul.ini</language>
 		<language tag="de-DE">language/de-DE/de-DE.mod_dwd_wettermodul.ini</language>
-
 	</languages>
-	
 	<config>
 		<fields name="params">
 			<fieldset name="basic">
