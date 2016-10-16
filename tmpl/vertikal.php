@@ -150,13 +150,10 @@ defined('_JEXEC') or die();
 					<img alt="<?php echo $list[3]['beschreibung']; ?>" src="<?php echo 'modules/mod_dwd_wettermodul/icons/' . $list[3]['himmel']; ?>" width="50" height="50" />
 				</td>
 			</tr>
-		<?php endif;
-		// Bitte beachten: Die Entfernung der Copyrighthinweise stellt eine Urheberrechtsverletzung dar! ?>
+		<?php endif; ?>
 		<tr>
 			<td colspan="2" style="text-align: right; font-size: 11px; color:gray; border-top: 1px solid <?php echo $farbe; ?>; nowrap;">
-				&copy; Deutscher Wetterdienst | <a title="Ferienhaus an der Ostsee" href="http://www.stranddorf.de">
-					<img alt="Ferienhaus Ostsee" src="<?php echo 'modules/mod_dwd_wettermodul/icons/icon.png'; ?>" width="10" height="10" style="border: none; vertical-align:middle; display: inline-block;" />
-				</a>
+				<a href="http://www.dwd.de/">&copy; Deutscher Wetterdienst</a>
 			</td>
 		</tr>
 	</table>

@@ -305,13 +305,10 @@ defined('_JEXEC') or die();
 					<?php endif; ?>
 				</tr>
 			<?php endif;
-		endif;
-		// Bitte beachten: Die Entfernung der Copyrighthinweise stellt eine Urheberrechtsverletzung dar! ?>
+		endif; ?>
 		<tr>
 			<td colspan="5" style="text-align: right; font-size: 11px; color:gray; border:none; padding:5px; nowrap;">
-				&copy; Deutscher Wetterdienst | <a title="Ferienhaus an der Ostsee" href="http://www.stranddorf.de">
-					<img alt="Ferienhaus Ostsee" src="<?php echo 'modules/mod_dwd_wettermodul/icons/icon.png'; ?>" width="10" height="10" style="border: none; vertical-align:middle; display: inline-block;" />
-				</a>
+				<a href="http://www.dwd.de/">&copy; Deutscher Wetterdienst</a>
 			</td>
 		</tr>
 	</table>
