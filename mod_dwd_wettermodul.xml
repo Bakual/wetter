@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<extension type="module" version="3.2" method="upgrade">
+<extension type="module" version="3.6" method="upgrade">
 	<name>DWD Wettermodul</name>
 	<author>T. Hunziker/ M. Bollmann</author>
-	<creationDate>2016-04-24</creationDate>
+	<creationDate>2016-10-17</creationDate>
 	<copyright>(C) 2016</copyright>
 	<authorEmail>admin@bakual.net</authorEmail>
 	<authorUrl>http://www.bakual.net</authorUrl>
-	<version>4.0</version>
+	<version>4.1</version>
 	<license>http://www.gnu.org/licenses/gpl.html</license>
 	<description>MOD_DWD_WETTERMODUL_XML_DESCRIPTION</description>
 	<files>
