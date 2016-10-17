@@ -7,309 +7,161 @@
  **/
 
 defined('_JEXEC') or die();
+
+JFactory::getDocument()->addStyleDeclaration(
+	'.dwd_wettermodul table {
+		width: 100%;
+	}
+	.dwd_wettermodul .border {
+		border-left: 1px solid ' . $farbe . ';
+	}
+	.dwd_wettermodul .color_text {
+		color: ' . $zweitfarbe .';
+	}
+	.dwd_wettermodul .temp {
+		font-size: large;
+		color: ' . $farbe .';
+	}'
+);
 ?>
 <div class="dwd_wettermodul">
-	<table style="width: 100%; border-collapse: collapse;text-align:left;">
-		<?php
-		if ($titel) : ?>
-			<tr><td colspan="5" style="text-align: left"><h2><?php echo $titel; ?></h2><br /></td></tr>
-		<?php endif;
-		if ($datumtitel) : ?>
-			<tr>
-				<?php
-				if (isset($list[0])) : ?>
-					<td colspan="2" style="border:none; color: <?php echo $zweitfarbe; ?>;text-align: center;">
+	<?php if ($titel) : ?>
+		<h2><?php echo $titel; ?></h2>
+	<?php endif; ?>
+	<table>
+		<?php if ($datumtitel) : ?>
+			<tr class="color_text text-center">
+				<?php if (isset($list[0])) : ?>
+					<td colspan="2">
 						<strong>Aktuell</strong>
 					</td>
-				<?php else : ?>
-					<td></td>
-				<?php endif;
-
-				if (isset($list[1])) : ?>
-					<td style="border-left: 1px solid <?php echo $farbe; ?>;color: <?php echo $zweitfarbe; ?>;text-align: center;">
+				<?php endif; ?>
+				<?php if (isset($list[1])) : ?>
+					<td class="border">
 						<strong>Morgen</strong>
 					</td>
-				<?php else : ?>
-					<td></td>
-				<?php endif;
-
-				if (isset($list[2])) : ?>
-					<td style="border-left: 1px solid <?php echo $farbe; ?>;color: <?php echo $zweitfarbe; ?>;text-align: center;">
+				<?php endif; ?>
+				<?php if (isset($list[2])) : ?>
+					<td class="border">
 						<strong><?php echo $datum2; ?></strong>
 					</td>
-				<?php else : ?>
-					<td></td>
-				<?php endif;
-
-				if (isset($list[3])) : ?>
-					<td style="border-left: 1px solid <?php echo $farbe; ?>;color: <?php echo $zweitfarbe; ?>; text-align: center;">
+				<?php endif; ?>
+				<?php if (isset($list[3])) : ?>
+					<td class="border">
 						<strong><?php echo $datum3; ?></strong>
 					</td>
-				<?php else : ?>
-					<td></td>
 				<?php endif; ?>
 			</tr>
 		<?php endif; ?>
-		<tr>
-			<?php
-			if (isset($list[0])) : ?>
-				<td colspan="2" style="border: none;color: <?php echo $farbe; ?>; text-align: center;">
-					<img alt="<?php echo $list[0]['beschreibung']; ?>" src="<?php echo 'modules/mod_dwd_wettermodul/icons/' . $list[0]['himmel']; ?>" width="100" height="100" />
-				</td>
-			<?php else : ?>
-				<td></td>
-			<?php endif;
-
-			if (isset($list[1])) : ?>
-				<td style="border-left: 1px solid <?php echo $farbe; ?>; text-align: center;">
-					<img alt="<?php echo $list[1]['beschreibung']; ?>" src="<?php echo 'modules/mod_dwd_wettermodul/icons/' . $list[1]['himmel']; ?>" width="100" height="100" />
-				</td>
-			<?php else : ?>
-				<td></td>
-			<?php endif;
-
-			if (isset($list[2])) : ?>
-				<td style="border-left: 1px solid <?php echo $farbe; ?>; text-align: center;">
-					<img alt="<?php echo $list[2]['beschreibung']; ?>" src="<?php echo 'modules/mod_dwd_wettermodul/icons/' . $list[2]['himmel']; ?>" width="100" height="100" />
-				</td>
-			<?php else : ?>
-				<td></td>
-			<?php endif;
-
-			if (isset($list[3])) : ?>
-				<td style="border-left: 1px solid <?php echo $farbe; ?>; text-align: center;">
-					<img alt="<?php echo $list[3]['beschreibung']; ?>" src="<?php echo 'modules/mod_dwd_wettermodul/icons/' . $list[3]['himmel']; ?>" width="100" height="100" />
-				</td>
-			<?php else : ?>
-				<td></td>
-			<?php endif; ?>
-		</tr>
-		<tr>
-			<?php
-			if (isset($list[0])) : ?>
-				<td colspan="2" style="border: none;color: <?php echo $farbe; ?>;text-align: center; padding:8px;">
-					<span style="font-size: large; color: <?php echo $farbe; ?>;"><?php echo $list[0]['temp']; ?></span>
-				</td>
-			<?php else : ?>
-				<td></td>
-			<?php endif;
-
-			if (isset($list[1])) : ?>
-				<td style="border-left: 1px solid <?php echo $farbe; ?>;color: <?php echo $farbe; ?>; text-align: center; padding:8px;">
-					<span style="font-size: large; color: <?php echo $farbe; ?>;"><?php echo $list[1]['temp']; ?></span>
-				</td>
-			<?php else : ?>
-				<td></td>
-			<?php endif;
-
-			if (isset($list[2])) : ?>
-				<td style="border-left: 1px solid <?php echo $farbe; ?>;color: <?php echo $farbe; ?>; text-align: center; padding:8px;">
-					<span style="font-size: large; color: <?php echo $farbe; ?>;"><?php echo $list[2]['temp']; ?></span>
-				</td>
-			<?php else : ?>
-				<td></td>
-			<?php endif;
-
-			if (isset($list[3])) : ?>
-				<td style="border-left: 1px solid <?php echo $farbe; ?>; color: <?php echo $farbe; ?>; text-align: center; padding:8px;">
-					<span style="font-size: large; color: <?php echo $farbe; ?>;"><?php echo $list[3]['temp']; ?></span>
-				</td>
-			<?php else : ?>
-				<td></td>
-			<?php endif; ?>
-		</tr>
-		<?php
-		if ($textausgabe) : ?>
-			<tr>
-				<?php if (isset($list[0])) : ?>
-					<td colspan="2" style="border:none;text-align: center;">
-						<?php echo $list[0]['beschreibung']; ?>
+		<tr class="text-center">
+			<?php for ($i = 0; $i <= 3; $i++) : ?>
+				<?php if (isset($list[$i])) : ?>
+					<?php if (!$i) : ?>
+						<td colspan="2">
+					<?php else : ?>
+						<td class="border">
+					<?php endif; ?>
+						<img alt="<?php echo $list[$i]['beschreibung']; ?>" src="modules/mod_dwd_wettermodul/icons/<?php echo $list[$i]['himmel']; ?>" width="100" height="100" />
 					</td>
-				<?php else : ?>
-					<td></td>
-				<?php endif;
-
-				if (isset($list[1])) : ?>
-					<td style="border-left: 1px solid <?php echo $farbe; ?>; text-align: center;">
-						<?php echo $list[1]['beschreibung']; ?>
-					</td>
-				<?php else : ?>
-					<td></td>
-				<?php endif;
-
-				if (isset($list[2])) : ?>
-					<td style="border-left: 1px solid <?php echo $farbe; ?>; text-align: center;">
-						<?php echo $list[2]['beschreibung']; ?>
-					</td>
-				<?php else : ?>
-					<td></td>
-				<?php endif;
-
-				if (isset($list[3])) : ?>
-					<td style="border-left: 1px solid <?php echo $farbe; ?>; text-align: center;">
-						<?php echo $list[3]['beschreibung']; ?>
-					</td>
-				<?php else : ?>
-					<td></td>
 				<?php endif; ?>
+			<?php endfor; ?>
+		</tr>
+		<tr class="text-center">
+			<?php for ($i = 0; $i <= 3; $i++) : ?>
+				<?php if (isset($list[$i])) : ?>
+					<?php if (!$i) : ?>
+						<td colspan="2">
+					<?php else : ?>
+						<td class="border">
+					<?php endif; ?>
+						<span class="temp"><?php echo $list[$i]['temp']; ?></span>
+					</td>
+				<?php endif; ?>
+			<?php endfor; ?>
+		</tr>
+		<?php if ($textausgabe) : ?>
+			<tr class="text-center">
+				<?php for ($i = 0; $i <= 3; $i++) : ?>
+					<?php if (isset($list[$i])) : ?>
+						<?php if (!$i) : ?>
+							<td colspan="2">
+						<?php else : ?>
+							<td class="border">
+						<?php endif; ?>
+							<?php echo $list[$i]['beschreibung']; ?>
+						</td>
+					<?php endif; ?>
+				<?php endfor; ?>
 			</tr>
-		<?php endif;
-
-		if (isset($list[0])) :
-			if ($heutehohe) : ?>
+		<?php endif; ?>
+		<?php if (isset($list[0])) : ?>
+			<?php if ($heutehohe) : ?>
 				<tr>
 					<td>H&ouml;he &uuml;. NN:</td>
-					<td nowrap="nowrap" style="border:none;"><?php echo htmlentities($list[0]['hohe']); ?></td>
-					<?php
-					if (isset($list[1])) : ?>
-						<td style="border-left: 1px solid <?php echo $farbe; ?>;"></td>
-					<?php else : ?>
-						<td></td>
-					<?php endif;
-
-					if (isset($list[2])) : ?>
-						<td style="border-left: 1px solid <?php echo $farbe; ?>;"></td>
-					<?php else : ?>
-						<td></td>
-					<?php endif;
-
-					if (isset($list[3])) : ?>
-						<td style="border-left: 1px solid <?php echo $farbe; ?>;"></td>
-					<?php else : ?>
-						<td></td>
-					<?php endif; ?>
+					<td nowrap="nowrap""><?php echo htmlentities($list[0]['hohe']); ?></td>
+					<?php for ($i = 1; $i <= 3; $i++) : ?>
+						<?php if (isset($list[$i])) : ?>
+							<td class="border"></td>
+						<?php endif; ?>
+					<?php endfor; ?>
 				</tr>
-			<?php endif;
-
-			if ($heuteluft) : ?>
+			<?php endif; ?>
+			<?php if ($heuteluft) : ?>
 				<tr>
 					<td>Luftdruck:</td>
-					<td nowrap="nowrap" style="border:none;"><?php echo htmlentities($list[0]['luft']); ?></td>
-					<?php
-					if (isset($list[1])) : ?>
-						<td style="border-left: 1px solid <?php echo $farbe; ?>;"></td>
-					<?php else : ?>
-						<td></td>
-					<?php endif;
-
-					if (isset($list[2])) : ?>
-						<td style="border-left: 1px solid <?php echo $farbe; ?>;"></td>
-					<?php else : ?>
-						<td></td>
-					<?php endif;
-
-					if (isset($list[3])) : ?>
-						<td style="border-left: 1px solid <?php echo $farbe; ?>;"></td>
-					<?php else : ?>
-						<td></td>
-					<?php endif; ?>
+					<td nowrap="nowrap"><?php echo htmlentities($list[0]['luft']); ?></td>
+					<?php for ($i = 1; $i <= 3; $i++) : ?>
+						<?php if (isset($list[$i])) : ?>
+							<td class="border"></td>
+						<?php endif; ?>
+					<?php endfor; ?>
 				</tr>
-			<?php endif;
-
-			if ($heuteregen) : ?>
+			<?php endif; ?>
+			<?php if ($heuteregen) : ?>
 				<tr>
 					<td>Niederschlag:</td>
-					<td nowrap="nowrap" style="border:none;"><?php echo htmlentities($list[0]['regen']); ?></td>
-					<?php
-					if (isset($list[1])) : ?>
-						<td style="border-left: 1px solid <?php echo $farbe; ?>;"></td>
-					<?php else : ?>
-						<td></td>
-					<?php endif;
-
-					if (isset($list[2])) : ?>
-						<td style="border-left: 1px solid <?php echo $farbe; ?>;"></td>
-					<?php else : ?>
-						<td></td>
-					<?php endif;
-
-					if (isset($list[3])) : ?>
-						<td style="border-left: 1px solid <?php echo $farbe; ?>;"></td>
-					<?php else : ?>
-						<td></td>
-					<?php endif; ?>
+					<td nowrap="nowrap"><?php echo htmlentities($list[0]['regen']); ?></td>
+					<?php for ($i = 1; $i <= 3; $i++) : ?>
+						<?php if (isset($list[$i])) : ?>
+							<td class="border"></td>
+						<?php endif; ?>
+					<?php endfor; ?>
 				</tr>
-			<?php endif;
-
-			if ($heutewindrichtung) : ?>
+			<?php endif; ?>
+			<?php if ($heutewindrichtung) : ?>
 				<tr>
 					<td>Windrichtung:</td>
-					<td style="border:none;"><?php echo htmlentities($list[0]['richtung']); ?></td>
-					<?php
-					if (isset($list[1])) : ?>
-						<td style="border-left: 1px solid <?php echo $farbe; ?>;"></td>
-					<?php else : ?>
-						<td></td>
-					<?php endif;
-
-					if (isset($list[2])) : ?>
-						<td style="border-left: 1px solid <?php echo $farbe; ?>;"></td>
-					<?php else : ?>
-						<td></td>
-					<?php endif;
-
-					if (isset($list[3])) : ?>
-						<td style="border-left: 1px solid <?php echo $farbe; ?>;"></td>
-					<?php else : ?>
-						<td></td>
-					<?php endif; ?>
+					<td><?php echo htmlentities($list[0]['richtung']); ?></td>
+					<?php for ($i = 1; $i <= 3; $i++) : ?>
+						<?php if (isset($list[$i])) : ?>
+							<td class="border"></td>
+						<?php endif; ?>
+					<?php endfor; ?>
 				</tr>
-			<?php endif;
-
-			if ($heutewind) : ?>
+			<?php endif; ?>
+			<?php if ($heutewind) : ?>
 				<tr>
 					<td>Geschwindigkeit:</td>
-					<td nowrap="nowrap" style="border:none;"><?php echo htmlentities($list[0]['wind']); ?></td>
-					<?php
-					if (isset($list[1])) : ?>
-						<td style="border-left: 1px solid <?php echo $farbe; ?>;"></td>
-					<?php else : ?>
-						<td></td>
-					<?php endif;
-
-					if (isset($list[2])) : ?>
-						<td style="border-left: 1px solid <?php echo $farbe; ?>;"></td>
-					<?php else : ?>
-						<td></td>
-					<?php endif;
-
-					if (isset($list[3])) : ?>
-						<td style="border-left: 1px solid <?php echo $farbe; ?>;"></td>
-					<?php else : ?>
-						<td></td>
-					<?php endif; ?>
+					<td nowrap="nowrap"><?php echo htmlentities($list[0]['wind']); ?></td>
+					<?php for ($i = 1; $i <= 3; $i++) : ?>
+						<?php if (isset($list[$i])) : ?>
+							<td class="border"></td>
+						<?php endif; ?>
+					<?php endfor; ?>
 				</tr>
-			<?php endif;
-
-			if ($heutewindspitze) : ?>
+			<?php endif; ?>
+			<?php if ($heutewindspitze) : ?>
 				<tr>
 					<td>Windb&ouml;en:</td>
-					<td nowrap="nowrap" style="border:none;"><?php echo htmlentities($list[0]['spitze']); ?></td>
-					<?php
-					if (isset($list[1])) : ?>
-						<td style="border-left: 1px solid <?php echo $farbe; ?>;"></td>
-					<?php else : ?>
-						<td></td>
-					<?php endif;
-
-					if (isset($list[2])) : ?>
-						<td style="border-left: 1px solid <?php echo $farbe; ?>;"></td>
-					<?php else : ?>
-						<td></td>
-					<?php endif;
-
-					if (isset($list[3])) : ?>
-						<td style="border-left: 1px solid <?php echo $farbe; ?>;"></td>
-					<?php else : ?>
-						<td></td>
-					<?php endif; ?>
+					<td nowrap="nowrap"><?php echo htmlentities($list[0]['spitze']); ?></td>
+					<?php for ($i = 1; $i <= 3; $i++) : ?>
+						<?php if (isset($list[$i])) : ?>
+							<td class="border"></td>
+						<?php endif; ?>
+					<?php endfor; ?>
 				</tr>
 			<?php endif;
 		endif; ?>
-		<tr>
-			<td colspan="5" style="text-align: right; font-size: 11px; color:gray; border:none; padding:5px; nowrap;">
-				<a href="http://www.dwd.de/">&copy; Deutscher Wetterdienst</a>
-			</td>
-		</tr>
 	</table>
+	<div class="text-right"><small><a href="http://www.dwd.de/">&copy; Deutscher Wetterdienst</a></small></div>
 </div>

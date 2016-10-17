@@ -1,9 +1,9 @@
 <?php
 /**
- * @package     Wettermodul
- * @author      Thomas Hunziker <admin@bakual.net>
+ * @package         Wettermodul
+ * @author          Thomas Hunziker <admin@bakual.net>
  * @copyright   (C) 2014 - Thomas Hunziker
- * @license     http://www.gnu.org/licenses/gpl.html
+ * @license         http://www.gnu.org/licenses/gpl.html
  **/
 
 // DWD Wettervorhersage Modul
@@ -14,8 +14,6 @@
 // Das Modul lädt aktuelle Wetterdaten und Vorhersagen vom FTP Server des DWD.
 // Die Daten werden lokal zwischengespeichert und grafisch aufgearbeitet. 
 // Die Wetterdaten der Grundversorgung dürfen frei verwendet werden, sind jedoch urheberrechtlich geschützt.
-// Der Copyright-Vermerk und der Link dürfen nicht entfernt werden! Anpassungen an das eigene Webdesign sind natürlich gestattet.
-// Der Quelltext ist zwar nicht schön, dafür in liebevoller Handarbeit gebastelt!
 // **************************************************************************
 
 defined('_JEXEC') or die();

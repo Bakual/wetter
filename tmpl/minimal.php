@@ -7,63 +7,49 @@
  **/
 
 defined('_JEXEC') or die();
+
+JFactory::getDocument()->addStyleDeclaration(
+	'.dwd_wettermodul table {
+		width: 100%;
+	}
+	.dwd_wettermodul table td {
+		border-top: 1px solid ' . $farbe . ';
+		width: 33%;
+	}
+	.dwd_wettermodul .color_text {
+		color: ' . $zweitfarbe .';
+	}
+	.dwd_wettermodul .temp {
+		color: ' . $farbe .';
+	}'
+);
 ?>
 <div class="dwd_wettermodul">
-	<table style="width: 100%; border-collapse: collapse;text-align:left;">
-		<?php
-		if ($titel) : ?>
-			<tr><td colspan="3" style="text-align: left"><?php echo $titel; ?></td></tr>
-		<?php endif;
-
-		if (isset($list[0])) : ?>
-			<tr>
-				<td style="border-top: 1px solid <?php echo $farbe; ?>;color: <?php echo $zweitfarbe; ?>;width: 33%;">Aktuell</td>
-				<td style="border-top: 1px solid <?php echo $farbe; ?>; text-align: center;">
-					<span style="color: <?php echo $farbe; ?>;"><?php echo $list[0]['temp']; ?></span>
-				</td>
-				<td style="border-top: 1px solid <?php echo $farbe; ?>; text-align: center">
-					<img alt="<?php echo $list[0]['beschreibung']; ?>" src="<?php echo 'modules/mod_dwd_wettermodul/icons/' . $list[0]['himmel']; ?>" width="26" height="26" />
-				</td>
-			</tr>
-		<?php endif;
-
-		if (isset($list[1])) : ?>
-			<tr>
-				<td style="border-top: 1px solid <?php echo $farbe; ?>;color: <?php echo $zweitfarbe; ?>;width: 33%;">Morgen</td>
-				<td style="border-top: 1px solid <?php echo $farbe; ?>; text-align: center;">
-					<span style="color: <?php echo $farbe; ?>;"><?php echo $list[1]['temp']; ?></span>
-				</td>
-				<td style="border-top: 1px solid <?php echo $farbe; ?>; text-align: center">
-					<img alt="<?php echo $list[1]['beschreibung']; ?>" src="<?php echo 'modules/mod_dwd_wettermodul/icons/' . $list[1]['himmel']; ?>" width="26" height="26" />
-				</td>
-			</tr>
-		<?php endif;
-
-		if (isset($list[2])) : ?>
-			<tr>
-				<td style="border-top: 1px solid <?php echo $farbe; ?>;color: <?php echo $zweitfarbe; ?>;width: 33%;"><?php echo $datum2; ?></td>
-				<td style="border-top: 1px solid <?php echo $farbe; ?>; text-align: center;">
-					<span style="color: <?php echo $farbe; ?>;"><?php echo $list[2]['temp']; ?></span>
-				</td>
-				<td style="border-top: 1px solid <?php echo $farbe; ?>; text-align: center">
-					<img alt="<?php echo $list[2]['beschreibung']; ?>" src="<?php echo 'modules/mod_dwd_wettermodul/icons/' . $list[2]['himmel']; ?>" width="26" height="26" />
-				</td>
-			</tr>
-		<?php endif;
-
-		if (isset($list[3])) : ?>
-			<tr>
-				<td style="border-top: 1px solid <?php echo $farbe; ?>;color: <?php echo $zweitfarbe; ?>;width: 33%;"><?php echo $datum3; ?></td>
-				<td style="border-top: 1px solid <?php echo $farbe; ?>; text-align: center;">
-					<span style="color: <?php echo $farbe; ?>;"><?php echo $list[3]['temp']; ?></span>
-				</td>
-				<td style="border-top: 1px solid <?php echo $farbe; ?>; text-align: center">
-					<img alt="<?php echo $list[3]['beschreibung']; ?>" src="<?php echo 'modules/mod_dwd_wettermodul/icons/' . $list[3]['himmel']; ?>" width="26" height="26" />
-				</td>
-			</tr>
-		<?php endif; ?>
-		<tr><td colspan="3" style="text-align: right; font-size: 11px; color:gray; border:none;padding:5px; border-top: 1px solid <?php echo $farbe; ?>; nowrap;">
-				<a href="http://www.dwd.de/">&copy; Deutscher Wetterdienst</a>
-		</td></tr>
+	<?php if ($titel) : ?>
+		<?php echo $titel; ?>
+	<?php endif; ?>
+	<table>
+		<?php for ($i = 0; $i <= 3; $i++) : ?>
+			<?php if (isset($list[$i])) : ?>
+				<tr>
+					<td class="color_text">
+						<?php if (!$i) : ?>
+							Aktuell
+						<?php elseif ($i == 1) : ?>
+							Morgen
+						<?php else : ?>
+							<?php echo ${'datum' . $i}; ?>
+						<?php endif; ?>
+					</td>
+					<td class="text-center">
+						<span class="temp"><?php echo $list[$i]['temp']; ?></span>
+					</td>
+					<td class="text-center">
+						<img alt="<?php echo $list[$i]['beschreibung']; ?>" src="modules/mod_dwd_wettermodul/icons/<?php echo $list[$i]['himmel']; ?>" width="26" height="26" />
+					</td>
+				</tr>
+			<?php endif; ?>
+		<?php endfor; ?>
 	</table>
+	<div class="text-right"><small><a href="http://www.dwd.de/">&copy; Deutscher Wetterdienst</a></small></div>
 </div>

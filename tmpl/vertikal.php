@@ -7,153 +7,112 @@
  **/
 
 defined('_JEXEC') or die();
+
+JFactory::getDocument()->addStyleDeclaration(
+	'.dwd_wettermodul .row_header {
+		border-top: 1px solid ' . $farbe . ';
+	}
+	.dwd_wettermodul .color_text {
+		color: ' . $zweitfarbe .';
+	}
+	.dwd_wettermodul .temp {
+		font-size: large;
+		color: ' . $farbe .';
+	}'
+);
 ?>
 <div class="dwd_wettermodul">
-	<table style="width: 100%; border-collapse: collapse;text-align:left;">
-		<?php
-		if ($titel) : ?>
-			<tr><td colspan="2" style="text-align: left"><h2><?php echo $titel; ?></h2></td></tr>
-		<?php endif;
-
-		if (isset($list[0])) : ?>
+	<?php if ($titel) : ?>
+		<h2><?php echo $titel; ?></h2>
+	<?php endif; ?>
+	<table>
+		<?php if (isset($list[0])) : ?>
 			<tr>
-				<td colspan="2" style="border-top: 1px solid <?php echo $farbe; ?>;color: <?php echo $zweitfarbe; ?>;">
+				<td colspan="2" class="row_header color_text">
 					<?php if ($datumtitel) : ?>
 						<strong>Aktuell</strong>
 					<?php endif; ?>
 				</td>
 			</tr>
 			<tr>
-				<td style="text-align: center;">
-					<span style="font-size: large; color: <?php echo $farbe; ?>;"><?php echo $list[0]['temp']; ?></span>
-					<?php
-					if ($textausgabe) : ?>
+				<td class="text-center">
+					<span class="temp"><?php echo $list[0]['temp']; ?></span>
+					<?php if ($textausgabe) : ?>
 						<br />
-						<?php echo $list[0]['beschreibung'];
-					endif; ?>
+						<?php echo $list[0]['beschreibung']; ?>
+					<?php endif; ?>
 				</td>
-				<td style="text-align: center">
-					<img alt="<?php echo $list[0]['beschreibung']; ?>" src="<?php echo JURI::base() . '/modules/mod_dwd_wettermodul/icons/' . $list[0]['himmel']; ?>" width="50" height="50" />
+				<td class="text-center">
+					<img alt="<?php echo $list[0]['beschreibung']; ?>" src="modules/mod_dwd_wettermodul/icons/<?php echo $list[0]['himmel']; ?>" width="50" height="50" />
 				</td>
 			</tr>
-			<?php
-			if ($heutehohe) : ?>
+			<?php if ($heutehohe) : ?>
 				<tr>
 					<td>H&ouml;he &uuml;. NN:</td>
 					<td nowrap="nowrap"><?php echo htmlentities($list[0]['hohe']); ?></td>
 				</tr>
-			<?php endif;
-
-			if ($heuteluft) : ?>
+			<?php endif; ?>
+			<?php if ($heuteluft) : ?>
 				<tr>
 					<td>Luftdruck:</td>
 					<td nowrap="nowrap"><?php echo htmlentities($list[0]['luft']); ?></td>
 				</tr>
-			<?php endif;
-
-			if ($heuteregen) : ?>
+			<?php endif; ?>
+			<?php if ($heuteregen) : ?>
 				<tr>
 					<td>Niederschlag:</td>
 					<td nowrap="nowrap"><?php echo htmlentities($list[0]['regen']); ?></td>
 				</tr>
-			<?php endif;
-
-			if ($heutewindrichtung) : ?>
+			<?php endif; ?>
+			<?php if ($heutewindrichtung) : ?>
 				<tr>
 					<td>Windrichtung:</td>
 					<td><?php echo htmlentities($list[0]['richtung']); ?></td>
 				</tr>
-			<?php endif;
-
-			if ($heutewind) : ?>
+			<?php endif; ?>
+			<?php if ($heutewind) : ?>
 				<tr>
 					<td>Geschwindigkeit:</td>
 					<td nowrap="nowrap"><?php echo htmlentities($list[0]['wind']); ?></td>
 				</tr>
-			<?php endif;
-
-			if ($heutewindspitze) : ?>
+			<?php endif; ?>
+			<?php if ($heutewindspitze) : ?>
 				<tr>
 					<td>Windb&ouml;en:</td>
 					<td nowrap="nowrap"><?php echo htmlentities($list[0]['spitze']); ?></td>
 				</tr>
-			<?php endif;
-		endif;
- 
-		if (isset($list[1])) : ?>
-			<tr>
-				<td colspan="2" style="border-top: 1px solid <?php echo $farbe; ?>;color: <?php echo $zweitfarbe; ?>;">
-					<?php
-					if ($datumtitel) : ?>
-						<strong>Morgen</strong>
-					<?php endif; ?>
-				</td>
-			</tr>
-			<tr>
-				<td style="text-align: center;">
-					<span style="font-size: large; color: <?php echo $farbe; ?>;"><?php echo $list[1]['temp']; ?></span>
-					<?php
-					if ($textausgabe) : ?>
-						<br />
-						<?php echo $list[1]['beschreibung'];
-					endif; ?>
-				</td>
-				<td style="text-align: center">
-					<img alt="<?php echo $list[1]['beschreibung']; ?>" src="<?php echo 'modules/mod_dwd_wettermodul/icons/' . $list[1]['himmel']; ?>" width="50" height="50" />
-				</td>
-			</tr>
-		<?php endif;
-
-		if (isset($list[2])) : ?>
-			<tr>
-				<td colspan="2" style="border-top: 1px solid <?php echo $farbe; ?>;color: <?php echo $zweitfarbe; ?>;">
-					<?php
-					if ($datumtitel) : ?>
-						<strong><?php echo $datum2; ?></strong>
-					<?php endif; ?>
-				</td>
-			</tr>
-			<tr>
-				<td style="text-align: center;">
-					<span style="font-size: large; color: <?php echo $farbe; ?>;"><?php echo $list[2]['temp']; ?></span>
-					<?php
-					if ($textausgabe) : ?>
-						<br />
-						<?php echo $list[2]['beschreibung'];
-					endif; ?>
-				</td>
-				<td style="text-align: center">
-					<img alt="<?php echo $list[2]['beschreibung']; ?>" src="<?php echo 'modules/mod_dwd_wettermodul/icons/' . $list[2]['himmel']; ?>" width="50" height="50" />
-				</td>
-			</tr>
-		<?php endif;
-
-		if (isset($list[3])) : ?>
-			<tr>
-				<td colspan="2" style="border-top: 1px solid <?php echo $farbe; ?>;color: <?php echo $zweitfarbe; ?>;">
-					<?php
-					if ($datumtitel) : ?>
-						<strong><?php echo $datum3; ?></strong>
-					<?php endif; ?>
-				</td>
-			</tr>
-			<tr>
-				<td style="text-align: center;">
-					<span style="font-size: large; color: <?php echo $farbe; ?>;"><?php echo $list[3]['temp']; ?></span>
-					<?php
-					if ($textausgabe) : ?>
-						<br />
-						<?php echo $list[3]['beschreibung'];
-					endif; ?>
-				</td>
-				<td style="text-align: center">
-					<img alt="<?php echo $list[3]['beschreibung']; ?>" src="<?php echo 'modules/mod_dwd_wettermodul/icons/' . $list[3]['himmel']; ?>" width="50" height="50" />
-				</td>
-			</tr>
+			<?php endif; ?>
 		<?php endif; ?>
+		<?php for ($i = 1; $i <= 3; $i++) : ?>
+			<?php if (isset($list[$i])) : ?>
+				<tr>
+					<td colspan="2" class="row_header color_text">
+						<?php if ($datumtitel) : ?>
+							<?php if ($i == 1) : ?>
+								<strong>Morgen</strong>
+							<?php else : ?>
+								<strong><?php echo ${'datum' . $i}; ?></strong>
+							<?php endif; ?>
+						<?php endif; ?>
+					</td>
+				</tr>
+				<tr>
+					<td class="text-center">
+						<span class="temp"><?php echo $list[$i]['temp']; ?></span>
+						<?php if ($textausgabe) : ?>
+							<br />
+							<?php echo $list[$i]['beschreibung']; ?>
+						<?php endif; ?>
+					</td>
+					<td class="text-center">
+						<img alt="<?php echo $list[$i]['beschreibung']; ?>" src="modules/mod_dwd_wettermodul/icons/<?php echo $list[$i]['himmel']; ?>" width="50" height="50" />
+					</td>
+				</tr>
+			<?php endif; ?>
+		<?php endfor; ?>
 		<tr>
-			<td colspan="2" style="text-align: right; font-size: 11px; color:gray; border-top: 1px solid <?php echo $farbe; ?>; nowrap;">
-				<a href="http://www.dwd.de/">&copy; Deutscher Wetterdienst</a>
+			<td colspan="2" class="row_header text-right">
+				<small><a href="http://www.dwd.de/">&copy; Deutscher Wetterdienst</a></small>
 			</td>
 		</tr>
 	</table>
