@@ -76,6 +76,8 @@ class ModDwdwetterHelper
 		}
 
 		$data = array();
+		
+		new JBuffer;
 
 		foreach ($days as $day)
 		{
