@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<extension type="module" version="3.6" method="upgrade">
+<extension type="module" version="3.8" method="upgrade">
 	<name>DWD Wettermodul</name>
 	<author>T. Hunziker/ M. Bollmann</author>
-	<creationDate>2016-10-17</creationDate>
-	<copyright>(C) 2016</copyright>
+	<creationDate>2017-11-16</creationDate>
+	<copyright>(C) 2017</copyright>
 	<authorEmail>admin@bakual.net</authorEmail>
 	<authorUrl>http://www.bakual.net</authorUrl>
-	<version>4.1</version>
+	<version>5.0.0</version>
 	<license>http://www.gnu.org/licenses/gpl.html</license>
 	<description>MOD_DWD_WETTERMODUL_XML_DESCRIPTION</description>
 	<files>
@@ -14,12 +14,30 @@
 		<filename>helper.php</filename>
 		<folder>language</folder>
 		<folder>icons</folder>
+		<folder>sql</folder>
 		<folder>tmpl</folder>
 	</files>
 	<languages>
 		<language tag="en-GB">language/en-GB/en-GB.mod_dwd_wettermodul.ini</language>
 		<language tag="de-DE">language/de-DE/de-DE.mod_dwd_wettermodul.ini</language>
 	</languages>
+	<install>
+		<sql>
+			<file driver="mysql" charset="utf8">sql/mysql/install.mysql.utf8.sql</file>
+		</sql>
+	</install>
+
+	<uninstall>
+		<sql>
+			<file driver="mysql" charset="utf8">sql/mysql/uninstall.mysql.utf8.sql</file>
+		</sql>
+	</uninstall>
+
+	<update>
+		<schemas>
+			<schemapath type="mysql">sql/mysql/updates</schemapath>
+		</schemas>
+	</update>
 	<config>
 		<fields name="params">
 			<fieldset name="basic">
@@ -28,18 +46,6 @@
 					type="text"
 					label="Überschrift"
 					description="Geben Sie optional eine angezeigte Überschrift an."
-				/>
-				<field
-					name="user"
-					type="text"
-					label="DWD-FTP Nutzername"
-					description="Geben Sie den nach der Anmeldung vom DWD erhaltenen Nutzernamen ein."
-				/>
-				<field
-					name="passwort"
-					type="text"
-					label="DWD-FTP Passwort"
-					description="Geben Sie das nach der Anmeldung vom DWD erhaltene FTP Passwort ein."
 				/>
 				<field
 					name="daten"

@@ -2,7 +2,7 @@
 /**
  * @package         Wettermodul
  * @author          Thomas Hunziker <admin@bakual.net>
- * @copyright   (C) 2014 - Thomas Hunziker
+ * @copyright   (C) 2017 - Thomas Hunziker
  * @license         http://www.gnu.org/licenses/gpl.html
  **/
 
@@ -32,12 +32,6 @@ class ModDwdwetterHelper
 	static $params;
 
 	/**
-	 * @var JClientFtp Holds the FTP connection
-	 * @since  4.0
-	 */
-	static $ftp;
-
-	/**
 	 * @param $params \Joomla\Registry\Registry Module Params
 	 *
 	 * @since  1.0
@@ -46,12 +40,6 @@ class ModDwdwetterHelper
 	public static function getList($params)
 	{
 		self::$params = $params;
-
-		if (!self::$ftp)
-		{
-			$host      = 'ftp-outgoing2.dwd.de';
-			self::$ftp = JClientFtp::getInstance($host, 21, array(), self::$params->get('user'), self::$params->get('passwort'));
-		}
 
 		$days = array();
 

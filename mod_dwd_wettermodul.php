@@ -2,7 +2,7 @@
 /**
  * @package         Wettermodul
  * @author          Thomas Hunziker <admin@bakual.net>
- * @copyright   (C) 2014 - Thomas Hunziker
+ * @copyright   (C) 2017 - Thomas Hunziker
  * @license         http://www.gnu.org/licenses/gpl.html
  **/
 
@@ -19,13 +19,6 @@
 defined('_JEXEC') or die();
 
 require_once __DIR__ . '/helper.php';
-
-if (!$params->get('user') || !$params->get('passwort'))
-{
-	echo '<span class="text-error">DWD Wettermodul Fehler:<br />Die FTP-Zugangsdaten vom DWD wurden nicht korrekt angegeben!</span>';
-
-	return;
-}
 
 $cacheparams = new stdClass;
 $cacheparams->cachemode = 'static';
