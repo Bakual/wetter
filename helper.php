@@ -64,7 +64,7 @@ class ModDwdwetterHelper
 		}
 
 		$data = array();
-		
+
 		new JBuffer;
 
 		foreach ($days as $day)
@@ -98,10 +98,12 @@ class ModDwdwetterHelper
 	 */
 	private static function getFile($day)
 	{
+		$server = "https://opendata.dwd.de";
+
 		if (!$day)
 		{
 			$folder = '/gds/gds/specials/observations/tables/germany/';
-			$files  = self::$ftp->listNames($folder);
+//			$files  = self::$ftp->listNames($folder);
 			sort($files);
 
 			// Take the raw one
@@ -116,29 +118,31 @@ class ModDwdwetterHelper
 		}
 		else
 		{
-			$folder = '/gds/gds/specials/forecasts/tables/germany/';
-			$file   = 'Daten_Deutschland';
+			$folder  = '/weather/local_forecasts/poi/';
+			$station = self::$params->get('station');
 
-			switch ($day)
+			if (is_numeric($station))
 			{
-				case 1:
-					$file .= '_morgen_spaet';
-					break;
-				case 2:
-					$file .= '_uebermorgen_spaet';
-					break;
-				case 3:
-					$file .= '_Tag4_spaet';
-					break;
+				$station = str_pad($station, 5, '0', STR_PAD_LEFT);
 			}
 
-			$file .= '_HTML';
+			$file    = $station . '-MOSMIX.csv';
+			$url = $server . $folder . $file;
 		}
 
 		// Read file
-		self::$ftp->read($folder . $file, $filedata);
+		try
+		{
+			$response = \JHttpFactory::getHttp()->get($url);
+		}
+		catch (\RuntimeException $exception)
+		{
+			\JLog::add(\JText::sprintf('JLIB_INSTALLER_ERROR_DOWNLOAD_SERVER_CONNECT', $exception->getMessage()), \JLog::WARNING, 'jerror');
 
-		return utf8_encode($filedata);
+			return false;
+		}
+
+		return '';
 	}
 
 	/**
