@@ -9,47 +9,46 @@
 defined('_JEXEC') or die();
 
 JFactory::getDocument()->addStyleDeclaration(
-	'.dwd_wettermodul table {
+	'.dwd_wettermodul.minimal table {
 		width: 100%;
 	}
-	.dwd_wettermodul table td {
+	.dwd_wettermodul.minimal table td {
 		border-top: 1px solid ' . $farbe . ';
 		width: 33%;
 	}
-	.dwd_wettermodul .color_text {
+	.dwd_wettermodul.minimal .color_text {
 		color: ' . $zweitfarbe .';
 	}
-	.dwd_wettermodul .temp {
+	.dwd_wettermodul.minimal .temp {
 		color: ' . $farbe .';
 	}'
 );
 ?>
-<div class="dwd_wettermodul">
+<div class="dwd_wettermodul minimal">
 	<?php if ($titel) : ?>
 		<?php echo $titel; ?>
 	<?php endif; ?>
 	<table>
-		<?php for ($i = 0; $i <= 3; $i++) : ?>
-			<?php if (isset($list[$i])) : ?>
-				<tr>
-					<td class="color_text">
-						<?php if (!$i) : ?>
-							Aktuell
-						<?php elseif ($i == 1) : ?>
-							Morgen
-						<?php else : ?>
-							<?php echo ${'datum' . $i}; ?>
-						<?php endif; ?>
-					</td>
-					<td class="text-center">
-						<span class="temp"><?php echo $list[$i]['temp']; ?></span>
-					</td>
-					<td class="text-center">
-						<img alt="<?php echo $list[$i]['beschreibung']; ?>" src="modules/mod_dwd_wettermodul/icons/<?php echo $list[$i]['himmel']; ?>" width="26" height="26" />
-					</td>
-				</tr>
-			<?php endif; ?>
-		<?php endfor; ?>
+		<?php foreach ($days as $i => $day) : ?>
+			<?php $row = $list[$day . ' 18:00'] ?>
+            <tr>
+                <td class="color_text">
+                    <?php if (!$i) : ?>
+                        Aktuell
+                    <?php elseif ($i == 1) : ?>
+                        Morgen
+                    <?php else : ?>
+                        <?php echo $day; ?>
+                    <?php endif; ?>
+                </td>
+                <td class="text-center">
+                    <span class="temp"><?php echo $row['TT']; ?>°C</span>
+                </td>
+                <td class="text-center">
+                    <img alt="" src="modules/mod_dwd_wettermodul/icons/<?php echo ModDwdwetterHelper::getIcon($row, $time); ?>" width="26" height="26" />
+                </td>
+            </tr>
+		<?php endforeach; ?>
 	</table>
 	<div class="text-right"><small><a href="http://www.dwd.de/">&copy; Deutscher Wetterdienst</a></small></div>
 </div>

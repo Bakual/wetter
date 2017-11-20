@@ -20,33 +20,56 @@ defined('_JEXEC') or die();
 
 require_once __DIR__ . '/helper.php';
 
-$cacheparams = new stdClass;
-$cacheparams->cachemode = 'static';
-$cacheparams->class = 'ModDwdwetterHelper';
-$cacheparams->method = 'getList';
+$cacheparams               = new stdClass;
+$cacheparams->cachemode    = 'static';
+$cacheparams->class        = 'ModDwdwetterHelper';
+$cacheparams->method       = 'getList';
 $cacheparams->methodparams = $params;
 
 $list = JModuleHelper::moduleCache($module, $params, $cacheparams);
 
-if (!count($list))
+if (!$list)
 {
 	return;
 }
 
-$timestamp = time();
-$datum2 = date('d.m.y', $timestamp + (2 * 24 * 60 * 60));
-$datum3 = date('d.m.y', $timestamp + (3 * 24 * 60 * 60));
+$units = ModDwdwetterHelper::getUnits();
 
-$titel = $params->get('titel');
-$farbe = $params->get('farbe', '#3366cc');
-$zweitfarbe = $params->get('zweitfarbe', '#666666');
-$textausgabe = $params->get('textausgabe', 1);
-$heutehohe = $params->get('heutehohe');
-$heuteluft = $params->get('heuteluft', 1);
-$heuteregen = $params->get('heuteregen', 1);
+$timestamp = time();
+$day0      = date('d.m.y', $timestamp);
+$day1      = date('d.m.y', $timestamp + (1 * 24 * 60 * 60));
+$time      = str_pad(floor(date('H', $timestamp)/3)*3, '2', '0');
+
+$days = array();
+
+if ($params->get('tag0'))
+{
+	$days[0] = $day0;
+}
+if ($params->get('tag1'))
+{
+	$days[1] = $day1;
+}
+if ($params->get('tag2'))
+{
+	$days[2] = date('d.m.y', $timestamp + (2 * 24 * 60 * 60));
+}
+if ($params->get('tag3'))
+{
+	$days[3] = date('d.m.y', $timestamp + (3 * 24 * 60 * 60));
+	$days[4] = date('d.m.y', $timestamp + (4 * 24 * 60 * 60));
+	$days[5] = date('d.m.y', $timestamp + (5 * 24 * 60 * 60));
+}
+
+$titel             = $params->get('titel');
+$farbe             = $params->get('farbe', '#3366cc');
+$zweitfarbe        = $params->get('zweitfarbe', '#666666');
+$heutehohe         = $params->get('heutehohe');
+$heuteluft         = $params->get('heuteluft', 1);
+$heuteregen        = $params->get('heuteregen', 1);
 $heutewindrichtung = $params->get('heutewindrichtung', 1);
-$heutewind = $params->get('heutewind', 1);
-$heutewindspitze = $params->get('heutewindspitze');
-$datumtitel = $params->get('datumtitel', 1);
+$heutewind         = $params->get('heutewind', 1);
+$heutewindspitze   = $params->get('heutewindspitze');
+$datumtitel        = $params->get('datumtitel', 1);
 
 require JModuleHelper::getLayoutPath('mod_dwd_wettermodul', $params->get('layout', 'vertikal'));

@@ -9,155 +9,122 @@
 defined('_JEXEC') or die();
 
 JFactory::getDocument()->addStyleDeclaration(
-	'.dwd_wettermodul table {
+	'.dwd_wettermodul.horizontal table {
 		width: 100%;
 	}
-	.dwd_wettermodul .border {
+	.dwd_wettermodul.horizontal .border {
 		border-left: 1px solid ' . $farbe . ';
 	}
-	.dwd_wettermodul .color_text {
+	.dwd_wettermodul.horizontal .color_text {
 		color: ' . $zweitfarbe .';
 	}
-	.dwd_wettermodul .temp {
+	.dwd_wettermodul.horizontal .temp {
 		font-size: large;
 		color: ' . $farbe .';
 	}'
 );
+
+$count = count($days);
 ?>
-<div class="dwd_wettermodul">
+<div class="dwd_wettermodul horizontal">
 	<?php if ($titel) : ?>
 		<h2><?php echo $titel; ?></h2>
 	<?php endif; ?>
 	<table>
 		<?php if ($datumtitel) : ?>
 			<tr class="color_text text-center">
-				<?php if (isset($list[0])) : ?>
-					<td colspan="2">
-						<strong>Aktuell</strong>
-					</td>
-				<?php endif; ?>
-				<?php if (isset($list[1])) : ?>
-					<td class="border">
-						<strong>Morgen</strong>
-					</td>
-				<?php endif; ?>
-				<?php if (isset($list[2])) : ?>
-					<td class="border">
-						<strong><?php echo $datum2; ?></strong>
-					</td>
-				<?php endif; ?>
-				<?php if (isset($list[3])) : ?>
-					<td class="border">
-						<strong><?php echo $datum3; ?></strong>
-					</td>
-				<?php endif; ?>
+                <?php foreach ($days as $i => $day) : ?>
+                    <?php if (!$i) : ?>
+                        <td colspan="2">
+                            <strong>Aktuell</strong>
+                        </td>
+                    <?php elseif ($i == 1) : ?>
+                        <td class="border">
+                            <strong>Morgen</strong>
+                        </td>
+    				<?php else: ?>
+                        <td class="border">
+                            <strong><?php echo $day; ?></strong>
+                        </td>
+    				<?php endif; ?>
+                <?php endforeach; ?>
 			</tr>
 		<?php endif; ?>
 		<tr class="text-center">
-			<?php for ($i = 0; $i <= 3; $i++) : ?>
-				<?php if (isset($list[$i])) : ?>
-					<?php if (!$i) : ?>
-						<td colspan="2">
-					<?php else : ?>
-						<td class="border">
-					<?php endif; ?>
-						<img alt="<?php echo $list[$i]['beschreibung']; ?>" src="modules/mod_dwd_wettermodul/icons/<?php echo $list[$i]['himmel']; ?>" width="100" height="100" />
-					</td>
-				<?php endif; ?>
-			<?php endfor; ?>
+			<?php foreach ($days as $i => $day) : ?>
+                <?php if (!$i) : ?>
+                    <td colspan="2">
+                <?php else : ?>
+                    <td class="border">
+                <?php endif; ?>
+                    <img alt="" src="modules/mod_dwd_wettermodul/icons/<?php echo ModDwdwetterHelper::getIcon($list[$day . ' 18:00'], $time); ?>" width="100" height="100" />
+                </td>
+			<?php endforeach; ?>
 		</tr>
 		<tr class="text-center">
-			<?php for ($i = 0; $i <= 3; $i++) : ?>
-				<?php if (isset($list[$i])) : ?>
-					<?php if (!$i) : ?>
-						<td colspan="2">
-					<?php else : ?>
-						<td class="border">
-					<?php endif; ?>
-						<span class="temp"><?php echo $list[$i]['temp']; ?></span>
-					</td>
-				<?php endif; ?>
-			<?php endfor; ?>
+			<?php foreach ($days as $i => $day) : ?>
+                <?php if (!$i) : ?>
+                    <td colspan="2">
+                <?php else : ?>
+                    <td class="border">
+                <?php endif; ?>
+                    <span class="temp"><?php echo $list[$day . ' 18:00']['Tx']; ?>°C</span>
+                </td>
+			<?php endforeach; ?>
 		</tr>
-		<?php if ($textausgabe) : ?>
-			<tr class="text-center">
-				<?php for ($i = 0; $i <= 3; $i++) : ?>
-					<?php if (isset($list[$i])) : ?>
-						<?php if (!$i) : ?>
-							<td colspan="2">
-						<?php else : ?>
-							<td class="border">
-						<?php endif; ?>
-							<?php echo $list[$i]['beschreibung']; ?>
-						</td>
-					<?php endif; ?>
-				<?php endfor; ?>
-			</tr>
-		<?php endif; ?>
-		<?php if (isset($list[0])) : ?>
+		<?php if (isset($days[0])) : ?>
+			<?php $current = $list[$day0 . ' ' . $time . ':00']; ?>
 			<?php if ($heutehohe) : ?>
 				<tr>
 					<td>H&ouml;he &uuml;. NN:</td>
-					<td nowrap="nowrap""><?php echo htmlentities($list[0]['hohe']); ?></td>
-					<?php for ($i = 1; $i <= 3; $i++) : ?>
-						<?php if (isset($list[$i])) : ?>
-							<td class="border"></td>
-						<?php endif; ?>
+					<td nowrap="nowrap""><?php echo ModDwdwetterHelper::getStation($params->get('station'))->alt; ?> m</td>
+					<?php for ($i = 2; $i <= $count; $i++) : ?>
+                        <td class="border"></td>
 					<?php endfor; ?>
 				</tr>
 			<?php endif; ?>
 			<?php if ($heuteluft) : ?>
 				<tr>
 					<td>Luftdruck:</td>
-					<td nowrap="nowrap"><?php echo htmlentities($list[0]['luft']); ?></td>
-					<?php for ($i = 1; $i <= 3; $i++) : ?>
-						<?php if (isset($list[$i])) : ?>
-							<td class="border"></td>
-						<?php endif; ?>
+					<td nowrap="nowrap"><?php echo $current['PPPP'] . ' ' . $units['PPPP']; ?></td>
+					<?php for ($i = 2; $i <= $count; $i++) : ?>
+                        <td class="border"></td>
 					<?php endfor; ?>
 				</tr>
 			<?php endif; ?>
 			<?php if ($heuteregen) : ?>
 				<tr>
 					<td>Niederschlag:</td>
-					<td nowrap="nowrap"><?php echo htmlentities($list[0]['regen']); ?></td>
-					<?php for ($i = 1; $i <= 3; $i++) : ?>
-						<?php if (isset($list[$i])) : ?>
-							<td class="border"></td>
-						<?php endif; ?>
+					<td nowrap="nowrap"><?php echo $list[$day1 . ' 06:00']['RR24'] . ' ' . $units['RR24']; ?></td>
+					<?php for ($i = 2; $i <= $count; $i++) : ?>
+                        <td class="border"></td>
 					<?php endfor; ?>
 				</tr>
 			<?php endif; ?>
 			<?php if ($heutewindrichtung) : ?>
 				<tr>
 					<td>Windrichtung:</td>
-					<td><?php echo htmlentities($list[0]['richtung']); ?></td>
-					<?php for ($i = 1; $i <= 3; $i++) : ?>
-						<?php if (isset($list[$i])) : ?>
-							<td class="border"></td>
-						<?php endif; ?>
+					<td><?php echo $current['dd'] . ' ' . $units['dd']; ?></td>
+					<?php for ($i = 2; $i <= $count; $i++) : ?>
+                        <td class="border"></td>
 					<?php endfor; ?>
 				</tr>
 			<?php endif; ?>
 			<?php if ($heutewind) : ?>
 				<tr>
 					<td>Geschwindigkeit:</td>
-					<td nowrap="nowrap"><?php echo htmlentities($list[0]['wind']); ?></td>
-					<?php for ($i = 1; $i <= 3; $i++) : ?>
-						<?php if (isset($list[$i])) : ?>
-							<td class="border"></td>
-						<?php endif; ?>
+					<td nowrap="nowrap"><?php echo $current['ff'] . ' ' . $units['ff']; ?></td>
+					<?php for ($i = 2; $i <= $count; $i++) : ?>
+                        <td class="border"></td>
 					<?php endfor; ?>
 				</tr>
 			<?php endif; ?>
 			<?php if ($heutewindspitze) : ?>
 				<tr>
 					<td>Windb&ouml;en:</td>
-					<td nowrap="nowrap"><?php echo htmlentities($list[0]['spitze']); ?></td>
-					<?php for ($i = 1; $i <= 3; $i++) : ?>
-						<?php if (isset($list[$i])) : ?>
-							<td class="border"></td>
-						<?php endif; ?>
+					<td nowrap="nowrap"><?php echo $current['fx'] . ' ' . $units['fx']; ?></td>
+					<?php for ($i = 2; $i <= $count; $i++) : ?>
+                        <td class="border"></td>
 					<?php endfor; ?>
 				</tr>
 			<?php endif;

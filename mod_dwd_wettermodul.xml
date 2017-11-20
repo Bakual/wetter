@@ -86,17 +86,6 @@
                     <option value="0">JNO</option>
                 </field>
                 <field
-                        name="textausgabe"
-                        type="radio"
-                        label="Wetterbeschreibung anzeigen?"
-                        description="Soll die Wetterbeschreibung (heiter, bewölkt etc.) als Text angezeigt werden?"
-                        class="btn-group btn-group-yesno"
-                        default="1"
-                >
-                    <option value="1">JYES</option>
-                    <option value="0">JNO</option>
-                </field>
-                <field
                         name="tag0"
                         type="radio"
                         label="Aktuelle Wetterdaten anzeigen?"
@@ -203,7 +192,7 @@
                 <field name="layout" type="modulelayout"
                        label="JFIELD_ALT_LAYOUT_LABEL"
                        description="JFIELD_ALT_MODULE_LAYOUT_DESC"
-                       default="_:default"/>
+                       default="_:vertikal"/>
                 <field name="moduleclass_sfx" type="textarea"
                        label="COM_MODULES_FIELD_MODULECLASS_SFX_LABEL"
                        description="COM_MODULES_FIELD_MODULECLASS_SFX_DESC"
