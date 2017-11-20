@@ -5,7 +5,7 @@
         <description>Joomla! Wettermodul</description>
         <element>mod_dwd_wettermodul</element>
         <type>module</type>
-        <version>5.0.0-alpha2</version>
+        <version>5.0.0-alpha1</version>
         <client>site</client>
         <infourl title="DWD Wettermodul">https://github.com/Bakual/wetter/releases/tag/5.0.0-alpha1</infourl>
         <downloads>
