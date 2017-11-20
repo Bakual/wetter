@@ -6,7 +6,7 @@
     <copyright>(C) 2017</copyright>
     <authorEmail>admin@bakual.net</authorEmail>
     <authorUrl>http://www.bakual.net</authorUrl>
-    <version>5.0.0</version>
+    <version>5.0.0-alpha1</version>
     <license>http://www.gnu.org/licenses/gpl.html</license>
     <description>MOD_DWD_WETTERMODUL_XML_DESCRIPTION</description>
     <files>
@@ -38,6 +38,9 @@
             <schemapath type="mysql">sql/mysql/updates</schemapath>
         </schemas>
     </update>
+    <updateservers>
+        <server type="extension" name="DWD Wettermodul">https://raw.githubusercontent.com/Bakual/wetter/master/manifest.xml</server>
+    </updateservers>
     <config>
         <fields name="params">
             <fieldset name="basic">
