@@ -94,7 +94,7 @@ Factory::getDocument()->addStyleDeclaration(
                     <td colspan="2" class="row_header color_text">
 						<?php if ($datumtitel) : ?>
 							<?php if ($i == 1) : ?>
-                                <strong><?php echo Text::_('MOD_DWD_WETTERMODUL_DAY0'); ?></strong>
+                                <strong><?php echo Text::_('MOD_DWD_WETTERMODUL_DAY1'); ?></strong>
 							<?php else : ?>
                                 <strong><?php echo $day; ?></strong>
 							<?php endif; ?>
