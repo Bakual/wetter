@@ -91,7 +91,7 @@
 					default="1"
 				>
 					<option value="1">JSHOW</option>
-					<option value="0">JNO</option>
+					<option value="0">JHIDE</option>
 				</field>
 				<field
 					name="heutehohe"
@@ -102,7 +102,7 @@
 					default="0"
 				>
 					<option value="1">JSHOW</option>
-					<option value="0">JNO</option>
+					<option value="0">JHIDE</option>
 				</field>
 				<field
 					name="heuteluft"
@@ -113,7 +113,7 @@
 					default="1"
 				>
 					<option value="1">JSHOW</option>
-					<option value="0">JNO</option>
+					<option value="0">JHIDE</option>
 				</field>
 
 				<field
@@ -125,7 +125,7 @@
 					default="1"
 				>
 					<option value="1">JSHOW</option>
-					<option value="0">JNO</option>
+					<option value="0">JHIDE</option>
 				</field>
 				<field
 					name="heutewindrichtung"
@@ -136,7 +136,7 @@
 					default="1"
 				>
 					<option value="1">JSHOW</option>
-					<option value="0">JNO</option>
+					<option value="0">JHIDE</option>
 				</field>
 				<field
 					name="heutewind"
@@ -147,7 +147,7 @@
 					default="1"
 				>
 					<option value="1">JSHOW</option>
-					<option value="0">JNO</option>
+					<option value="0">JHIDE</option>
 				</field>
 				<field
 					name="heutewindspitze"
@@ -158,7 +158,7 @@
 					default="0"
 				>
 					<option value="1">JSHOW</option>
-					<option value="0">JNO</option>
+					<option value="0">JHIDE</option>
 				</field>
 				<field
 					name="tag1"
@@ -168,7 +168,7 @@
 					default="0"
 				>
 					<option value="1">JSHOW</option>
-					<option value="0">JNO</option>
+					<option value="0">JHIDE</option>
 				</field>
 				<field
 					name="tag2"
