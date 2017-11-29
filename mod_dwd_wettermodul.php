@@ -18,6 +18,8 @@
 
 defined('_JEXEC') or die();
 
+use Joomla\CMS\Helper\ModuleHelper;
+
 require_once __DIR__ . '/helper.php';
 
 $cacheparams               = new stdClass;
@@ -26,7 +28,7 @@ $cacheparams->class        = 'ModDwdwetterHelper';
 $cacheparams->method       = 'getList';
 $cacheparams->methodparams = $params;
 
-$list = JModuleHelper::moduleCache($module, $params, $cacheparams);
+$list = ModuleHelper::moduleCache($module, $params, $cacheparams);
 
 if (!$list)
 {
@@ -38,7 +40,7 @@ $units = ModDwdwetterHelper::getUnits();
 $timestamp = time();
 $day0      = date('d.m.y', $timestamp);
 $day1      = date('d.m.y', $timestamp + (1 * 24 * 60 * 60));
-$time      = str_pad(floor(date('H', $timestamp)/3)*3, '2', '0');
+$time      = str_pad(floor(date('H', $timestamp) / 3) * 3, '2', '0', STR_PAD_LEFT);
 
 $days = array();
 
@@ -72,4 +74,4 @@ $heutewind         = $params->get('heutewind', 1);
 $heutewindspitze   = $params->get('heutewindspitze');
 $datumtitel        = $params->get('datumtitel', 1);
 
-require JModuleHelper::getLayoutPath('mod_dwd_wettermodul', $params->get('layout', 'vertikal'));
+require ModuleHelper::getLayoutPath('mod_dwd_wettermodul', $params->get('layout', 'vertikal'));

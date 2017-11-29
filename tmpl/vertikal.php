@@ -8,7 +8,9 @@
 
 defined('_JEXEC') or die();
 
-JFactory::getDocument()->addStyleDeclaration(
+use Joomla\CMS\Factory;
+
+Factory::getDocument()->addStyleDeclaration(
 	'.dwd_wettermodul.vertikal .row_header {
 		border-top: 1px solid ' . $farbe . ';
 	}
@@ -27,7 +29,7 @@ JFactory::getDocument()->addStyleDeclaration(
 	<?php endif; ?>
     <table>
 		<?php if ($days[0]) : ?>
-            <?php unset($days[0]); ?>
+			<?php unset($days[0]); ?>
 			<?php $current = $list[$day0 . ' ' . $time . ':00']; ?>
             <tr>
                 <td colspan="2" class="row_header color_text">
@@ -49,7 +51,8 @@ JFactory::getDocument()->addStyleDeclaration(
 			<?php if ($heutehohe) : ?>
                 <tr>
                     <td>H&ouml;he &uuml;. NN:</td>
-                    <td nowrap="nowrap"><?php echo ModDwdwetterHelper::getStation($params->get('station'))->alt; ?> m</td>
+                    <td nowrap="nowrap"><?php echo ModDwdwetterHelper::getStation($params->get('station'))->alt; ?>m
+                    </td>
                 </tr>
 			<?php endif; ?>
 			<?php if ($heuteluft) : ?>
@@ -67,7 +70,7 @@ JFactory::getDocument()->addStyleDeclaration(
 			<?php if ($heutewindrichtung) : ?>
                 <tr>
                     <td>Windrichtung:</td>
-                    <td><?php echo $current['dd'] . ' ' . $units['dd']; ?></td>
+                    <td><?php echo ModDwdwetterHelper::getDirection($current['dd']); ?></td>
                 </tr>
 			<?php endif; ?>
 			<?php if ($heutewind) : ?>
@@ -85,7 +88,7 @@ JFactory::getDocument()->addStyleDeclaration(
 		<?php endif; ?>
 		<?php foreach ($days as $i => $day) : ?>
 			<?php if (isset($list[$day . ' 18:00'])) : ?>
-                <?php $row = $list[$day . ' 18:00'] ?>
+				<?php $row = $list[$day . ' 18:00'] ?>
                 <tr>
                     <td colspan="2" class="row_header color_text">
 						<?php if ($datumtitel) : ?>
@@ -100,10 +103,11 @@ JFactory::getDocument()->addStyleDeclaration(
                 <tr>
                     <td class="text-center">
                         <span class="temp"><?php echo $row['Tx']; ?>°C</span>
-                   </td>
+                    </td>
                     <td class="text-center">
                         <img alt=""
-                             src="modules/mod_dwd_wettermodul/icons/<?php echo ModDwdwetterHelper::getIcon($row, $time); ?>" width="50"
+                             src="modules/mod_dwd_wettermodul/icons/<?php echo ModDwdwetterHelper::getIcon($row, $time); ?>"
+                             width="50"
                              height="50"/>
                     </td>
                 </tr>

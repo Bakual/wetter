@@ -16,6 +16,10 @@
 // Die filedata der Grundversorgung dürfen frei verwendet werden, sind jedoch urheberrechtlich geschützt.
 // **************************************************************************
 
+use Joomla\CMS\Factory;
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\Log\Log;
+
 defined('_JEXEC') or die('Restricted access');
 
 /**
@@ -77,7 +81,7 @@ class ModDwdwetterHelper
 		}
 		catch (\RuntimeException $exception)
 		{
-			\JLog::add(\JText::sprintf('JLIB_INSTALLER_ERROR_DOWNLOAD_SERVER_CONNECT', $exception->getMessage()), \JLog::WARNING, 'jerror');
+			Log::add(Text::sprintf('JLIB_INSTALLER_ERROR_DOWNLOAD_SERVER_CONNECT', $exception->getMessage()), Log::WARNING, 'jerror');
 
 			return array();
 		}
@@ -86,8 +90,10 @@ class ModDwdwetterHelper
 	}
 
 	/**
-	 * @param  array  $row
-	 * @param  int    $hour
+	 * Returns the weather icon for a condition
+	 *
+	 * @param  array $row
+	 * @param  int   $hour
 	 *
 	 * @return string
 	 *
@@ -185,19 +191,42 @@ class ModDwdwetterHelper
 	/**
 	 * Returns selected Station.
 	 *
-	 * @return array
+	 * @param $id
 	 *
+	 * @return array
 	 * @since 5.0.0
 	 */
 	public static function getStation($id)
 	{
-		$db = JFactory::getDbo();
+		$db    = Factory::getDbo();
 		$query = $db->getQuery(true);
 		$query->select('*');
 		$query->from('#__dwd_wetter_sites');
 		$query->where('id = ' . (int) $id);
 
 		$db->setQuery($query);
+
 		return $db->loadObject();
+	}
+
+	/**
+	 * Returns direction in N/E/S/W instead of Grad.
+	 *
+	 * @param $grad integer
+	 *
+	 * @return string
+	 * @since 5.0.0
+	 */
+	public static function getDirection($grad)
+	{
+		$directions = array(
+			'N', 'NNO', 'NO', 'ONO',
+			'O', 'OSO', 'SO', 'SSO',
+			'S', 'SSW', 'SW', 'WSW',
+			'W', 'WNW', 'NW', 'NNW',
+			'N'
+		);
+
+		return $directions[round($grad / 22.5)];
 	}
 }
