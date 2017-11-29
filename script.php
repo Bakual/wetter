@@ -48,7 +48,7 @@ class Mod_Dwd_wettermodulInstallerScript extends InstallerScript
 	{
 		$manifest = $this->getItemArray('manifest_cache', '#__extensions', 'element', Factory::getDbo()->quote($this->extension));
 
-		if (version_compare($manifest['version'], '5.0.0', '<'))
+		if (version_compare($manifest['version'], '5.0.1', '<'))
 		{
 			$this->deleteFiles = array(
 				'/language/en-GB/en-GB.mod_dwd_wettermodul.ini',
