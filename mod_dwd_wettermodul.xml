@@ -17,10 +17,7 @@
 		<folder>sql</folder>
 		<folder>tmpl</folder>
 	</files>
-	<languages>
-		<language tag="en-GB">language/en-GB/en-GB.mod_dwd_wettermodul.ini</language>
-		<language tag="de-DE">language/de-DE/de-DE.mod_dwd_wettermodul.ini</language>
-	</languages>
+	<scriptfile>script.php</scriptfile>
 	<install>
 		<sql>
 			<file driver="mysql" charset="utf8">sql/mysql/install.mysql.utf8.sql</file>
