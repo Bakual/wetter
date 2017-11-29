@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <extension type="module" version="3.8" method="upgrade">
-	<name>DWD Wettermodul</name>
+	<name>MOD_DWD_WETTERMODUL</name>
 	<author>T. Hunziker/ M. Bollmann</author>
 	<creationDate>2017-11-16</creationDate>
 	<copyright>(C) 2017</copyright>
@@ -44,41 +44,39 @@
 				<field
 					name="titel"
 					type="text"
-					label="Überschrift"
-					description="Geben Sie optional eine angezeigte Überschrift an."
+					label="MOD_DWD_WETTERMODUL_FIELD_TITEL_LABEL"
+					description="MOD_DWD_WETTERMODUL_FIELD_TITEL_DESC"
 				/>
 				<field
 					name="station"
 					type="sql"
-					label="Vorhersage/DWD Region"
-					description="Wählen Sie den nächstgelegenen Ort als Datenbasis. Anhang dieser Wahl wird die Vorhersage erstellt."
+					label="MOD_DWD_WETTERMODUL_FIELD_STATION_LABEL"
+					description="MOD_DWD_WETTERMODUL_FIELD_STATION_DESC"
 					sql_select="id, title"
 					sql_from="#__dwd_wetter_sites"
 					sql_order="title ASC"
 					key_field="id"
 					value_field="title"
 				/>
-			</fieldset>
-			<fieldset name="weiteres" label="Weitere Einstellungen">
 				<field
 					name="farbe"
 					type="color"
-					label="Hauptfarbe"
-					description="Geben Sie einen Farbcode für die Temperatur etc. an."
+					label="MOD_DWD_WETTERMODUL_FIELD_FARBE_LABEL"
+					description="MOD_DWD_WETTERMODUL_FIELD_FARBE_DESC"
 					default="#6699cc"
 				/>
 				<field
 					name="zweitfarbe"
 					type="color"
-					label="Textfarbe"
-					description="Geben Sie einen Farbcode für die Tage an."
+					label="MOD_DWD_WETTERMODUL_FIELD_ZWEITFARBE_LABEL"
+					description="MOD_DWD_WETTERMODUL_FIELD_ZWEITFARBE_DESC"
 					default="#999999"
 				/>
 				<field
 					name="datumtitel"
 					type="radio"
-					label="Tagesbezeichnung anzeigen?"
-					description="Soll der Tag (Aktuell, Morgen, 12.03. etc.) als Text angezeigt werden?"
+					label="MOD_DWD_WETTERMODUL_FIELD_DATUMTITEL_LABEL"
+					description="MOD_DWD_WETTERMODUL_FIELD_DATUMTITEL_DESC"
 					class="btn-group btn-group-yesno"
 					default="1"
 				>
@@ -88,128 +86,144 @@
 				<field
 					name="tag0"
 					type="radio"
-					label="Aktuelle Wetterdaten anzeigen?"
-					description="Sollen die aktuellen Wetterdaten angezeigt werden?"
+					label="MOD_DWD_WETTERMODUL_FIELD_TAG0_LABEL"
 					class="btn-group btn-group-yesno"
 					default="1"
 				>
-					<option value="1">JYES</option>
+					<option value="1">JSHOW</option>
 					<option value="0">JNO</option>
 				</field>
 				<field
 					name="heutehohe"
 					type="radio"
-					label="Höhe(m) über Normalnull anzeigen?"
+					label="MOD_DWD_WETTERMODUL_FIELD_HEUTEHOHE_LABEL"
 					class="btn-group btn-group-yesno"
+					showon="tag0:1"
 					default="0"
 				>
-					<option value="1">JYES</option>
+					<option value="1">JSHOW</option>
 					<option value="0">JNO</option>
 				</field>
 				<field
 					name="heuteluft"
 					type="radio"
-					label="Luftdruck(hPa) anzeigen?"
+					label="MOD_DWD_WETTERMODUL_FIELD_HEUTELUFT_LABEL"
 					class="btn-group btn-group-yesno"
+					showon="tag0:1"
 					default="1"
 				>
-					<option value="1">JYES</option>
+					<option value="1">JSHOW</option>
 					<option value="0">JNO</option>
 				</field>
 
 				<field
 					name="heuteregen"
 					type="radio"
-					label="Niederschlag(mm/h) anzeigen?"
+					label="MOD_DWD_WETTERMODUL_FIELD_HEUTEREGEN_LABEL"
 					class="btn-group btn-group-yesno"
+					showon="tag0:1"
 					default="1"
 				>
-					<option value="1">JYES</option>
+					<option value="1">JSHOW</option>
 					<option value="0">JNO</option>
 				</field>
 				<field
 					name="heutewindrichtung"
 					type="radio"
-					label="Windrichtung anzeigen?"
+					label="MOD_DWD_WETTERMODUL_FIELD_HEUTEWINDRICHTUNG_LABEL"
 					class="btn-group btn-group-yesno"
+					showon="tag0:1"
 					default="1"
 				>
-					<option value="1">JYES</option>
+					<option value="1">JSHOW</option>
 					<option value="0">JNO</option>
 				</field>
 				<field
 					name="heutewind"
 					type="radio"
-					label="Windgeschwindigkeit(km/h) anzeigen?"
+					label="MOD_DWD_WETTERMODUL_FIELD_HEUTEWIND_LABEL"
 					class="btn-group btn-group-yesno"
+					showon="tag0:1"
 					default="1"
 				>
-					<option value="1">JYES</option>
+					<option value="1">JSHOW</option>
 					<option value="0">JNO</option>
 				</field>
 				<field
 					name="heutewindspitze"
 					type="radio"
-					label="Windspitze(km/h) anzeigen?"
+					label="MOD_DWD_WETTERMODUL_FIELD_HEUTEWINDSPITZE_LABEL"
 					class="btn-group btn-group-yesno"
+					showon="tag0:1"
 					default="0"
 				>
-					<option value="1">JYES</option>
+					<option value="1">JSHOW</option>
 					<option value="0">JNO</option>
 				</field>
 				<field
 					name="tag1"
 					type="radio"
-					label="Wettervorhersage für Morgen?"
+					label="MOD_DWD_WETTERMODUL_FIELD_TAG1_LABEL"
 					class="btn-group btn-group-yesno"
 					default="0"
 				>
-					<option value="1">JYES</option>
+					<option value="1">JSHOW</option>
 					<option value="0">JNO</option>
 				</field>
 				<field
 					name="tag2"
 					type="radio"
-					label="Wettervorhersage für Übermorgen?"
+					label="MOD_DWD_WETTERMODUL_FIELD_TAG2_LABEL"
 					class="btn-group btn-group-yesno"
 					default="0"
 				>
-					<option value="1">JYES</option>
-					<option value="0">JNO</option>
+					<option value="1">JSHOW</option>
+					<option value="0">JHIDE</option>
 				</field>
 				<field
 					name="tag3"
 					type="radio"
-					label="Wettervorhersage für 3 Tage?"
+					label="MOD_DWD_WETTERMODUL_FIELD_TAG3_LABEL"
 					class="btn-group btn-group-yesno"
 					default="0"
 				>
-					<option value="1">JYES</option>
-					<option value="0">JNO</option>
+					<option value="1">JSHOW</option>
+					<option value="0">JHIDE</option>
 				</field>
 			</fieldset>
 			<fieldset name="advanced">
-				<field name="layout" type="modulelayout"
-					   label="JFIELD_ALT_LAYOUT_LABEL"
-					   description="JFIELD_ALT_MODULE_LAYOUT_DESC"
-					   default="_:vertikal"/>
-				<field name="moduleclass_sfx" type="textarea"
-					   label="COM_MODULES_FIELD_MODULECLASS_SFX_LABEL"
-					   description="COM_MODULES_FIELD_MODULECLASS_SFX_DESC"
-					   rows="3"/>
-				<field name="cache" type="list"
-					   label="COM_MODULES_FIELD_CACHING_LABEL"
-					   description="COM_MODULES_FIELD_CACHING_DESC"
-					   default="1">
+				<field
+					name="layout"
+					type="modulelayout"
+					label="JFIELD_ALT_LAYOUT_LABEL"
+					description="JFIELD_ALT_MODULE_LAYOUT_DESC"
+					default="_:vertikal"/>
+				<field
+					name="moduleclass_sfx"
+					type="textarea"
+					label="COM_MODULES_FIELD_MODULECLASS_SFX_LABEL"
+					description="COM_MODULES_FIELD_MODULECLASS_SFX_DESC"
+					rows="3"/>
+				<field
+					name="cache"
+					type="list"
+					label="COM_MODULES_FIELD_CACHING_LABEL"
+					description="COM_MODULES_FIELD_CACHING_DESC"
+					default="1"
+				>
 					<option value="1">JGLOBAL_USE_GLOBAL</option>
 					<option value="0">COM_MODULES_FIELD_VALUE_NOCACHING</option>
 				</field>
-				<field name="cache_time" type="text"
-					   label="COM_MODULES_FIELD_CACHE_TIME_LABEL"
-					   description="COM_MODULES_FIELD_CACHE_TIME_DESC"
-					   default="900"/>
-				<field name="cachemode" type="hidden"
-					   default="static">
+				<field
+					name="cache_time"
+					type="text"
+					label="COM_MODULES_FIELD_CACHE_TIME_LABEL"
+					description="COM_MODULES_FIELD_CACHE_TIME_DESC"
+					default="900"/>
+				<field
+					name="cachemode"
+					type="hidden"
+					default="static">
 					<option value="static"></option>
 				</field>
 			</fieldset>
