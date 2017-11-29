@@ -219,14 +219,9 @@ class ModDwdwetterHelper
 	 */
 	public static function getDirection($grad)
 	{
-		$directions = array(
-			'N', 'NNO', 'NO', 'ONO',
-			'O', 'OSO', 'SO', 'SSO',
-			'S', 'SSW', 'SW', 'WSW',
-			'W', 'WNW', 'NW', 'NNW',
-			'N'
-		);
+		$index = round($grad / 22.5);
+		$index = ($index === 16) ? 0 : $index;
 
-		return $directions[round($grad / 22.5)];
+		return Text::_('MOD_DWD_WETTERMODUL_DIRECTION_' . $index);
 	}
 }
