@@ -9,6 +9,7 @@
 defined('_JEXEC') or die();
 
 use Joomla\CMS\Factory;
+use Joomla\CMS\Language\Text;
 
 Factory::getDocument()->addStyleDeclaration(
 	'.dwd_wettermodul.vertikal .row_header {
@@ -34,7 +35,7 @@ Factory::getDocument()->addStyleDeclaration(
             <tr>
                 <td colspan="2" class="row_header color_text">
 					<?php if ($datumtitel) : ?>
-                        <strong>Aktuell</strong>
+                        <strong><?php echo Text::_('MOD_DWD_WETTERMODUL_DAY0'); ?></strong>
 					<?php endif; ?>
                 </td>
             </tr>
@@ -50,38 +51,38 @@ Factory::getDocument()->addStyleDeclaration(
             </tr>
 			<?php if ($heutehohe) : ?>
                 <tr>
-                    <td>H&ouml;he &uuml;. NN:</td>
+                    <td><?php echo Text::_('MOD_DWD_WETTERMODUL_HOEHE'); ?></td>
                     <td nowrap="nowrap"><?php echo ModDwdwetterHelper::getStation($params->get('station'))->alt; ?>m
                     </td>
                 </tr>
 			<?php endif; ?>
 			<?php if ($heuteluft) : ?>
                 <tr>
-                    <td>Luftdruck:</td>
+                    <td><?php echo Text::_('MOD_DWD_WETTERMODUL_LUFTDRUCK'); ?></td>
                     <td nowrap="nowrap"><?php echo $current['PPPP'] . ' ' . $units['PPPP']; ?></td>
                 </tr>
 			<?php endif; ?>
 			<?php if ($heuteregen) : ?>
                 <tr>
-                    <td>Niederschlag:</td>
+                    <td><?php echo Text::_('MOD_DWD_WETTERMODUL_NIEDERSCHLAG'); ?></td>
                     <td nowrap="nowrap"><?php echo $list[$day1 . ' 06:00']['RR24'] . ' ' . $units['RR24']; ?></td>
                 </tr>
 			<?php endif; ?>
 			<?php if ($heutewindrichtung) : ?>
                 <tr>
-                    <td>Windrichtung:</td>
+                    <td><?php echo Text::_('MOD_DWD_WETTERMODUL_WINDRICHTUNG'); ?></td>
                     <td><?php echo ModDwdwetterHelper::getDirection($current['dd']); ?></td>
                 </tr>
 			<?php endif; ?>
 			<?php if ($heutewind) : ?>
                 <tr>
-                    <td>Geschwindigkeit:</td>
+                    <td><?php echo Text::_('MOD_DWD_WETTERMODUL_WINDGESCHWINDIKEIT'); ?></td>
                     <td nowrap="nowrap"><?php echo $current['ff'] . ' ' . $units['ff']; ?></td>
                 </tr>
 			<?php endif; ?>
 			<?php if ($heutewindspitze) : ?>
                 <tr>
-                    <td>Windb&ouml;en:</td>
+                    <td><?php echo Text::_('MOD_DWD_WETTERMODUL_WINDSPITZE'); ?></td>
                     <td nowrap="nowrap"><?php echo $current['fx'] . ' ' . $units['fx']; ?></td>
                 </tr>
 			<?php endif; ?>
@@ -93,7 +94,7 @@ Factory::getDocument()->addStyleDeclaration(
                     <td colspan="2" class="row_header color_text">
 						<?php if ($datumtitel) : ?>
 							<?php if ($i == 1) : ?>
-                                <strong>Morgen</strong>
+                                <strong><?php echo Text::_('MOD_DWD_WETTERMODUL_DAY0'); ?></strong>
 							<?php else : ?>
                                 <strong><?php echo $day; ?></strong>
 							<?php endif; ?>

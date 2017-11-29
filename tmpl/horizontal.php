@@ -9,6 +9,7 @@
 defined('_JEXEC') or die();
 
 use Joomla\CMS\Factory;
+use Joomla\CMS\Language\Text;
 
 Factory::getDocument()->addStyleDeclaration(
 	'.dwd_wettermodul.horizontal table {
@@ -38,11 +39,11 @@ $count = count($days);
 				<?php foreach ($days as $i => $day) : ?>
 					<?php if (!$i) : ?>
                         <td colspan="2">
-                            <strong>Aktuell</strong>
+                            <strong><?php echo Text::_('MOD_DWD_WETTERMODUL_DAY0'); ?></strong>
                         </td>
 					<?php elseif ($i == 1) : ?>
                         <td class="border">
-                            <strong>Morgen</strong>
+                            <strong><?php echo Text::_('MOD_DWD_WETTERMODUL_DAY1'); ?></strong>
                         </td>
 					<?php else: ?>
                         <td class="border">
@@ -80,9 +81,8 @@ $count = count($days);
 			<?php $current = $list[$day0 . ' ' . $time . ':00']; ?>
 			<?php if ($heutehohe) : ?>
                 <tr>
-                    <td>H&ouml;he &uuml;. NN:</td>
-                    <td nowrap="nowrap"
-                    "><?php echo ModDwdwetterHelper::getStation($params->get('station'))->alt; ?> m</td>
+                    <td><?php echo Text::_('MOD_DWD_WETTERMODUL_HOEHE'); ?></td>
+                    <td nowrap="nowrap"><?php echo ModDwdwetterHelper::getStation($params->get('station'))->alt; ?> m</td>
 					<?php for ($i = 2; $i <= $count; $i++) : ?>
                         <td class="border"></td>
 					<?php endfor; ?>
@@ -90,7 +90,7 @@ $count = count($days);
 			<?php endif; ?>
 			<?php if ($heuteluft) : ?>
                 <tr>
-                    <td>Luftdruck:</td>
+                    <td><?php echo Text::_('MOD_DWD_WETTERMODUL_LUFTDRUCK'); ?></td>
                     <td nowrap="nowrap"><?php echo $current['PPPP'] . ' ' . $units['PPPP']; ?></td>
 					<?php for ($i = 2; $i <= $count; $i++) : ?>
                         <td class="border"></td>
@@ -99,7 +99,7 @@ $count = count($days);
 			<?php endif; ?>
 			<?php if ($heuteregen) : ?>
                 <tr>
-                    <td>Niederschlag:</td>
+                    <td><?php echo Text::_('MOD_DWD_WETTERMODUL_NIEDERSCHLAG'); ?></td>
                     <td nowrap="nowrap"><?php echo $list[$day1 . ' 06:00']['RR24'] . ' ' . $units['RR24']; ?></td>
 					<?php for ($i = 2; $i <= $count; $i++) : ?>
                         <td class="border"></td>
@@ -108,7 +108,7 @@ $count = count($days);
 			<?php endif; ?>
 			<?php if ($heutewindrichtung) : ?>
                 <tr>
-                    <td>Windrichtung:</td>
+                    <td><?php echo Text::_('MOD_DWD_WETTERMODUL_WINDRICHTUNG'); ?></td>
                     <td><?php echo ModDwdwetterHelper::getDirection($current['dd']); ?></td>
 					<?php for ($i = 2; $i <= $count; $i++) : ?>
                         <td class="border"></td>
@@ -117,7 +117,7 @@ $count = count($days);
 			<?php endif; ?>
 			<?php if ($heutewind) : ?>
                 <tr>
-                    <td>Geschwindigkeit:</td>
+                    <td><?php echo Text::_('MOD_DWD_WETTERMODUL_WINDGESCHWINDIKEIT'); ?></td>
                     <td nowrap="nowrap"><?php echo $current['ff'] . ' ' . $units['ff']; ?></td>
 					<?php for ($i = 2; $i <= $count; $i++) : ?>
                         <td class="border"></td>
@@ -126,7 +126,7 @@ $count = count($days);
 			<?php endif; ?>
 			<?php if ($heutewindspitze) : ?>
                 <tr>
-                    <td>Windb&ouml;en:</td>
+                    <td><?php echo Text::_('MOD_DWD_WETTERMODUL_WINDSPITZE'); ?></td>
                     <td nowrap="nowrap"><?php echo $current['fx'] . ' ' . $units['fx']; ?></td>
 					<?php for ($i = 2; $i <= $count; $i++) : ?>
                         <td class="border"></td>

@@ -9,6 +9,7 @@
 defined('_JEXEC') or die();
 
 use Joomla\CMS\Factory;
+use Joomla\CMS\Language\Text;
 
 Factory::getDocument()->addStyleDeclaration(
 	'.dwd_wettermodul.minimal table {
@@ -36,9 +37,9 @@ Factory::getDocument()->addStyleDeclaration(
             <tr>
                 <td class="color_text">
 					<?php if (!$i) : ?>
-                        Aktuell
+						<?php echo Text::_('MOD_DWD_WETTERMODUL_DAY0'); ?>
 					<?php elseif ($i == 1) : ?>
-                        Morgen
+						<?php echo Text::_('MOD_DWD_WETTERMODUL_DAY1'); ?>
 					<?php else : ?>
 						<?php echo $day; ?>
 					<?php endif; ?>
