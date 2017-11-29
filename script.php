@@ -54,6 +54,7 @@ class Mod_Dwd_wettermodulInstallerScript extends InstallerScript
 				'/language/en-GB/en-GB.mod_dwd_wettermodul.ini',
 				'/language/de-DE/de-DE.mod_dwd_wettermodul.ini',
 			);
+			$this->removeFiles();
 		}
 	}
 }
