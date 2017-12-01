@@ -34,6 +34,35 @@ class Mod_Dwd_wettermodulInstallerScript extends InstallerScript
 	 * @since  5.0.0
 	 */
 	protected $minimumJoomla = '3.8.0';
+	/**
+	 * Old version before updating
+	 *
+	 * @var    string
+	 * @since  5.0.2
+	 */
+	private $oldRelease;
+
+	/**
+	 * method to run before an install/update/uninstall method
+	 *
+	 * @param   string                     $type   'install', 'update' or 'discover_install'
+	 * @param   JInstallerAdapterComponent $parent Installerobject
+	 *
+	 * @return  boolean  false will terminate the installation
+	 *
+	 * @since ?
+	 */
+	public function preflight($type, $parent)
+	{
+		// Storing old release number for process in postflight
+		if (strtolower($type) == 'update')
+		{
+			$manifest = $this->getItemArray('manifest_cache', '#__extensions', 'element', JFactory::getDbo()->quote($this->extension));
+			$this->oldRelease = $manifest['version'];
+		}
+
+		return parent::preflight($type, $parent);
+	}
 
 	/**
 	 * method to update the component
@@ -46,13 +75,13 @@ class Mod_Dwd_wettermodulInstallerScript extends InstallerScript
 	 */
 	public function update($parent)
 	{
-		$manifest = $this->getItemArray('manifest_cache', '#__extensions', 'element', Factory::getDbo()->quote($this->extension));
-
-		if (version_compare($manifest['version'], '5.0.1', '<'))
+		if (version_compare($this->oldRelease, '5.0.2', '<'))
 		{
 			$this->deleteFiles = array(
 				'/language/en-GB/en-GB.mod_dwd_wettermodul.ini',
+				'/language/en-GB/en-GB.mod_dwd_wettermodul.sys.ini',
 				'/language/de-DE/de-DE.mod_dwd_wettermodul.ini',
+				'/language/de-DE/de-DE.mod_dwd_wettermodul.sys.ini',
 			);
 			$this->removeFiles();
 		}
