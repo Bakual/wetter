@@ -2,11 +2,11 @@
 <extension type="module" version="3.8" method="upgrade">
 	<name>MOD_DWD_WETTERMODUL</name>
 	<author>T. Hunziker/ M. Bollmann</author>
-	<creationDate>2018-02-07</creationDate>
-	<copyright>(C) 2017</copyright>
+	<creationDate>2018-03-23</creationDate>
+	<copyright>(C) 2018</copyright>
 	<authorEmail>admin@bakual.net</authorEmail>
 	<authorUrl>http://www.bakual.net</authorUrl>
-	<version>5.0.3</version>
+	<version>5.0.4</version>
 	<license>http://www.gnu.org/licenses/gpl.html</license>
 	<description>MOD_DWD_WETTERMODUL_XML_DESCRIPTION</description>
 	<files>
