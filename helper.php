@@ -219,7 +219,7 @@ class ModDwdwetterHelper
 	 */
 	public static function getDirection($grad)
 	{
-		$index = round($grad / 22.5);
+		$index = (int) round($grad / 22.5);
 		$index = ($index === 16) ? 0 : $index;
 
 		return Text::_('MOD_DWD_WETTERMODUL_DIRECTION_' . $index);
