@@ -31,7 +31,7 @@ Factory::getDocument()->addStyleDeclaration(
     <table>
 		<?php if ($days[0]) : ?>
 			<?php unset($days[0]); ?>
-			<?php $current = $list[$day0 . ' ' . $time . ':00']; ?>
+			<?php $current = ($time === '24') ? $list[$day1 . ' 00:00'] : $list[$day0 . ' ' . $time . ':00']; ?>
             <tr>
                 <td colspan="2" class="row_header color_text">
 					<?php if ($datumtitel) : ?>

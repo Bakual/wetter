@@ -78,7 +78,7 @@ $count = count($days);
 			<?php endforeach; ?>
         </tr>
 		<?php if (isset($days[0])) : ?>
-			<?php $current = $list[$day0 . ' ' . $time . ':00']; ?>
+			<?php $current = ($time === '24') ? $list[$day1 . ' 00:00'] : $list[$day0 . ' ' . $time . ':00']; ?>
 			<?php if ($heutehohe) : ?>
                 <tr>
                     <td><?php echo Text::_('MOD_DWD_WETTERMODUL_HOEHE'); ?></td>
