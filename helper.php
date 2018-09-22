@@ -16,24 +16,28 @@
 // Die filedata der Grundversorgung dürfen frei verwendet werden, sind jedoch urheberrechtlich geschützt.
 // **************************************************************************
 
+defined('_JEXEC') or die('Restricted access');
+
 use Joomla\CMS\Factory;
+use Joomla\CMS\Filesystem\File;
+use Joomla\CMS\Http\HttpFactory;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Log\Log;
-
-defined('_JEXEC') or die('Restricted access');
+use Joomla\Filesystem\Folder;
 
 /**
  * Helper class for DWD Wettermodul
  *
+ * @property array|null timeSteps
  * @since  1.0
  */
 class ModDwdwetterHelper
 {
 	/**
-	 * @var array
-	 * @since 5.0.0
+	 * @var  array  Holds Forecast TimeSteps read by getList method
+	 * @since 5.1.0
 	 */
-	public static $units = array();
+	public static $timeSteps;
 
 	/**
 	 * @param $params \Joomla\Registry\Registry Module Params
@@ -43,7 +47,7 @@ class ModDwdwetterHelper
 	 */
 	public static function getList($params)
 	{
-		$url     = 'https://opendata.dwd.de/weather/local_forecasts/poi/';
+		$url     = 'https://opendata.dwd.de/weather/local_forecasts/mos/MOSMIX_L/single_stations/';
 		$station = $params->get('station');
 
 		if (is_numeric($station))
@@ -51,33 +55,34 @@ class ModDwdwetterHelper
 			$station = str_pad($station, 5, '0', STR_PAD_LEFT);
 		}
 
-		$url .= $station . '-MOSMIX.csv';
+		$url .= $station . '/kml/MOSMIX_L_LATEST_' . $station . '.kmz';
 
 		// Read file
 		try
 		{
-			$response      = Joomla\CMS\Http\HttpFactory::getHttp()->get($url);
-			$responseArray = explode("\n", $response->body);
+			$response  = HttpFactory::getHttp()->get($url);
+			$tmpFolder = Factory::getApplication()->get('tmp_path');
+			$tmpFile   = $tmpFolder . '/mod_dwd_wettermodul.kmz';
 
-			// Remove headers from array and store it separately where needed.
-			$header      = str_getcsv(array_shift($responseArray), ';');
-			self::$units = array_combine($header, str_getcsv(array_shift($responseArray), ';'));
-			array_shift($responseArray);
-
-			$csv = array();
-
-			foreach ($responseArray as $row)
+			if (File::write($tmpFile, $response->body))
 			{
-				if (!$row)
-				{
-					continue;
-				}
+				$zip = new ZipArchive;
 
-				$row       = str_getcsv($row, ';');
-				$key       = $row[0] . ' ' . $row[1];
-				$row       = array_combine($header, $row);
-				$csv[$key] = $row;
+				if ($zip->open($tmpFile) === true)
+				{
+					$zip->extractTo($tmpFolder . '/mod_dwd_wettermodul_kmz');
+					$zip->close();
+				}
 			}
+
+			$kmlFile         = Folder::files($tmpFolder . '/mod_dwd_wettermodul_kmz')[0];
+			$xml             = simplexml_load_file($tmpFolder . '/mod_dwd_wettermodul_kmz/' . $kmlFile);
+			$xmlDocument     = $xml->children('kml', true)->Document;
+			self::$timeSteps = $xmlDocument->ExtendedData->children('dwd', true)->ProductDefinition->ForecastTimeSteps->children('dwd', true);
+			self::$timeSteps = array_flip((array) self::$timeSteps->TimeStep);
+
+			// $location = (string) $xmlDocument->Placemark->description;
+			$dwd = $xmlDocument->Placemark->ExtendedData->children('dwd', true);
 		}
 		catch (\RuntimeException $exception)
 		{
@@ -86,35 +91,45 @@ class ModDwdwetterHelper
 			return array();
 		}
 
-		return $csv;
+		$forecast = new stdClass;
+
+		foreach ($dwd as $i)
+		{
+			$name            = (string) $i['elementName'];
+			$value           = preg_split('/\s+/', $i->value, -1, PREG_SPLIT_NO_EMPTY);
+			$forecast->$name = $value;
+		}
+
+		return $forecast;
 	}
 
 	/**
 	 * Returns the weather icon for a condition
 	 *
-	 * @param  array $row
-	 * @param  int   $hour
+	 * @param  object $list
+	 * @param  int    $index
+	 * @param  int    $hour
 	 *
 	 * @return string
 	 *
 	 * @since 1.0
 	 */
-	public static function getIcon($row, $hour = 12)
+	public static function getIcon($list, $index, $hour = 12)
 	{
 		$day = ($hour > 4 && $hour < 19);
 
-		if ($row['ww'] < 30)
+		if ($list->ww[$index] < 30)
 		{
 			// Cloud Cover is measured in 1/8
-			if ($row['N'] == 0)
+			if ($list->N[$index] == 0)
 			{
 				$icon = ($day) ? 'sonne.png' : 'nsonne.png';
 			}
-			elseif ($row['N'] < 4)
+			elseif ($list->N[$index] < 4)
 			{
 				$icon = ($day) ? 'heiter.png' : 'nheiter.png';
 			}
-			elseif ($row['N'] < 8)
+			elseif ($list->N[$index] < 8)
 			{
 				$icon = ($day) ? 'bewolkt.png' : 'nbewolkt.png';
 			}
@@ -123,9 +138,9 @@ class ModDwdwetterHelper
 				$icon = 'bedeckt.png';
 			}
 		}
-		elseif ($row['ww'] < 50)
+		elseif ($list->ww[$index] < 50)
 		{
-			if ($row['ww'] >= 36 && $row['ww'] <= 39)
+			if ($list->ww[$index] >= 36 && $list->ww[$index] <= 39)
 			{
 				$icon = 'schnee.png';
 			}
@@ -134,9 +149,9 @@ class ModDwdwetterHelper
 				$icon = 'nebel.png';
 			}
 		}
-		elseif ($row['ww'] < 66)
+		elseif ($list->ww[$index] < 66)
 		{
-			if ($row['ww'] <= 61 || $row['ww'] == 66 || $row['ww'] == 68)
+			if ($list->ww[$index] <= 61 || $list->ww[$index] == 66 || $list->ww[$index] == 68)
 			{
 				$icon = 'leichtregen.png';
 			}
@@ -145,21 +160,21 @@ class ModDwdwetterHelper
 				$icon = 'starkregen.png';
 			}
 		}
-		elseif ($row['ww'] < 80)
+		elseif ($list->ww[$index] < 80)
 		{
 			$icon = 'schnee.png';
 		}
-		elseif ($row['ww'] < 90)
+		elseif ($list->ww[$index] < 90)
 		{
-			if ($row['ww'] <= 81)
+			if ($list->ww[$index] <= 81)
 			{
 				$icon = 'leichtregen.png';
 			}
-			elseif ($row['ww'] == 82)
+			elseif ($list->ww[$index] == 82)
 			{
 				$icon = 'starkregen.png';
 			}
-			elseif ($row['ww'] >= 83 && $row['ww'] <= 87)
+			elseif ($list->ww[$index] >= 83 && $list->ww[$index] <= 87)
 			{
 				$icon = 'schnee.png';
 			}
@@ -181,11 +196,133 @@ class ModDwdwetterHelper
 	 *
 	 * @return array
 	 *
+	 * @see   https://opendata.dwd.de/weather/lib/MetElementDefinition.xml
+	 *
 	 * @since 5.0.0
 	 */
 	public static function getUnits()
 	{
-		return self::$units;
+		$units = array(
+			'TTT'   => 'K',
+			'Td'    => 'K',
+			'TX'    => 'K',
+			'TN'    => 'K',
+			'DD'    => 'Â°',
+			'FF'    => 'm/s',
+			'FX1'   => 'm/s',
+			'FX3'   => 'm/s',
+			'FXh'   => 'm/s',
+			'RR1c'  => 'kg/m2',
+			'RR3c'  => 'kg/m2',
+			'RRS1c' => 'kg/m2',
+			'RRS3c' => 'kg/m2',
+			'ww'    => '',
+			'W1W2'  => '',
+			'N'     => '%',
+			'Neff'  => '%',
+			'N05'   => '%',
+			'Nl'    => '%',
+			'Nm'    => '%',
+			'Nh'    => '%',
+			'PPPP'  => 'Pa',
+			'T5cm'  => 'K',
+			'RadS3' => 'kJ/m2',
+			'Rad1h' => 'kJ/m2',
+			'RadL3' => 'kJ/m2',
+			'VV'    => 'm',
+			'SunD1' => 's',
+			'FXh25' => '%',
+			'FXh40' => '%',
+			'FXh55' => '%',
+			'wwM'   => '%',
+			'wwM6'  => '%',
+			'wwMh'  => '%',
+			'Rh00'  => '%',
+			'R602'  => '%',
+			'Rh02'  => '%',
+			'Rd02'  => '%',
+			'Rh10'  => '%',
+			'R650'  => '%',
+			'Rh50'  => '%',
+			'Rd50'  => '%',
+			'TG'    => 'K',
+			'TM'    => 'K',
+			'DRR1'  => 's',
+			'wwZ'   => '%',
+			'wwD'   => '%',
+			'wwC'   => '%',
+			'wwT'   => '%',
+			'wwL'   => '%',
+			'wwS'   => '%',
+			'wwF'   => '%',
+			'wwP'   => '%',
+			'VV10'  => '%',
+			'E_TTT' => 'K',
+			'E_FF'  => 'm/s',
+			'E_DD'  => 'Â°',
+			'E_Td'  => 'K',
+			'RR6c'  => 'kg/m2',
+			'R600'  => '%',
+			'R101'  => '%',
+			'R102'  => '%',
+			'R103'  => '%',
+			'R105'  => '%',
+			'R107'  => '%',
+			'R110'  => '%',
+			'R120'  => '%',
+			'SunD'  => 's',
+			'RSunD' => '%',
+			'PSd00' => '%',
+			'PSd30' => '%',
+			'PSd60' => '%',
+			'RRad1' => '%',
+			'PEvap' => 'kg/m2',
+			'R130'  => '%',
+			'R150'  => '%',
+			'RR1o1' => '%',
+			'RR1w1' => '%',
+			'RR1u1' => '%',
+			'wwD6'  => '%',
+			'wwC6'  => '%',
+			'wwT6'  => '%',
+			'wwP6'  => '%',
+			'wwL6'  => '%',
+			'wwF6'  => '%',
+			'wwS6'  => '%',
+			'wwZ6'  => '%',
+			'wwMd'  => '%',
+			'FX625' => '%',
+			'FX640' => '%',
+			'FX655' => '%',
+			'wwDh'  => '%',
+			'wwCh'  => '%',
+			'wwTh'  => '%',
+			'wwPh'  => '%',
+			'wwLh'  => '%',
+			'wwFh'  => '%',
+			'wwSh'  => '%',
+			'wwZh'  => '%',
+			'R610'  => '%',
+			'RRhc'  => 'kg / m2',
+			'ww3'   => '',
+			'RRL1c' => 'kg / m2',
+			'Rd00'  => '%',
+			'Rd10'  => '%',
+			'RRdc'  => 'kg / m2',
+			'Nlm'   => '%',
+			'wwPd'  => '%',
+			'H_BsC' => 'm',
+			'wwTd'  => '%',
+			'E_PPP' => 'Pa',
+			'SunD3' => 's',
+			'WPc11' => '',
+			'WPc31' => '',
+			'WPc61' => '',
+			'WPch1' => '',
+			'WPcd1' => '',
+		);
+
+		return $units;
 	}
 
 	/**
@@ -223,5 +360,17 @@ class ModDwdwetterHelper
 		$index = ($index === 16) ? 0 : $index;
 
 		return Text::_('MOD_DWD_WETTERMODUL_DIRECTION_' . $index);
+	}
+
+	/**
+	 * Returns the TimeSteps
+	 *
+	 * @return array
+	 *
+	 * @since 5.0.0
+	 */
+	public static function getTimeSteps()
+	{
+		return self::$timeSteps;
 	}
 }

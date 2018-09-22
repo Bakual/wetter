@@ -55,30 +55,32 @@ $count = count($days);
 		<?php endif; ?>
         <tr class="text-center">
 			<?php foreach ($days as $i => $day) : ?>
+				<?php $forecastIndex = $timeSteps[$daysEn[$i] . 'T18:00:00.000Z'] ?>
 				<?php if (!$i) : ?>
                     <td colspan="2">
 				<?php else : ?>
                     <td class="border">
 				<?php endif; ?>
                 <img alt=""
-                     src="modules/mod_dwd_wettermodul/icons/<?php echo ModDwdwetterHelper::getIcon($list[$day . ' 18:00'], $time); ?>"
+                     src="modules/mod_dwd_wettermodul/icons/<?php echo ModDwdwetterHelper::getIcon($list, $forecastIndex, $time); ?>"
                      width="100" height="100"/>
                 </td>
 			<?php endforeach; ?>
         </tr>
         <tr class="text-center">
 			<?php foreach ($days as $i => $day) : ?>
+				<?php $forecastIndex = $timeSteps[$daysEn[$i] . 'T18:00:00.000Z'] ?>
 				<?php if (!$i) : ?>
                     <td colspan="2">
 				<?php else : ?>
                     <td class="border">
 				<?php endif; ?>
-                <span class="temp"><?php echo $list[$day . ' 18:00']['Tx']; ?>°C</span>
+                <span class="temp"><?php echo $list->TX[$forecastIndex] - 273.15; ?>°C</span>
                 </td>
 			<?php endforeach; ?>
         </tr>
 		<?php if (isset($days[0])) : ?>
-			<?php $current = ($time === '24') ? $list[$day1 . ' 00:00'] : $list[$day0 . ' ' . $time . ':00']; ?>
+			<?php $forecastIndex = ($time === '24') ? $timeSteps[$day1en . 'T00:00:00.000Z'] : $timeSteps[$day0en . 'T00:00:00.000Z']; ?>
 			<?php if ($heutehohe) : ?>
                 <tr>
                     <td><?php echo Text::_('MOD_DWD_WETTERMODUL_HOEHE'); ?></td>
@@ -91,7 +93,7 @@ $count = count($days);
 			<?php if ($heuteluft) : ?>
                 <tr>
                     <td><?php echo Text::_('MOD_DWD_WETTERMODUL_LUFTDRUCK'); ?></td>
-                    <td nowrap="nowrap"><?php echo $current['PPPP'] . ' ' . $units['PPPP']; ?></td>
+                    <td nowrap="nowrap"><?php echo $list->PPPP[$forecastIndex] . ' ' . $units['PPPP']; ?></td>
 					<?php for ($i = 2; $i <= $count; $i++) : ?>
                         <td class="border"></td>
 					<?php endfor; ?>
@@ -100,7 +102,7 @@ $count = count($days);
 			<?php if ($heuteregen) : ?>
                 <tr>
                     <td><?php echo Text::_('MOD_DWD_WETTERMODUL_NIEDERSCHLAG'); ?></td>
-                    <td nowrap="nowrap"><?php echo $list[$day1 . ' 06:00']['RR24'] . ' ' . $units['RR24']; ?></td>
+                    <td nowrap="nowrap"><?php echo $list->FX3[$forecastIndex] . ' ' . $units['FX3']; ?></td>
 					<?php for ($i = 2; $i <= $count; $i++) : ?>
                         <td class="border"></td>
 					<?php endfor; ?>
@@ -109,7 +111,7 @@ $count = count($days);
 			<?php if ($heutewindrichtung) : ?>
                 <tr>
                     <td><?php echo Text::_('MOD_DWD_WETTERMODUL_WINDRICHTUNG'); ?></td>
-                    <td><?php echo ModDwdwetterHelper::getDirection($current['dd']); ?></td>
+                    <td><?php echo ModDwdwetterHelper::getDirection($list->DD[$forecastIndex]); ?></td>
 					<?php for ($i = 2; $i <= $count; $i++) : ?>
                         <td class="border"></td>
 					<?php endfor; ?>
@@ -118,7 +120,7 @@ $count = count($days);
 			<?php if ($heutewind) : ?>
                 <tr>
                     <td><?php echo Text::_('MOD_DWD_WETTERMODUL_WINDGESCHWINDIKEIT'); ?></td>
-                    <td nowrap="nowrap"><?php echo $current['ff'] . ' ' . $units['ff']; ?></td>
+                    <td nowrap="nowrap"><?php echo $list->FF[$forecastIndex] . ' ' . $units['FF']; ?></td>
 					<?php for ($i = 2; $i <= $count; $i++) : ?>
                         <td class="border"></td>
 					<?php endfor; ?>
@@ -127,7 +129,7 @@ $count = count($days);
 			<?php if ($heutewindspitze) : ?>
                 <tr>
                     <td><?php echo Text::_('MOD_DWD_WETTERMODUL_WINDSPITZE'); ?></td>
-                    <td nowrap="nowrap"><?php echo $current['fx'] . ' ' . $units['fx']; ?></td>
+                    <td nowrap="nowrap"><?php echo $list->FX3[$forecastIndex] . ' ' . $units['FX3']; ?></td>
 					<?php for ($i = 2; $i <= $count; $i++) : ?>
                         <td class="border"></td>
 					<?php endfor; ?>

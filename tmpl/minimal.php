@@ -31,11 +31,11 @@ Factory::getDocument()->addStyleDeclaration(
 	<?php if ($titel) : ?>
 		<?php echo $titel; ?>
 	<?php endif; ?>
-    <table>
+	<table>
 		<?php foreach ($days as $i => $day) : ?>
-			<?php $row = $list[$day . ' 18:00'] ?>
-            <tr>
-                <td class="color_text">
+			<?php $forecastIndex = $timeSteps[$daysEn[$i] . 'T18:00:00.000Z'] ?>
+			<tr>
+				<td class="color_text">
 					<?php if (!$i) : ?>
 						<?php echo Text::_('MOD_DWD_WETTERMODUL_DAY0'); ?>
 					<?php elseif ($i == 1) : ?>
@@ -43,19 +43,19 @@ Factory::getDocument()->addStyleDeclaration(
 					<?php else : ?>
 						<?php echo $day; ?>
 					<?php endif; ?>
-                </td>
-                <td class="text-center">
-                    <span class="temp"><?php echo $row['TT']; ?>°C</span>
-                </td>
-                <td class="text-center">
-                    <img alt=""
-                         src="modules/mod_dwd_wettermodul/icons/<?php echo ModDwdwetterHelper::getIcon($row, $time); ?>"
-                         width="26" height="26"/>
-                </td>
-            </tr>
+				</td>
+				<td class="text-center">
+					<span class="temp"><?php echo $list->TTT[$forecastIndex] - 273.15; ?>°C</span>
+				</td>
+				<td class="text-center">
+					<img alt=""
+						 src="modules/mod_dwd_wettermodul/icons/<?php echo ModDwdwetterHelper::getIcon($list, $forecastIndex, $time); ?>"
+						 width="26" height="26"/>
+				</td>
+			</tr>
 		<?php endforeach; ?>
-    </table>
-    <div class="text-right">
-        <small><a href="http://www.dwd.de/">&copy; Deutscher Wetterdienst</a></small>
-    </div>
+	</table>
+	<div class="text-right">
+		<small><a href="http://www.dwd.de/">&copy; Deutscher Wetterdienst</a></small>
+	</div>
 </div>
