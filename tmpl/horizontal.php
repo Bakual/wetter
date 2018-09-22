@@ -80,7 +80,7 @@ $count = count($days);
 			<?php endforeach; ?>
         </tr>
 		<?php if (isset($days[0])) : ?>
-			<?php $forecastIndex = ($time === '24') ? $timeSteps[$day1en . 'T00:00:00.000Z'] : $timeSteps[$day0en . 'T00:00:00.000Z']; ?>
+			<?php $forecastIndex = $timeSteps[$day0en . 'T18:00:00.000Z']; ?>
 			<?php if ($heutehohe) : ?>
                 <tr>
                     <td><?php echo Text::_('MOD_DWD_WETTERMODUL_HOEHE'); ?></td>
@@ -102,7 +102,7 @@ $count = count($days);
 			<?php if ($heuteregen) : ?>
                 <tr>
                     <td><?php echo Text::_('MOD_DWD_WETTERMODUL_NIEDERSCHLAG'); ?></td>
-                    <td nowrap="nowrap"><?php echo $list->FX3[$forecastIndex] . ' ' . $units['FX3']; ?></td>
+                    <td nowrap="nowrap"><?php echo $list->RRdc[$timeSteps[$day1en . 'T06:00:00.000Z']] . ' ' . $units['RRdc']; ?></td>
 					<?php for ($i = 2; $i <= $count; $i++) : ?>
                         <td class="border"></td>
 					<?php endfor; ?>

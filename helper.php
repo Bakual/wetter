@@ -19,11 +19,9 @@
 defined('_JEXEC') or die('Restricted access');
 
 use Joomla\CMS\Factory;
-use Joomla\CMS\Filesystem\File;
 use Joomla\CMS\Http\HttpFactory;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Log\Log;
-use Joomla\Filesystem\Folder;
 
 /**
  * Helper class for DWD Wettermodul
@@ -64,9 +62,11 @@ class ModDwdwetterHelper
 			$tmpFolder = Factory::getApplication()->get('tmp_path');
 			$tmpFile   = $tmpFolder . '/mod_dwd_wettermodul.kmz';
 
-			if (File::write($tmpFile, $response->body))
+			if (JFile::write($tmpFile, $response->body))
 			{
 				$zip = new ZipArchive;
+
+				Jfolder::delete($tmpFolder . '/mod_dwd_wettermodul_kmz');
 
 				if ($zip->open($tmpFile) === true)
 				{
@@ -75,7 +75,7 @@ class ModDwdwetterHelper
 				}
 			}
 
-			$kmlFile         = Folder::files($tmpFolder . '/mod_dwd_wettermodul_kmz')[0];
+			$kmlFile         = JFolder::files($tmpFolder . '/mod_dwd_wettermodul_kmz')[0];
 			$xml             = simplexml_load_file($tmpFolder . '/mod_dwd_wettermodul_kmz/' . $kmlFile);
 			$xmlDocument     = $xml->children('kml', true)->Document;
 			self::$timeSteps = $xmlDocument->ExtendedData->children('dwd', true)->ProductDefinition->ForecastTimeSteps->children('dwd', true);

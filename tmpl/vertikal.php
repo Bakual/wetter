@@ -32,7 +32,7 @@ Factory::getDocument()->addStyleDeclaration(
 		<?php if ($days[0]) : ?>
 			<?php unset($days[0]); ?>
 			<?php unset($daysEn[0]); ?>
-			<?php $forecastIndex = ($time === '24') ? $timeSteps[$day1en . 'T00:00:00.000Z'] : $timeSteps[$day0en . 'T00:00:00.000Z']; ?>
+			<?php $forecastIndex = $timeSteps[$day0en . 'T18:00:00.000Z']; ?>
             <tr>
                 <td colspan="2" class="row_header color_text">
 					<?php if ($datumtitel) : ?>
@@ -66,7 +66,7 @@ Factory::getDocument()->addStyleDeclaration(
 			<?php if ($heuteregen) : ?>
                 <tr>
                     <td><?php echo Text::_('MOD_DWD_WETTERMODUL_NIEDERSCHLAG'); ?></td>
-                    <td nowrap="nowrap"><?php echo $list->FX3[$forecastIndex] . ' ' . $units['FX3']; ?></td>
+                    <td nowrap="nowrap"><?php echo $list->RRdc[$timeSteps[$day1en . 'T06:00:00.000Z']] . ' ' . $units['RRdc']; ?></td>
                 </tr>
 			<?php endif; ?>
 			<?php if ($heutewindrichtung) : ?>

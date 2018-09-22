@@ -43,7 +43,7 @@ $day0      = date('d.m.y', $timestamp);
 $day0en    = date('Y-m-d', $timestamp);
 $day1      = date('d.m.y', $timestamp + (1 * 24 * 60 * 60));
 $day1en    = date('Y-m-d', $timestamp + (1 * 24 * 60 * 60));
-$time      = str_pad(round(date('H', $timestamp) / 3, 0) * 3, '2', '0', STR_PAD_LEFT);
+$time      = str_pad(date('H', $timestamp), '2', '0', STR_PAD_LEFT);
 
 $days   = array();
 $daysEn = array();
