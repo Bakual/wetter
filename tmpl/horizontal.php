@@ -93,7 +93,7 @@ $count = count($days);
 			<?php if ($heuteluft) : ?>
                 <tr>
                     <td><?php echo Text::_('MOD_DWD_WETTERMODUL_LUFTDRUCK'); ?></td>
-                    <td nowrap="nowrap"><?php echo $list->PPPP[$forecastIndex] . ' ' . $units['PPPP']; ?></td>
+                    <td nowrap="nowrap"><?php echo $list->PPPP[$forecastIndex] / 100 . ' hPa'; ?></td>
 					<?php for ($i = 2; $i <= $count; $i++) : ?>
                         <td class="border"></td>
 					<?php endfor; ?>
@@ -102,7 +102,7 @@ $count = count($days);
 			<?php if ($heuteregen) : ?>
                 <tr>
                     <td><?php echo Text::_('MOD_DWD_WETTERMODUL_NIEDERSCHLAG'); ?></td>
-                    <td nowrap="nowrap"><?php echo $list->RRdc[$timeSteps[$day1en . 'T06:00:00.000Z']] . ' ' . $units['RRdc']; ?></td>
+                    <td nowrap="nowrap"><?php echo $list->RRdc[$timeSteps[$day1en . 'T06:00:00.000Z']] . ' mm'; ?></td>
 					<?php for ($i = 2; $i <= $count; $i++) : ?>
                         <td class="border"></td>
 					<?php endfor; ?>
@@ -120,7 +120,7 @@ $count = count($days);
 			<?php if ($heutewind) : ?>
                 <tr>
                     <td><?php echo Text::_('MOD_DWD_WETTERMODUL_WINDGESCHWINDIKEIT'); ?></td>
-                    <td nowrap="nowrap"><?php echo $list->FF[$forecastIndex] . ' ' . $units['FF']; ?></td>
+                    <td nowrap="nowrap"><?php echo round($list->FF[$forecastIndex]) . ' ' . $units['FF']; ?></td>
 					<?php for ($i = 2; $i <= $count; $i++) : ?>
                         <td class="border"></td>
 					<?php endfor; ?>
@@ -129,7 +129,7 @@ $count = count($days);
 			<?php if ($heutewindspitze) : ?>
                 <tr>
                     <td><?php echo Text::_('MOD_DWD_WETTERMODUL_WINDSPITZE'); ?></td>
-                    <td nowrap="nowrap"><?php echo $list->FX3[$forecastIndex] . ' ' . $units['FX3']; ?></td>
+                    <td nowrap="nowrap"><?php echo round($list->FX3[$forecastIndex]) . ' ' . $units['FX3']; ?></td>
 					<?php for ($i = 2; $i <= $count; $i++) : ?>
                         <td class="border"></td>
 					<?php endfor; ?>

@@ -60,13 +60,13 @@ Factory::getDocument()->addStyleDeclaration(
 			<?php if ($heuteluft) : ?>
                 <tr>
                     <td><?php echo Text::_('MOD_DWD_WETTERMODUL_LUFTDRUCK'); ?></td>
-                    <td nowrap="nowrap"><?php echo $list->PPPP[$forecastIndex] . ' ' . $units['PPPP']; ?></td>
+                    <td nowrap="nowrap"><?php echo $list->PPPP[$forecastIndex] / 100 . ' hPa'; ?></td>
                 </tr>
 			<?php endif; ?>
 			<?php if ($heuteregen) : ?>
                 <tr>
                     <td><?php echo Text::_('MOD_DWD_WETTERMODUL_NIEDERSCHLAG'); ?></td>
-                    <td nowrap="nowrap"><?php echo $list->RRdc[$timeSteps[$day1en . 'T06:00:00.000Z']] . ' ' . $units['RRdc']; ?></td>
+                    <td nowrap="nowrap"><?php echo $list->RRdc[$timeSteps[$day1en . 'T06:00:00.000Z']] . ' mm'; ?></td>
                 </tr>
 			<?php endif; ?>
 			<?php if ($heutewindrichtung) : ?>
@@ -78,13 +78,13 @@ Factory::getDocument()->addStyleDeclaration(
 			<?php if ($heutewind) : ?>
                 <tr>
                     <td><?php echo Text::_('MOD_DWD_WETTERMODUL_WINDGESCHWINDIKEIT'); ?></td>
-                    <td nowrap="nowrap"><?php echo $list->FF[$forecastIndex] . ' ' . $units['FF']; ?></td>
+                    <td nowrap="nowrap"><?php echo round($list->FF[$forecastIndex]) . ' ' . $units['FF']; ?></td>
                 </tr>
 			<?php endif; ?>
 			<?php if ($heutewindspitze) : ?>
                 <tr>
                     <td><?php echo Text::_('MOD_DWD_WETTERMODUL_WINDSPITZE'); ?></td>
-                    <td nowrap="nowrap"><?php echo $list->FX3[$forecastIndex] . ' ' . $units['FX3']; ?></td>
+                    <td nowrap="nowrap"><?php echo round($list->FX3[$forecastIndex]) . ' ' . $units['FX3']; ?></td>
                 </tr>
 			<?php endif; ?>
 		<?php endif; ?>
