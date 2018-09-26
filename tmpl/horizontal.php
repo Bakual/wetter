@@ -47,7 +47,7 @@ $count = count($days);
                         </td>
 					<?php else: ?>
                         <td class="border">
-                            <strong><?php echo $day; ?></strong>
+                            <strong><?php echo JHtml::date($day, JText::_('DATE_FORMAT_LC4')); ?></strong>
                         </td>
 					<?php endif; ?>
 				<?php endforeach; ?>
@@ -55,7 +55,7 @@ $count = count($days);
 		<?php endif; ?>
         <tr class="text-center">
 			<?php foreach ($days as $i => $day) : ?>
-				<?php $forecastIndex = $timeSteps[$daysEn[$i] . 'T18:00:00.000Z'] ?>
+				<?php $forecastIndex = $timeSteps[$day . 'T18:00:00.000Z'] ?>
 				<?php if (!$i) : ?>
                     <td colspan="2">
 				<?php else : ?>
@@ -69,18 +69,18 @@ $count = count($days);
         </tr>
         <tr class="text-center">
 			<?php foreach ($days as $i => $day) : ?>
-				<?php $forecastIndex = $timeSteps[$daysEn[$i] . 'T18:00:00.000Z'] ?>
+				<?php $forecastIndex = $timeSteps[$day . 'T18:00:00.000Z'] ?>
 				<?php if (!$i) : ?>
                     <td colspan="2">
 				<?php else : ?>
                     <td class="border">
 				<?php endif; ?>
-                <span class="temp"><?php echo $list->TX[$forecastIndex] - 273.15; ?>°C</span>
+                <span class="temp"><?php echo round($list->TX[$forecastIndex] - 273.15); ?>°C</span>
                 </td>
 			<?php endforeach; ?>
         </tr>
 		<?php if (isset($days[0])) : ?>
-			<?php $forecastIndex = $timeSteps[$day0en . 'T18:00:00.000Z']; ?>
+			<?php $forecastIndex = $timeSteps[$day0 . 'T18:00:00.000Z']; ?>
 			<?php if ($heutehohe) : ?>
                 <tr>
                     <td><?php echo Text::_('MOD_DWD_WETTERMODUL_HOEHE'); ?></td>
@@ -93,7 +93,7 @@ $count = count($days);
 			<?php if ($heuteluft) : ?>
                 <tr>
                     <td><?php echo Text::_('MOD_DWD_WETTERMODUL_LUFTDRUCK'); ?></td>
-                    <td nowrap="nowrap"><?php echo $list->PPPP[$forecastIndex] / 100 . ' hPa'; ?></td>
+                    <td nowrap="nowrap"><?php echo round($list->PPPP[$forecastIndex] / 100) . ' hPa'; ?></td>
 					<?php for ($i = 2; $i <= $count; $i++) : ?>
                         <td class="border"></td>
 					<?php endfor; ?>
@@ -102,7 +102,7 @@ $count = count($days);
 			<?php if ($heuteregen) : ?>
                 <tr>
                     <td><?php echo Text::_('MOD_DWD_WETTERMODUL_NIEDERSCHLAG'); ?></td>
-                    <td nowrap="nowrap"><?php echo $list->RRdc[$timeSteps[$day1en . 'T06:00:00.000Z']] . ' mm'; ?></td>
+                    <td nowrap="nowrap"><?php echo round($list->RRdc[$timeSteps[$day1 . 'T06:00:00.000Z']]) . ' mm'; ?></td>
 					<?php for ($i = 2; $i <= $count; $i++) : ?>
                         <td class="border"></td>
 					<?php endfor; ?>
@@ -120,7 +120,7 @@ $count = count($days);
 			<?php if ($heutewind) : ?>
                 <tr>
                     <td><?php echo Text::_('MOD_DWD_WETTERMODUL_WINDGESCHWINDIKEIT'); ?></td>
-                    <td nowrap="nowrap"><?php echo round($list->FF[$forecastIndex]) . ' ' . $units['FF']; ?></td>
+                    <td nowrap="nowrap"><?php echo round($list->FF[$forecastIndex] * 3.6) . ' km/h'; ?></td>
 					<?php for ($i = 2; $i <= $count; $i++) : ?>
                         <td class="border"></td>
 					<?php endfor; ?>
@@ -129,7 +129,7 @@ $count = count($days);
 			<?php if ($heutewindspitze) : ?>
                 <tr>
                     <td><?php echo Text::_('MOD_DWD_WETTERMODUL_WINDSPITZE'); ?></td>
-                    <td nowrap="nowrap"><?php echo round($list->FX3[$forecastIndex]) . ' ' . $units['FX3']; ?></td>
+                    <td nowrap="nowrap"><?php echo round($list->FX3[$forecastIndex] * 3.6) . ' km/h'; ?></td>
 					<?php for ($i = 2; $i <= $count; $i++) : ?>
                         <td class="border"></td>
 					<?php endfor; ?>

@@ -33,7 +33,7 @@ Factory::getDocument()->addStyleDeclaration(
 	<?php endif; ?>
 	<table>
 		<?php foreach ($days as $i => $day) : ?>
-			<?php $forecastIndex = $timeSteps[$daysEn[$i] . 'T18:00:00.000Z'] ?>
+			<?php $forecastIndex = $timeSteps[$day . 'T18:00:00.000Z'] ?>
 			<tr>
 				<td class="color_text">
 					<?php if (!$i) : ?>
@@ -41,11 +41,11 @@ Factory::getDocument()->addStyleDeclaration(
 					<?php elseif ($i == 1) : ?>
 						<?php echo Text::_('MOD_DWD_WETTERMODUL_DAY1'); ?>
 					<?php else : ?>
-						<?php echo $day; ?>
+						<?php echo JHtml::date($day, JText::_('DATE_FORMAT_LC4')); ?>
 					<?php endif; ?>
 				</td>
 				<td class="text-center">
-					<span class="temp"><?php echo $list->TTT[$forecastIndex] - 273.15; ?>°C</span>
+					<span class="temp"><?php echo round($list->TTT[$forecastIndex] - 273.15); ?>°C</span>
 				</td>
 				<td class="text-center">
 					<img alt=""

@@ -39,38 +39,29 @@ $units     = ModDwdwetterHelper::getUnits();
 $timeSteps = ModDwdwetterHelper::getTimeSteps();
 
 $timestamp = time();
-$day0      = date('d.m.y', $timestamp);
-$day0en    = date('Y-m-d', $timestamp);
-$day1      = date('d.m.y', $timestamp + (1 * 24 * 60 * 60));
-$day1en    = date('Y-m-d', $timestamp + (1 * 24 * 60 * 60));
+$day0      = date('Y-m-d', $timestamp);
+$day1      = date('Y-m-d', $timestamp + (1 * 24 * 60 * 60));
 $time      = str_pad(date('H', $timestamp), '2', '0', STR_PAD_LEFT);
 
-$days   = array();
-$daysEn = array();
+$days = array();
 
 if ($params->get('tag0'))
 {
-	$days[0]   = $day0;
-	$daysEn[0] = $day0en;
+	$days[0] = $day0;
 }
 if ($params->get('tag1'))
 {
-	$days[1]   = $day1;
-	$daysEn[1] = $day1en;
+	$days[1] = $day1;
 }
 if ($params->get('tag2'))
 {
-	$days[2]   = date('d.m.y', $timestamp + (2 * 24 * 60 * 60));
-	$daysEn[2] = date('Y-m-d', $timestamp + (2 * 24 * 60 * 60));
+	$days[2] = date('Y-m-d', $timestamp + (2 * 24 * 60 * 60));
 }
 if ($params->get('tag3'))
 {
-	$days[3]   = date('d.m.y', $timestamp + (3 * 24 * 60 * 60));
-	$daysEn[3] = date('Y-m-d', $timestamp + (3 * 24 * 60 * 60));
-	$days[4]   = date('d.m.y', $timestamp + (4 * 24 * 60 * 60));
-	$daysEn[4] = date('Y-m-d', $timestamp + (4 * 24 * 60 * 60));
-	$days[5]   = date('d.m.y', $timestamp + (5 * 24 * 60 * 60));
-	$daysEn[5] = date('Y-m-d', $timestamp + (5 * 24 * 60 * 60));
+	$days[3] = date('Y-m-d', $timestamp + (3 * 24 * 60 * 60));
+	$days[4] = date('Y-m-d', $timestamp + (4 * 24 * 60 * 60));
+	$days[5] = date('Y-m-d', $timestamp + (5 * 24 * 60 * 60));
 }
 
 $titel             = $params->get('titel');
