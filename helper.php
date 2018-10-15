@@ -116,76 +116,57 @@ class ModDwdwetterHelper
 	 */
 	public static function getIcon($list, $index, $hour = 12)
 	{
-		$day = ($hour > 4 && $hour < 19);
+		$day  = ($hour > 4 && $hour < 19);
+		$code = $list->ww[$index];
 
-		if ($list->ww[$index] < 30)
+		switch ($code)
 		{
-			// Cloud Cover is measured in 1/8
-			if ($list->N[$index] == 0)
-			{
+			case 00:
 				$icon = ($day) ? 'sonne.png' : 'nsonne.png';
-			}
-			elseif ($list->N[$index] < 4)
-			{
+				break;
+			case 01:
 				$icon = ($day) ? 'heiter.png' : 'nheiter.png';
-			}
-			elseif ($list->N[$index] < 8)
-			{
+				break;
+			case 02:
 				$icon = ($day) ? 'bewolkt.png' : 'nbewolkt.png';
-			}
-			else
-			{
+				break;
+			case 03:
 				$icon = 'bedeckt.png';
-			}
-		}
-		elseif ($list->ww[$index] < 50)
-		{
-			if ($list->ww[$index] >= 36 && $list->ww[$index] <= 39)
-			{
-				$icon = 'schnee.png';
-			}
-			else
-			{
+				break;
+			case 45:
+			case 49:
 				$icon = 'nebel.png';
-			}
-		}
-		elseif ($list->ww[$index] < 66)
-		{
-			if ($list->ww[$index] <= 61 || $list->ww[$index] == 66 || $list->ww[$index] == 68)
-			{
+				break;
+			case 51:
+			case 53:
+			case 55:
+			case 56:
+			case 57:
+			case 61:
+			case 66:
+			case 81:
 				$icon = 'leichtregen.png';
-			}
-			else
-			{
+				break;
+			case 63:
+			case 65:
+			case 67:
+			case 82:
 				$icon = 'starkregen.png';
-			}
-		}
-		elseif ($list->ww[$index] < 80)
-		{
-			$icon = 'schnee.png';
-		}
-		elseif ($list->ww[$index] < 90)
-		{
-			if ($list->ww[$index] <= 81)
-			{
-				$icon = 'leichtregen.png';
-			}
-			elseif ($list->ww[$index] == 82)
-			{
-				$icon = 'starkregen.png';
-			}
-			elseif ($list->ww[$index] >= 83 && $list->ww[$index] <= 87)
-			{
+				break;
+			case 68:
+			case 69:
+			case 71:
+			case 73:
+			case 75:
+			case 83:
+			case 84:
+			case 85:
+			case 86:
 				$icon = 'schnee.png';
-			}
-			else
-			{
-				$icon = 'hagel.png';
-			}
-		}
-		else
-		{
-			$icon = 'gewitter.png';
+				break;
+			case 95:
+				$icon = 'gewitter.png';
+				break;
 		}
 
 		return $icon;
