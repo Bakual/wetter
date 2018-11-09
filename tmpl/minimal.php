@@ -33,7 +33,7 @@ Factory::getDocument()->addStyleDeclaration(
 	<?php endif; ?>
 	<table>
 		<?php foreach ($days as $i => $day) : ?>
-			<?php $forecastIndex = $timeSteps[$day . 'T18:00:00.000Z'] ?>
+			<?php $forecastIndex = $timeSteps[$day . 'T' . ($time > 18) ? $time : 18 . ':00:00.000Z'] ?>
 			<tr>
 				<td class="color_text">
 					<?php if (!$i) : ?>

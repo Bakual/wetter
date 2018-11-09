@@ -31,7 +31,7 @@ Factory::getDocument()->addStyleDeclaration(
     <table>
         <?php if ($days[0]) : ?>
             <?php unset($days[0]); ?>
-            <?php $forecastIndex = $timeSteps[$day0 . 'T18:00:00.000Z']; ?>
+            <?php $forecastIndex = $timeSteps[$day0 . 'T' . ($time > 18) ? $time : 18 . ':00:00.000Z']; ?>
             <tr>
                 <td colspan="2" class="row_header color_text">
                     <?php if ($datumtitel) : ?>
