@@ -55,7 +55,7 @@ $count = count($days);
 		<?php endif; ?>
         <tr class="text-center">
 			<?php foreach ($days as $i => $day) : ?>
-				<?php $forecastIndex = $timeSteps[$day . 'T' . ($time > 18) ? $time : 18 . ':00:00.000Z'] ?>
+				<?php $forecastIndex = $timeSteps[$day . 'T18:00:00.000Z'] ?>
 				<?php if (!$i) : ?>
                     <td colspan="2">
 				<?php else : ?>
