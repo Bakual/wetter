@@ -144,6 +144,7 @@ class ModDwdwetterHelper
 			case 57:
 			case 61:
 			case 66:
+			case 80:
 			case 81:
 				$icon = 'leichtregen.png';
 				break;
