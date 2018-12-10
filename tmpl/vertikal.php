@@ -45,7 +45,7 @@ Factory::getDocument()->addStyleDeclaration(
 			</tr>
 			<tr>
 				<td class="text-center">
-					<? $index = $forecastIndex ?: $timeSteps[$day0 . 'T' . $time . ':00:00.000Z'] ?>
+					<?php $index = $forecastIndex ?: $timeSteps[$day0 . 'T' . $time . ':00:00.000Z'] ?>
 					<span class="temp"><?php echo round($list->TTT[$index] - 273.15); ?>°C</span>
 				</td>
 				<td class="text-center">
