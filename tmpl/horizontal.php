@@ -75,8 +75,18 @@ $count = count($days);
 				<?php else : ?>
 					<td class="border">
 				<?php endif; ?>
-				<span class="temp"><?php echo round($list->TX[$forecastIndex] - 273.15); ?>°C</span>
-				</td>
+				<span class="temp">
+					<?php if ($list->TX[$forecastIndex]) : ?>
+						<?php echo round($list->TX[$forecastIndex] - 273.15); ?>°C
+					<?php else: ?>
+						--
+						<?php $errorstring = 'Temperature not found for ForecastIndex "' . $forecastIndex . '" at time "' . $day . ' ' . $time . ':00". '; ?>
+						<?php $errorstring .= 'Layout in use was "horizontal".' ?>
+						<?php $errorstring .= "\n" . print_r($list->TX, true); ?>
+						<?php Log::add($errorstring, Log::WARNING, 'dwd_wetter'); ?>
+					<?php endif; ?>
+				</span>
+			</td>
 			<?php endforeach; ?>
 		</tr>
 		<?php if (isset($days[0])) : ?>

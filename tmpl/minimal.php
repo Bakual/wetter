@@ -45,7 +45,17 @@ Factory::getDocument()->addStyleDeclaration(
 					<?php endif; ?>
 				</td>
 				<td class="text-center">
-					<span class="temp"><?php echo round($list->TX[$forecastIndex] - 273.15); ?>°C</span>
+					<span class="temp">
+						<?php if ($list->TX[$forecastIndex]) : ?>
+							<?php echo round($list->TX[$forecastIndex] - 273.15); ?>°C
+						<?php else: ?>
+							--
+							<?php $errorstring = 'Temperature not found for ForecastIndex "' . $forecastIndex . '" at time "' . $day0 . ' ' . $time . ':00". '; ?>
+							<?php $errorstring .= 'Layout in use was "minimal".' ?>
+							<?php $errorstring .= "\n" . print_r($list->TX, true); ?>
+							<?php Log::add($errorstring, Log::WARNING, 'dwd_wetter'); ?>
+						<?php endif; ?>
+					</span>
 				</td>
 				<td class="text-center">
 					<img alt=""

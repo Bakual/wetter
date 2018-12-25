@@ -19,6 +19,14 @@
 defined('_JEXEC') or die();
 
 use Joomla\CMS\Helper\ModuleHelper;
+use Joomla\CMS\Log\Log;
+
+// Setting up custom logger
+Log::addLogger(
+	array('text_file' => 'dwd_wetter.php'),
+	Log::ALL,
+	array('dwd_wetter')
+);
 
 require_once __DIR__ . '/helper.php';
 

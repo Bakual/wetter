@@ -10,6 +10,7 @@ defined('_JEXEC') or die();
 
 use Joomla\CMS\Factory;
 use Joomla\CMS\Language\Text;
+use Joomla\CMS\Log\Log;
 
 Factory::getDocument()->addStyleDeclaration(
 	'.dwd_wettermodul.vertikal .row_header {
@@ -46,7 +47,17 @@ Factory::getDocument()->addStyleDeclaration(
 			<tr>
 				<td class="text-center">
 					<?php $index = $forecastIndex ?: $timeSteps[$day0 . 'T' . $time . ':00:00.000Z'] ?>
-					<span class="temp"><?php echo round($list->TTT[$index] - 273.15); ?>°C</span>
+					<span class="temp">
+						<?php if ($list->TTT[$index]) : ?>
+							<?php echo round($list->TTT[$index] - 273.15); ?>°C
+						<?php else: ?>
+							--
+							<?php $errorstring = 'Temperature not found for index "' . $index . '" at time "' . $day0 . ' ' . $time . ':00". '; ?>
+							<?php $errorstring .= 'ForecastIndex was "' . $forecastIndex . '", Layout in use was "vertikal".' ?>
+							<?php $errorstring .= "\n" . print_r($list->TTT, true); ?>
+							<?php Log::add($errorstring, Log::WARNING, 'dwd_wetter'); ?>
+						<?php endif; ?>
+					</span>
 				</td>
 				<td class="text-center">
 					<img alt=""

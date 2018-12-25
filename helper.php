@@ -86,7 +86,7 @@ class ModDwdwetterHelper
 		}
 		catch (\RuntimeException $exception)
 		{
-			Log::add(Text::sprintf('JLIB_INSTALLER_ERROR_DOWNLOAD_SERVER_CONNECT', $exception->getMessage()), Log::WARNING, 'jerror');
+			Log::add(Text::sprintf('JLIB_INSTALLER_ERROR_DOWNLOAD_SERVER_CONNECT', $exception->getMessage()), Log::WARNING, 'dwd_wetter');
 
 			return array();
 		}
