@@ -10,6 +10,7 @@ defined('_JEXEC') or die();
 
 use Joomla\CMS\Factory;
 use Joomla\CMS\Language\Text;
+use Joomla\CMS\Log\Log;
 
 Factory::getDocument()->addStyleDeclaration(
 	'.dwd_wettermodul.minimal table {

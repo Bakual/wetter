@@ -10,6 +10,7 @@ defined('_JEXEC') or die();
 
 use Joomla\CMS\Factory;
 use Joomla\CMS\Language\Text;
+use Joomla\CMS\Log\Log;
 
 Factory::getDocument()->addStyleDeclaration(
 	'.dwd_wettermodul.horizontal table {
@@ -86,7 +87,7 @@ $count = count($days);
 						<?php Log::add($errorstring, Log::WARNING, 'dwd_wetter'); ?>
 					<?php endif; ?>
 				</span>
-			</td>
+				</td>
 			<?php endforeach; ?>
 		</tr>
 		<?php if (isset($days[0])) : ?>
