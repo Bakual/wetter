@@ -35,7 +35,7 @@ Factory::getDocument()->addStyleDeclaration(
 			<?php if (isset($timeSteps[$day0 . 'T18:00:00.000Z'])) : ?>
 				<?php $forecastIndex = $timeSteps[$day0 . 'T18:00:00.000Z']; ?>
 			<?php else : ?>
-				<?php $forecastIndex = 0 ?>
+				<?php $forecastIndex = null; ?>
 			<?php endif; ?>
 			<tr>
 				<td colspan="2" class="row_header color_text">
@@ -46,7 +46,7 @@ Factory::getDocument()->addStyleDeclaration(
 			</tr>
 			<tr>
 				<td class="text-center">
-					<?php $index = $forecastIndex ?: $timeSteps[$day0 . 'T' . $time . ':00:00.000Z'] ?>
+					<?php $index = is_numeric($forecastIndex) ? $forecastIndex : $timeSteps[$day0 . 'T' . $time . ':00:00.000Z'] ?>
 					<span class="temp">
 						<?php if ($list->TTT[$index]) : ?>
 							<?php echo round($list->TTT[$index] - 273.15); ?>°C
