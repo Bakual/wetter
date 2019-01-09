@@ -44,7 +44,7 @@ if (!$list)
 }
 
 $units     = ModDwdwetterHelper::getUnits();
-$timeSteps = ModDwdwetterHelper::getTimeSteps();
+$timeSteps = $list->timeSteps;
 
 $timestamp = time();
 $day0      = date('Y-m-d', $timestamp);

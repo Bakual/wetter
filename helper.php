@@ -31,12 +31,6 @@ use Joomla\CMS\Log\Log;
 class ModDwdwetterHelper
 {
 	/**
-	 * @var  array  Holds Forecast TimeSteps read by getList method
-	 * @since 5.1.0
-	 */
-	public static $timeSteps;
-
-	/**
 	 * @param $params \Joomla\Registry\Registry Module Params
 	 *
 	 * @since  1.0
@@ -77,8 +71,8 @@ class ModDwdwetterHelper
 			$kmlFile         = JFolder::files($tmpFolder . '/mod_dwd_wettermodul_kmz')[0];
 			$xml             = simplexml_load_file($tmpFolder . '/mod_dwd_wettermodul_kmz/' . $kmlFile);
 			$xmlDocument     = $xml->children('kml', true)->Document;
-			self::$timeSteps = $xmlDocument->ExtendedData->children('dwd', true)->ProductDefinition->ForecastTimeSteps->children('dwd', true);
-			self::$timeSteps = array_flip((array) self::$timeSteps->TimeStep);
+			$timeSteps = $xmlDocument->ExtendedData->children('dwd', true)->ProductDefinition->ForecastTimeSteps->children('dwd', true);
+			$timeSteps = array_flip((array) $timeSteps->TimeStep);
 
 			// $location = (string) $xmlDocument->Placemark->description;
 			$dwd = $xmlDocument->Placemark->ExtendedData->children('dwd', true);
@@ -98,6 +92,8 @@ class ModDwdwetterHelper
 			$value           = preg_split('/\s+/', $i->value, -1, PREG_SPLIT_NO_EMPTY);
 			$forecast->$name = $value;
 		}
+
+		$forecast->timeSteps = $timeSteps;
 
 		return $forecast;
 	}
@@ -344,18 +340,6 @@ class ModDwdwetterHelper
 	}
 
 	/**
-	 * Returns the TimeSteps
-	 *
-	 * @return array
-	 *
-	 * @since 5.0.0
-	 */
-	public static function getTimeSteps()
-	{
-		return self::$timeSteps;
-	}
-
-	/**
 	 * Logs an error into logs/dwd_wetter.php
 	 *
 	 * @return void
@@ -366,8 +350,10 @@ class ModDwdwetterHelper
 	{
 		$errorstring = 'Temperature not found at "' . $day0 . ' ' . $time . ':00".';
 		$errorstring .= "\nSelected ForecastIndex was " . $forecastIndex . '", Layout in use was "' . $layout . '".';
-		$errorstring .= "\n'" . $day0 . 'T18:00:00.000Z\' was ' . isset($timeSteps[$day0 . 'T18:00:00.000Z']);
-		$errorstring .= "\n'" . $day0 . 'T' . $time . ':00:00.000Z\' was ' . isset($timeSteps[$day0 . 'T' . $time . ':00:00.000Z']);
+		$errorstring .= "\n'" . $day0 . 'T18:00:00.000Z\' was ';
+		$errorstring .= isset($timeSteps[$day0 . 'T18:00:00.000Z']) ? 'true' : 'false';
+		$errorstring .= "\n'" . $day0 . 'T' . $time . ':00:00.000Z\' was ';
+		$errorstring .= isset($timeSteps[$day0 . 'T' . $time . ':00:00.000Z']) ? 'true' : 'false';
 
 		$i           = 0;
 		$errorstring .= "\ntimeSteps:";
