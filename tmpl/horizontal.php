@@ -10,7 +10,6 @@ defined('_JEXEC') or die();
 
 use Joomla\CMS\Factory;
 use Joomla\CMS\Language\Text;
-use Joomla\CMS\Log\Log;
 
 Factory::getDocument()->addStyleDeclaration(
 	'.dwd_wettermodul.horizontal table {
@@ -81,10 +80,7 @@ $count = count($days);
 						<?php echo round($list->TX[$forecastIndex] - 273.15); ?>°C
 					<?php else: ?>
 						--
-						<?php $errorstring = 'Temperature not found for ForecastIndex "' . $forecastIndex . '" at time "' . $day . ' ' . $time . ':00". '; ?>
-						<?php $errorstring .= 'Layout in use was "horizontal".' ?>
-						<?php $errorstring .= "\n" . print_r($list->TX, true); ?>
-						<?php Log::add($errorstring, Log::WARNING, 'dwd_wetter'); ?>
+						<?php ModDwdwetterHelper::logError($forecastIndex, $day, $time, $timeSteps, $list, 'horizontal'); ?>
 					<?php endif; ?>
 				</span>
 				</td>

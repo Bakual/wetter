@@ -26,7 +26,6 @@ use Joomla\CMS\Log\Log;
 /**
  * Helper class for DWD Wettermodul
  *
- * @property array|null timeSteps
  * @since  1.0
  */
 class ModDwdwetterHelper
@@ -354,5 +353,58 @@ class ModDwdwetterHelper
 	public static function getTimeSteps()
 	{
 		return self::$timeSteps;
+	}
+
+	/**
+	 * Logs an error into logs/dwd_wetter.php
+	 *
+	 * @return void
+	 *
+	 * @since 5.1.2
+	 */
+	public static function logError($forecastIndex, $day0, $time, $timeSteps, $list, $layout)
+	{
+		$errorstring = 'Temperature not found at "' . $day0 . ' ' . $time . ':00".';
+		$errorstring .= "\nSelected ForecastIndex was " . $forecastIndex . '", Layout in use was "' . $layout . '".';
+		$errorstring .= "\n'" . $day0 . 'T18:00:00.000Z\' was ' . isset($timeSteps[$day0 . 'T18:00:00.000Z']);
+		$errorstring .= "\n'" . $day0 . 'T' . $time . ':00:00.000Z\' was ' . isset($timeSteps[$day0 . 'T' . $time . ':00:00.000Z']);
+
+		$i           = 0;
+		$errorstring .= "\ntimeSteps:";
+		foreach ($timeSteps as $key => $value)
+		{
+			$errorstring .= "\n" . $key . ' => ' . $value;
+			if ($i > 24)
+			{
+				break;
+			}
+			$i++;
+		}
+
+		$i           = 0;
+		$errorstring .= "\nTTT:";
+		foreach ($list->TTT as $key => $value)
+		{
+			$errorstring .= "\n" . $key . ' => ' . $value;
+			if ($i > 24)
+			{
+				break;
+			}
+			$i++;
+		}
+
+		$i           = 0;
+		$errorstring .= "\nTX:";
+		foreach ($list->TX as $key => $value)
+		{
+			$errorstring .= "\n" . $key . ' => ' . $value;
+			if ($i > 24)
+			{
+				break;
+			}
+			$i++;
+		}
+
+		Log::add($errorstring, Log::WARNING, 'dwd_wetter');
 	}
 }

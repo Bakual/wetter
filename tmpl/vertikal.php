@@ -10,7 +10,6 @@ defined('_JEXEC') or die();
 
 use Joomla\CMS\Factory;
 use Joomla\CMS\Language\Text;
-use Joomla\CMS\Log\Log;
 
 Factory::getDocument()->addStyleDeclaration(
 	'.dwd_wettermodul.vertikal .row_header {
@@ -35,7 +34,7 @@ Factory::getDocument()->addStyleDeclaration(
 			<?php if (isset($timeSteps[$day0 . 'T18:00:00.000Z'])) : ?>
 				<?php $forecastIndex = $timeSteps[$day0 . 'T18:00:00.000Z']; ?>
 			<?php else : ?>
-				<?php $forecastIndex = null; ?>
+				<?php $forecastIndex = $timeSteps[$day0 . 'T' . $time . ':00:00.000Z']; ?>
 			<?php endif; ?>
 			<tr>
 				<td colspan="2" class="row_header color_text">
@@ -46,16 +45,12 @@ Factory::getDocument()->addStyleDeclaration(
 			</tr>
 			<tr>
 				<td class="text-center">
-					<?php $index = is_numeric($forecastIndex) ? $forecastIndex : $timeSteps[$day0 . 'T' . $time . ':00:00.000Z'] ?>
 					<span class="temp">
-						<?php if ($list->TTT[$index]) : ?>
-							<?php echo round($list->TTT[$index] - 273.15); ?>°C
+						<?php if ($list->TTT[$forecastIndex]) : ?>
+							<?php echo round($list->TTT[$forecastIndex] - 273.15); ?>°C
 						<?php else: ?>
 							--
-							<?php $errorstring = 'Temperature not found for index "' . $index . '" at time "' . $day0 . ' ' . $time . ':00". '; ?>
-							<?php $errorstring .= 'ForecastIndex was "' . $forecastIndex . '", Layout in use was "vertikal".' ?>
-							<?php $errorstring .= "\n" . print_r($list->TTT, true); ?>
-							<?php Log::add($errorstring, Log::WARNING, 'dwd_wetter'); ?>
+							<?php ModDwdwetterHelper::logError($forecastIndex, $day0, $time, $timeSteps, $list, 'vertikal'); ?>
 						<?php endif; ?>
 					</span>
 				</td>

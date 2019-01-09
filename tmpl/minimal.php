@@ -10,7 +10,6 @@ defined('_JEXEC') or die();
 
 use Joomla\CMS\Factory;
 use Joomla\CMS\Language\Text;
-use Joomla\CMS\Log\Log;
 
 Factory::getDocument()->addStyleDeclaration(
 	'.dwd_wettermodul.minimal table {
@@ -51,10 +50,7 @@ Factory::getDocument()->addStyleDeclaration(
 							<?php echo round($list->TX[$forecastIndex] - 273.15); ?>°C
 						<?php else: ?>
 							--
-							<?php $errorstring = 'Temperature not found for ForecastIndex "' . $forecastIndex . '" at time "' . $day0 . ' ' . $time . ':00". '; ?>
-							<?php $errorstring .= 'Layout in use was "minimal".' ?>
-							<?php $errorstring .= "\n" . print_r($list->TX, true); ?>
-							<?php Log::add($errorstring, Log::WARNING, 'dwd_wetter'); ?>
+							<?php ModDwdwetterHelper::logError($forecastIndex, $day0, $time, $timeSteps, $list, 'minimal'); ?>
 						<?php endif; ?>
 					</span>
 				</td>
