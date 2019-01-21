@@ -30,13 +30,7 @@ Log::addLogger(
 
 require_once __DIR__ . '/helper.php';
 
-$cacheparams               = new stdClass;
-$cacheparams->cachemode    = 'static';
-$cacheparams->class        = 'ModDwdwetterHelper';
-$cacheparams->method       = 'getList';
-$cacheparams->methodparams = $params;
-
-$list = ModuleHelper::moduleCache($module, $params, $cacheparams);
+$list = ModDwdwetterHelper::getList($params);
 
 if (!$list)
 {
