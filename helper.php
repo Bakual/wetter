@@ -67,6 +67,10 @@ class ModDwdwetterHelper
 					$zip->close();
 				}
 			}
+			else
+			{
+				Log::add('Writing file "' . $tmpFile . '" failed!', Log::WARNING, 'dwd_wetter');
+			}
 
 			$kmlFile         = JFolder::files($tmpFolder . '/mod_dwd_wettermodul_kmz')[0];
 			$xml             = simplexml_load_file($tmpFolder . '/mod_dwd_wettermodul_kmz/' . $kmlFile);
