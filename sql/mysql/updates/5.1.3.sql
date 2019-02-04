@@ -1,13 +1,4 @@
-DROP TABLE IF EXISTS `#__dwd_wetter_sites`;
-
-CREATE TABLE `#__dwd_wetter_sites` (
-	`id` VARCHAR(10) NOT NULL,
-	`title` VARCHAR(255) NOT NULL,
-	`lat` VARCHAR(255) NOT NULL,
-	`long` VARCHAR(255) NOT NULL,
-	`alt` VARCHAR(255) NOT NULL,
-	PRIMARY KEY (`id`)
-) ENGINE=MyISAM AUTO_INCREMENT=0 DEFAULT CHARSET=utf8;
+TRUNCATE TABLE `#__dwd_wetter_sites`;
 
 INSERT INTO `#__dwd_wetter_sites`
 	(`id`,`title`,`lat`,`long`,`alt`) 
