@@ -9,6 +9,7 @@
 defined('_JEXEC') or die();
 
 use Joomla\CMS\Factory;
+use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Language\Text;
 
 Factory::getDocument()->addStyleDeclaration(
@@ -106,7 +107,7 @@ Factory::getDocument()->addStyleDeclaration(
 						<?php if ($i == 1) : ?>
 							<strong><?php echo Text::_('MOD_DWD_WETTERMODUL_DAY1'); ?></strong>
 						<?php else : ?>
-							<strong><?php echo JHtml::date($day, JText::_('DATE_FORMAT_LC4')); ?></strong>
+							<strong><?php echo HTMLHelper::date($day, JText::_('DATE_FORMAT_LC4')); ?></strong>
 						<?php endif; ?>
 					<?php endif; ?>
 				</td>

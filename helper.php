@@ -12,13 +12,15 @@
 // Modul: (c) M. Bollmann - www.stranddorf.de
 // **************************************************************************
 // Das Modul lädt aktuelle filedata und Vorhersagen vom FTP Server des DWD.
-// Die Daten werden lokal zwischengespeichert und grafisch aufgearbeitet. 
+// Die Daten werden lokal zwischengespeichert und grafisch aufgearbeitet.
 // Die filedata der Grundversorgung dürfen frei verwendet werden, sind jedoch urheberrechtlich geschützt.
 // **************************************************************************
 
 defined('_JEXEC') or die('Restricted access');
 
 use Joomla\CMS\Factory;
+use Joomla\CMS\Filesystem\File;
+use Joomla\CMS\Filesystem\Folder;
 use Joomla\CMS\Http\HttpFactory;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Log\Log;
@@ -33,8 +35,9 @@ class ModDwdwetterHelper
 	/**
 	 * @param $params \Joomla\Registry\Registry Module Params
 	 *
+	 * @return \stdClass
+	 * @throws \Exception
 	 * @since  1.0
-	 * @return array
 	 */
 	public static function getList($params)
 	{
@@ -55,11 +58,11 @@ class ModDwdwetterHelper
 			$tmpFolder = Factory::getApplication()->get('tmp_path');
 			$tmpFile   = $tmpFolder . '/mod_dwd_wettermodul.kmz';
 
-			if (JFile::write($tmpFile, $response->body))
+			if (File::write($tmpFile, $response->body))
 			{
 				$zip = new ZipArchive;
 
-				Jfolder::delete($tmpFolder . '/mod_dwd_wettermodul_kmz');
+				Folder::delete($tmpFolder . '/mod_dwd_wettermodul_kmz');
 
 				if ($zip->open($tmpFile) === true)
 				{
@@ -72,11 +75,11 @@ class ModDwdwetterHelper
 				Log::add('Writing file "' . $tmpFile . '" failed!', Log::WARNING, 'dwd_wetter');
 			}
 
-			$kmlFile         = JFolder::files($tmpFolder . '/mod_dwd_wettermodul_kmz')[0];
-			$xml             = simplexml_load_file($tmpFolder . '/mod_dwd_wettermodul_kmz/' . $kmlFile);
-			$xmlDocument     = $xml->children('kml', true)->Document;
-			$timeSteps = $xmlDocument->ExtendedData->children('dwd', true)->ProductDefinition->ForecastTimeSteps->children('dwd', true);
-			$timeSteps = array_flip((array) $timeSteps->TimeStep);
+			$kmlFile     = Folder::files($tmpFolder . '/mod_dwd_wettermodul_kmz')[0];
+			$xml         = simplexml_load_file($tmpFolder . '/mod_dwd_wettermodul_kmz/' . $kmlFile);
+			$xmlDocument = $xml->children('kml', true)->Document;
+			$timeSteps   = $xmlDocument->ExtendedData->children('dwd', true)->ProductDefinition->ForecastTimeSteps->children('dwd', true);
+			$timeSteps   = array_flip((array) $timeSteps->TimeStep);
 
 			// $location = (string) $xmlDocument->Placemark->description;
 			$dwd = $xmlDocument->Placemark->ExtendedData->children('dwd', true);
@@ -85,7 +88,7 @@ class ModDwdwetterHelper
 		{
 			Log::add(Text::sprintf('JLIB_INSTALLER_ERROR_DOWNLOAD_SERVER_CONNECT', $exception->getMessage()), Log::WARNING, 'dwd_wetter');
 
-			return array();
+			return new stdClass;
 		}
 
 		$forecast = new stdClass;
@@ -105,9 +108,9 @@ class ModDwdwetterHelper
 	/**
 	 * Returns the weather icon for a condition
 	 *
-	 * @param  object $list
-	 * @param  int    $index
-	 * @param  int    $hour
+	 * @param   object  $list
+	 * @param   int     $index
+	 * @param   int     $hour
 	 *
 	 * @return string
 	 *

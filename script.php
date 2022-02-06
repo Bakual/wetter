@@ -1,14 +1,13 @@
 <?php
 /**
- * @package    Wettermodul
- * @author     Thomas Hunziker <admin@bakual.net>
+ * @package        Wettermodul
+ * @author         Thomas Hunziker <admin@bakual.net>
  * @copyright  (C) 2019 - Thomas Hunziker
- * @license    http://www.gnu.org/licenses/gpl.html
+ * @license        http://www.gnu.org/licenses/gpl.html
  **/
 
 defined('_JEXEC') or die;
 
-use Joomla\CMS\Factory;
 use Joomla\CMS\Installer\InstallerScript;
 
 class Mod_Dwd_wettermodulInstallerScript extends InstallerScript
@@ -33,7 +32,7 @@ class Mod_Dwd_wettermodulInstallerScript extends InstallerScript
 	 * @var    string
 	 * @since  5.0.0
 	 */
-	protected $minimumJoomla = '3.8.0';
+	protected $minimumJoomla = '4.0.0';
 	/**
 	 * Old version before updating
 	 *
@@ -45,8 +44,8 @@ class Mod_Dwd_wettermodulInstallerScript extends InstallerScript
 	/**
 	 * method to run before an install/update/uninstall method
 	 *
-	 * @param   string                     $type   'install', 'update' or 'discover_install'
-	 * @param   JInstallerAdapterComponent $parent Installerobject
+	 * @param   string                      $type    'install', 'update' or 'discover_install'
+	 * @param   JInstallerAdapterComponent  $parent  Installerobject
 	 *
 	 * @return  boolean  false will terminate the installation
 	 *
@@ -57,7 +56,7 @@ class Mod_Dwd_wettermodulInstallerScript extends InstallerScript
 		// Storing old release number for process in postflight
 		if (strtolower($type) == 'update')
 		{
-			$manifest = $this->getItemArray('manifest_cache', '#__extensions', 'element', JFactory::getDbo()->quote($this->extension));
+			$manifest         = $this->getItemArray('manifest_cache', '#__extensions', 'element', JFactory::getDbo()->quote($this->extension));
 			$this->oldRelease = $manifest['version'];
 		}
 
@@ -67,7 +66,7 @@ class Mod_Dwd_wettermodulInstallerScript extends InstallerScript
 	/**
 	 * method to update the component
 	 *
-	 * @param   Joomla\CMS\Installer\Adapter\ComponentAdapter $parent Installerobject
+	 * @param   Joomla\CMS\Installer\Adapter\ComponentAdapter  $parent  Installerobject
 	 *
 	 * @return void
 	 *

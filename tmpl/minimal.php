@@ -9,6 +9,7 @@
 defined('_JEXEC') or die();
 
 use Joomla\CMS\Factory;
+use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Language\Text;
 
 Factory::getDocument()->addStyleDeclaration(
@@ -33,7 +34,15 @@ Factory::getDocument()->addStyleDeclaration(
 	<?php endif; ?>
 	<table>
 		<?php foreach ($days as $i => $day) : ?>
-			<?php $forecastIndex = $timeSteps[$day . 'T18:00:00.000Z'] ?>
+			<?php if ($i === 0) : ?>
+				<?php if (isset($timeSteps[$day . 'T18:00:00.000Z'])) : ?>
+					<?php $forecastIndex = $timeSteps[$day . 'T18:00:00.000Z']; ?>
+				<?php else : ?>
+					<?php $forecastIndex = $timeSteps[$day . 'T' . $time . ':00:00.000Z']; ?>
+				<?php endif; ?>
+			<?php else : ?>
+				<?php $forecastIndex = $timeSteps[$day . 'T18:00:00.000Z'] ?>
+			<?php endif; ?>
 			<tr>
 				<td class="color_text">
 					<?php if (!$i) : ?>
@@ -41,12 +50,12 @@ Factory::getDocument()->addStyleDeclaration(
 					<?php elseif ($i == 1) : ?>
 						<?php echo Text::_('MOD_DWD_WETTERMODUL_DAY1'); ?>
 					<?php else : ?>
-						<?php echo JHtml::date($day, JText::_('DATE_FORMAT_LC4')); ?>
+						<?php echo HtmlHelper::date($day, JText::_('DATE_FORMAT_LC4')); ?>
 					<?php endif; ?>
 				</td>
 				<td class="text-center">
 					<span class="temp">
-						<?php if ($list->TX[$forecastIndex]) : ?>
+						<?php if ($list->TX[$forecastIndex] !== '-') : ?>
 							<?php echo round($list->TX[$forecastIndex] - 273.15); ?>°C
 						<?php else: ?>
 							--

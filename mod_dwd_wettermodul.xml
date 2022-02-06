@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<extension type="module" version="3.8" client="site" method="upgrade">
+<extension type="module" version="4.0" client="site" method="upgrade">
 	<name>MOD_DWD_WETTERMODUL</name>
 	<author>Thomas Hunziker</author>
-	<creationDate>2019-02-04</creationDate>
-	<copyright>(C) 2019</copyright>
+	<creationDate>2022-02-06</creationDate>
+	<copyright>(C) 2022</copyright>
 	<authorEmail>admin@bakual.net</authorEmail>
 	<authorUrl>http://www.bakual.net</authorUrl>
-	<version>5.1.3</version>
+	<version>6.0.0</version>
 	<license>http://www.gnu.org/licenses/gpl.html</license>
 	<description>MOD_DWD_WETTERMODUL_XML_DESCRIPTION</description>
 	<files>
@@ -36,7 +36,9 @@
 		</schemas>
 	</update>
 	<updateservers>
-		<server type="extension" name="DWD Wettermodul">https://raw.githubusercontent.com/Bakual/wetter/master/manifest.xml</server>
+		<server type="extension" name="DWD Wettermodul">
+			https://raw.githubusercontent.com/Bakual/wetter/master/manifest.xml
+		</server>
 	</updateservers>
 	<config>
 		<fields name="params">
@@ -45,13 +47,11 @@
 					name="titel"
 					type="text"
 					label="MOD_DWD_WETTERMODUL_FIELD_TITEL_LABEL"
-					description="MOD_DWD_WETTERMODUL_FIELD_TITEL_DESC"
 				/>
 				<field
 					name="station"
 					type="sql"
 					label="MOD_DWD_WETTERMODUL_FIELD_STATION_LABEL"
-					description="MOD_DWD_WETTERMODUL_FIELD_STATION_DESC"
 					sql_select="id, title"
 					sql_from="#__dwd_wetter_sites"
 					sql_order="title ASC"
@@ -62,133 +62,130 @@
 					name="farbe"
 					type="color"
 					label="MOD_DWD_WETTERMODUL_FIELD_FARBE_LABEL"
-					description="MOD_DWD_WETTERMODUL_FIELD_FARBE_DESC"
 					default="#6699cc"
 				/>
 				<field
 					name="zweitfarbe"
 					type="color"
 					label="MOD_DWD_WETTERMODUL_FIELD_ZWEITFARBE_LABEL"
-					description="MOD_DWD_WETTERMODUL_FIELD_ZWEITFARBE_DESC"
 					default="#999999"
 				/>
 				<field
 					name="datumtitel"
 					type="radio"
 					label="MOD_DWD_WETTERMODUL_FIELD_DATUMTITEL_LABEL"
-					description="MOD_DWD_WETTERMODUL_FIELD_DATUMTITEL_DESC"
-					class="btn-group btn-group-yesno"
+					layout="joomla.form.field.radio.switcher"
 					default="1"
 				>
-					<option value="1">JYES</option>
 					<option value="0">JNO</option>
+					<option value="1">JYES</option>
 				</field>
 				<field
 					name="tag0"
 					type="radio"
 					label="MOD_DWD_WETTERMODUL_FIELD_TAG0_LABEL"
-					class="btn-group btn-group-yesno"
+					layout="joomla.form.field.radio.switcher"
 					default="1"
 				>
-					<option value="1">JSHOW</option>
 					<option value="0">JHIDE</option>
+					<option value="1">JSHOW</option>
 				</field>
 				<field
 					name="heutehohe"
 					type="radio"
 					label="MOD_DWD_WETTERMODUL_FIELD_HEUTEHOHE_LABEL"
-					class="btn-group btn-group-yesno"
+					layout="joomla.form.field.radio.switcher"
 					showon="tag0:1"
 					default="0"
 				>
-					<option value="1">JSHOW</option>
 					<option value="0">JHIDE</option>
+					<option value="1">JSHOW</option>
 				</field>
 				<field
 					name="heuteluft"
 					type="radio"
 					label="MOD_DWD_WETTERMODUL_FIELD_HEUTELUFT_LABEL"
-					class="btn-group btn-group-yesno"
+					layout="joomla.form.field.radio.switcher"
 					showon="tag0:1"
 					default="1"
 				>
-					<option value="1">JSHOW</option>
 					<option value="0">JHIDE</option>
+					<option value="1">JSHOW</option>
 				</field>
 
 				<field
 					name="heuteregen"
 					type="radio"
 					label="MOD_DWD_WETTERMODUL_FIELD_HEUTEREGEN_LABEL"
-					class="btn-group btn-group-yesno"
+					layout="joomla.form.field.radio.switcher"
 					showon="tag0:1"
 					default="1"
 				>
-					<option value="1">JSHOW</option>
 					<option value="0">JHIDE</option>
+					<option value="1">JSHOW</option>
 				</field>
 				<field
 					name="heutewindrichtung"
 					type="radio"
 					label="MOD_DWD_WETTERMODUL_FIELD_HEUTEWINDRICHTUNG_LABEL"
-					class="btn-group btn-group-yesno"
+					layout="joomla.form.field.radio.switcher"
 					showon="tag0:1"
 					default="1"
 				>
-					<option value="1">JSHOW</option>
 					<option value="0">JHIDE</option>
+					<option value="1">JSHOW</option>
 				</field>
 				<field
 					name="heutewind"
 					type="radio"
 					label="MOD_DWD_WETTERMODUL_FIELD_HEUTEWIND_LABEL"
-					class="btn-group btn-group-yesno"
+					layout="joomla.form.field.radio.switcher"
 					showon="tag0:1"
 					default="1"
 				>
-					<option value="1">JSHOW</option>
 					<option value="0">JHIDE</option>
+					<option value="1">JSHOW</option>
 				</field>
 				<field
 					name="heutewindspitze"
 					type="radio"
 					label="MOD_DWD_WETTERMODUL_FIELD_HEUTEWINDSPITZE_LABEL"
-					class="btn-group btn-group-yesno"
+					layout="joomla.form.field.radio.switcher"
 					showon="tag0:1"
 					default="0"
 				>
-					<option value="1">JSHOW</option>
 					<option value="0">JHIDE</option>
+					<option value="1">JSHOW</option>
 				</field>
 				<field
 					name="tag1"
 					type="radio"
 					label="MOD_DWD_WETTERMODUL_FIELD_TAG1_LABEL"
-					class="btn-group btn-group-yesno"
+					layout="joomla.form.field.radio.switcher"
 					default="0"
 				>
-					<option value="1">JSHOW</option>
 					<option value="0">JHIDE</option>
+					<option value="1">JSHOW</option>
 				</field>
 				<field
 					name="tag2"
 					type="radio"
 					label="MOD_DWD_WETTERMODUL_FIELD_TAG2_LABEL"
-					class="btn-group btn-group-yesno"
+					layout="joomla.form.field.radio.switcher"
 					default="0"
 				>
-					<option value="1">JSHOW</option>
 					<option value="0">JHIDE</option>
+					<option value="1">JSHOW</option>
 				</field>
 				<field
 					name="tag3"
 					type="radio"
 					label="MOD_DWD_WETTERMODUL_FIELD_TAG3_LABEL"
-					class="btn-group btn-group-yesno"
+					layout="joomla.form.field.radio.switcher"
 					default="0"
 				>
-					<option value="1">JSHOW</option>
 					<option value="0">JHIDE</option>
+					<option value="1">JSHOW</option>
 				</field>
 			</fieldset>
 			<fieldset name="advanced">
@@ -196,34 +193,43 @@
 					name="layout"
 					type="modulelayout"
 					label="JFIELD_ALT_LAYOUT_LABEL"
-					description="JFIELD_ALT_MODULE_LAYOUT_DESC"
-					default="_:vertikal"/>
+					class="form-select"
+					validate="moduleLayout"
+					default="_:vertikal"
+				/>
 				<field
 					name="moduleclass_sfx"
 					type="textarea"
 					label="COM_MODULES_FIELD_MODULECLASS_SFX_LABEL"
-					description="COM_MODULES_FIELD_MODULECLASS_SFX_DESC"
-					rows="3"/>
+					rows="3"
+					validate="CssIdentifier"
+				/>
+
 				<field
 					name="cache"
 					type="list"
 					label="COM_MODULES_FIELD_CACHING_LABEL"
-					description="COM_MODULES_FIELD_CACHING_DESC"
 					default="1"
+					filter="integer"
+					validate="options"
 				>
 					<option value="1">JGLOBAL_USE_GLOBAL</option>
 					<option value="0">COM_MODULES_FIELD_VALUE_NOCACHING</option>
 				</field>
+
 				<field
 					name="cache_time"
-					type="text"
+					type="number"
 					label="COM_MODULES_FIELD_CACHE_TIME_LABEL"
-					description="COM_MODULES_FIELD_CACHE_TIME_DESC"
-					default="900"/>
+					default="900"
+					filter="integer"
+				/>
+
 				<field
 					name="cachemode"
 					type="hidden"
-					default="static">
+					default="static"
+				>
 					<option value="static"></option>
 				</field>
 			</fieldset>

@@ -1,18 +1,19 @@
 <?php
 /**
- * @package    Wettermodul
- * @author     Thomas Hunziker <admin@bakual.net>
+ * @package        Wettermodul
+ * @author         Thomas Hunziker <admin@bakual.net>
  * @copyright  (C) 2019 - T. Hunziker / M. Bollmann
- * @license    http://www.gnu.org/licenses/gpl.html
+ * @license        http://www.gnu.org/licenses/gpl.html
  **/
 
 defined('_JEXEC') or die();
 
 use Joomla\CMS\Factory;
+use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Language\Text;
 
 Factory::getDocument()->addStyleDeclaration(
-	'.dwd_wettermodul.horizontal table {
+		'.dwd_wettermodul.horizontal table {
 		width: 100%;
 	}
 	.dwd_wettermodul.horizontal .border {
@@ -47,7 +48,7 @@ $count = count($days);
 						</td>
 					<?php else: ?>
 						<td class="border">
-							<strong><?php echo JHtml::date($day, JText::_('DATE_FORMAT_LC4')); ?></strong>
+							<strong><?php echo HTMLHelper::date($day, JText::_('DATE_FORMAT_LC4')); ?></strong>
 						</td>
 					<?php endif; ?>
 				<?php endforeach; ?>
@@ -55,7 +56,15 @@ $count = count($days);
 		<?php endif; ?>
 		<tr class="text-center">
 			<?php foreach ($days as $i => $day) : ?>
-				<?php $forecastIndex = $timeSteps[$day . 'T18:00:00.000Z'] ?>
+				<?php if ($i === 0) : ?>
+					<?php if (isset($timeSteps[$day . 'T18:00:00.000Z'])) : ?>
+						<?php $forecastIndex = $timeSteps[$day . 'T18:00:00.000Z']; ?>
+					<?php else : ?>
+						<?php $forecastIndex = $timeSteps[$day . 'T' . $time . ':00:00.000Z']; ?>
+					<?php endif; ?>
+				<?php else : ?>
+					<?php $forecastIndex = $timeSteps[$day . 'T18:00:00.000Z'] ?>
+				<?php endif; ?>
 				<?php if (!$i) : ?>
 					<td colspan="2">
 				<?php else : ?>
@@ -69,14 +78,22 @@ $count = count($days);
 		</tr>
 		<tr class="text-center">
 			<?php foreach ($days as $i => $day) : ?>
-				<?php $forecastIndex = $timeSteps[$day . 'T18:00:00.000Z'] ?>
+				<?php if ($i === 0) : ?>
+					<?php if (isset($timeSteps[$day . 'T18:00:00.000Z'])) : ?>
+						<?php $forecastIndex = $timeSteps[$day . 'T18:00:00.000Z']; ?>
+					<?php else : ?>
+						<?php $forecastIndex = $timeSteps[$day . 'T' . $time . ':00:00.000Z']; ?>
+					<?php endif; ?>
+				<?php else : ?>
+					<?php $forecastIndex = $timeSteps[$day . 'T18:00:00.000Z'] ?>
+				<?php endif; ?>
 				<?php if (!$i) : ?>
 					<td colspan="2">
 				<?php else : ?>
 					<td class="border">
 				<?php endif; ?>
 				<span class="temp">
-					<?php if ($list->TX[$forecastIndex]) : ?>
+					<?php if ($list->TX[$forecastIndex] !== '-') : ?>
 						<?php echo round($list->TX[$forecastIndex] - 273.15); ?>°C
 					<?php else: ?>
 						--
@@ -87,7 +104,11 @@ $count = count($days);
 			<?php endforeach; ?>
 		</tr>
 		<?php if (isset($days[0])) : ?>
-			<?php $forecastIndex = $timeSteps[$day0 . 'T18:00:00.000Z']; ?>
+			<?php if (isset($timeSteps[$day0 . 'T18:00:00.000Z'])) : ?>
+				<?php $forecastIndex = $timeSteps[$day0 . 'T18:00:00.000Z']; ?>
+			<?php else : ?>
+				<?php $forecastIndex = $timeSteps[$day0 . 'T' . $time . ':00:00.000Z']; ?>
+			<?php endif; ?>
 			<?php if ($heutehohe) : ?>
 				<tr>
 					<td><?php echo Text::_('MOD_DWD_WETTERMODUL_HOEHE'); ?></td>
