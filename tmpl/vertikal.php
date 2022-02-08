@@ -2,7 +2,7 @@
 /**
  * @package    Wettermodul
  * @author     Thomas Hunziker <admin@bakual.net>
- * @copyright  (C) 2019 - T. Hunziker / M.Bollmann
+ * @copyright  (C) 2022 - T. Hunziker / M.Bollmann
  * @license    http://www.gnu.org/licenses/gpl.html
  **/
 
