@@ -9,7 +9,7 @@
 		<client>site</client>
 		<infourl title="DWD Wettermodul">https://github.com/Bakual/wetter/releases/tag/6.0.0</infourl>
 		<downloads>
-			<downloadurl type="full" format="zip">https://github.com/Bakual/wetter/archive/6.0.0.zip</downloadurl>
+			<downloadurl type="full" format="zip">https://github.com/Bakual/wetter/archive/refs/tags/6.0.0.zip</downloadurl>
 		</downloads>
 		<targetplatform name="joomla" version="4.[0123]"/>
 	</update>
