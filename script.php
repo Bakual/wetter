@@ -8,6 +8,8 @@
 
 defined('_JEXEC') or die;
 
+use Joomla\CMS\Factory;
+use Joomla\CMS\Installer\Adapter\ComponentAdapter;
 use Joomla\CMS\Installer\InstallerScript;
 
 class Mod_Dwd_wettermodulInstallerScript extends InstallerScript
@@ -44,8 +46,8 @@ class Mod_Dwd_wettermodulInstallerScript extends InstallerScript
 	/**
 	 * method to run before an install/update/uninstall method
 	 *
-	 * @param   string                      $type    'install', 'update' or 'discover_install'
-	 * @param   JInstallerAdapterComponent  $parent  Installerobject
+	 * @param string           $type   'install', 'update' or 'discover_install'
+	 * @param ComponentAdapter $parent Installerobject
 	 *
 	 * @return  boolean  false will terminate the installation
 	 *
@@ -56,7 +58,7 @@ class Mod_Dwd_wettermodulInstallerScript extends InstallerScript
 		// Storing old release number for process in postflight
 		if (strtolower($type) == 'update')
 		{
-			$manifest         = $this->getItemArray('manifest_cache', '#__extensions', 'element', JFactory::getDbo()->quote($this->extension));
+			$manifest         = $this->getItemArray('manifest_cache', '#__extensions', 'element', Factory::getDbo()->quote($this->extension));
 			$this->oldRelease = $manifest['version'];
 		}
 
