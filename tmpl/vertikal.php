@@ -29,7 +29,7 @@ Factory::getDocument()->addStyleDeclaration(
 	<?php if ($titel) : ?>
 		<h2><?php echo $titel; ?></h2>
 	<?php endif; ?>
-	<table>
+	<table class="table">
 		<?php if ($days[0]) : ?>
 			<?php unset($days[0]); ?>
 			<?php if (isset($timeSteps[$day0 . 'T18:00:00.000Z'])) : ?>
@@ -107,7 +107,7 @@ Factory::getDocument()->addStyleDeclaration(
 						<?php if ($i == 1) : ?>
 							<strong><?php echo Text::_('MOD_DWD_WETTERMODUL_DAY1'); ?></strong>
 						<?php else : ?>
-							<strong><?php echo HTMLHelper::date($day, JText::_('DATE_FORMAT_LC4')); ?></strong>
+							<strong><?php echo HTMLHelper::date($day, Text::_('DATE_FORMAT_LC4')); ?></strong>
 						<?php endif; ?>
 					<?php endif; ?>
 				</td>

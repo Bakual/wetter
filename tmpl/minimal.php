@@ -32,7 +32,7 @@ Factory::getDocument()->addStyleDeclaration(
 	<?php if ($titel) : ?>
 		<?php echo $titel; ?>
 	<?php endif; ?>
-	<table>
+	<table class="table table-sm">
 		<?php foreach ($days as $i => $day) : ?>
 			<?php if ($i === 0) : ?>
 				<?php if (isset($timeSteps[$day . 'T18:00:00.000Z'])) : ?>
@@ -50,7 +50,7 @@ Factory::getDocument()->addStyleDeclaration(
 					<?php elseif ($i == 1) : ?>
 						<?php echo Text::_('MOD_DWD_WETTERMODUL_DAY1'); ?>
 					<?php else : ?>
-						<?php echo HtmlHelper::date($day, JText::_('DATE_FORMAT_LC4')); ?>
+						<?php echo HtmlHelper::date($day, Text::_('DATE_FORMAT_LC4')); ?>
 					<?php endif; ?>
 				</td>
 				<td class="text-center">

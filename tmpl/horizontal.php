@@ -34,7 +34,7 @@ $count = count($days);
 	<?php if ($titel) : ?>
 		<h2><?php echo $titel; ?></h2>
 	<?php endif; ?>
-	<table>
+	<table class="table">
 		<?php if ($datumtitel) : ?>
 			<tr class="color_text text-center">
 				<?php foreach ($days as $i => $day) : ?>
@@ -48,7 +48,7 @@ $count = count($days);
 						</td>
 					<?php else: ?>
 						<td class="border">
-							<strong><?php echo HTMLHelper::date($day, JText::_('DATE_FORMAT_LC4')); ?></strong>
+							<strong><?php echo HTMLHelper::date($day, Text::_('DATE_FORMAT_LC4')); ?></strong>
 						</td>
 					<?php endif; ?>
 				<?php endforeach; ?>
