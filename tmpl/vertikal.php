@@ -29,7 +29,7 @@ Factory::getDocument()->addStyleDeclaration(
 	<?php if ($titel) : ?>
 		<h2><?php echo $titel; ?></h2>
 	<?php endif; ?>
-	<table class="table">
+	<table>
 		<?php if ($days[0]) : ?>
 			<?php unset($days[0]); ?>
 			<?php if (isset($timeSteps[$day0 . 'T18:00:00.000Z'])) : ?>

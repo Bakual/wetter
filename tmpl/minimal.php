@@ -32,7 +32,7 @@ Factory::getDocument()->addStyleDeclaration(
 	<?php if ($titel) : ?>
 		<?php echo $titel; ?>
 	<?php endif; ?>
-	<table class="table table-sm">
+	<table>
 		<?php foreach ($days as $i => $day) : ?>
 			<?php if ($i === 0) : ?>
 				<?php if (isset($timeSteps[$day . 'T18:00:00.000Z'])) : ?>

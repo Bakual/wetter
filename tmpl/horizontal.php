@@ -34,7 +34,7 @@ $count = count($days);
 	<?php if ($titel) : ?>
 		<h2><?php echo $titel; ?></h2>
 	<?php endif; ?>
-	<table class="table">
+	<table>
 		<?php if ($datumtitel) : ?>
 			<tr class="color_text text-center">
 				<?php foreach ($days as $i => $day) : ?>
