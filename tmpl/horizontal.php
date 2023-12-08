@@ -43,11 +43,11 @@ $count = count($days);
 							<strong><?php echo Text::_('MOD_DWD_WETTERMODUL_DAY0'); ?></strong>
 						</td>
 					<?php elseif ($i == 1) : ?>
-						<td class="border">
+						<td class="border d-none d-md-table-cell">
 							<strong><?php echo Text::_('MOD_DWD_WETTERMODUL_DAY1'); ?></strong>
 						</td>
 					<?php else: ?>
-						<td class="border">
+						<td class="border d-none d-md-table-cell">
 							<strong><?php echo HTMLHelper::date($day, Text::_('DATE_FORMAT_LC4')); ?></strong>
 						</td>
 					<?php endif; ?>
@@ -68,7 +68,7 @@ $count = count($days);
 				<?php if (!$i) : ?>
 					<td colspan="2">
 				<?php else : ?>
-					<td class="border">
+					<td class="border  d-none d-md-table-cell">
 				<?php endif; ?>
 				<img alt=""
 					 src="modules/mod_dwd_wettermodul/icons/<?php echo ModDwdwetterHelper::getIcon($list, $forecastIndex, $time); ?>"
@@ -90,7 +90,7 @@ $count = count($days);
 				<?php if (!$i) : ?>
 					<td colspan="2">
 				<?php else : ?>
-					<td class="border">
+					<td class="border d-none d-md-table-cell">
 				<?php endif; ?>
 				<span class="temp">
 					<?php if ($list->TX[$forecastIndex] !== '-') : ?>
@@ -115,7 +115,7 @@ $count = count($days);
 					<td nowrap="nowrap"><?php echo ModDwdwetterHelper::getStation($params->get('station'))->alt; ?>m
 					</td>
 					<?php for ($i = 2; $i <= $count; $i++) : ?>
-						<td class="border"></td>
+						<td class="border d-none d-md-table-cell"></td>
 					<?php endfor; ?>
 				</tr>
 			<?php endif; ?>
@@ -124,7 +124,7 @@ $count = count($days);
 					<td><?php echo Text::_('MOD_DWD_WETTERMODUL_LUFTDRUCK'); ?></td>
 					<td nowrap="nowrap"><?php echo round($list->PPPP[$forecastIndex] / 100) . ' hPa'; ?></td>
 					<?php for ($i = 2; $i <= $count; $i++) : ?>
-						<td class="border"></td>
+						<td class="border d-none d-md-table-cell"></td>
 					<?php endfor; ?>
 				</tr>
 			<?php endif; ?>
@@ -133,7 +133,7 @@ $count = count($days);
 					<td><?php echo Text::_('MOD_DWD_WETTERMODUL_NIEDERSCHLAG'); ?></td>
 					<td nowrap="nowrap"><?php echo round($list->RRdc[$timeSteps[$day1 . 'T06:00:00.000Z']]) . ' mm'; ?></td>
 					<?php for ($i = 2; $i <= $count; $i++) : ?>
-						<td class="border"></td>
+						<td class="border d-none d-md-table-cell"></td>
 					<?php endfor; ?>
 				</tr>
 			<?php endif; ?>
@@ -142,7 +142,7 @@ $count = count($days);
 					<td><?php echo Text::_('MOD_DWD_WETTERMODUL_WINDRICHTUNG'); ?></td>
 					<td><?php echo ModDwdwetterHelper::getDirection($list->DD[$forecastIndex]); ?></td>
 					<?php for ($i = 2; $i <= $count; $i++) : ?>
-						<td class="border"></td>
+						<td class="border d-none d-md-table-cell"></td>
 					<?php endfor; ?>
 				</tr>
 			<?php endif; ?>
@@ -151,7 +151,7 @@ $count = count($days);
 					<td><?php echo Text::_('MOD_DWD_WETTERMODUL_WINDGESCHWINDIKEIT'); ?></td>
 					<td nowrap="nowrap"><?php echo round($list->FF[$forecastIndex] * 3.6) . ' km/h'; ?></td>
 					<?php for ($i = 2; $i <= $count; $i++) : ?>
-						<td class="border"></td>
+						<td class="border d-none d-md-table-cell"></td>
 					<?php endfor; ?>
 				</tr>
 			<?php endif; ?>
@@ -160,7 +160,7 @@ $count = count($days);
 					<td><?php echo Text::_('MOD_DWD_WETTERMODUL_WINDSPITZE'); ?></td>
 					<td nowrap="nowrap"><?php echo round($list->FX3[$forecastIndex] * 3.6) . ' km/h'; ?></td>
 					<?php for ($i = 2; $i <= $count; $i++) : ?>
-						<td class="border"></td>
+						<td class="border d-none d-md-table-cell"></td>
 					<?php endfor; ?>
 				</tr>
 			<?php endif;
