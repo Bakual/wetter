@@ -57,6 +57,8 @@ Factory::getDocument()->addStyleDeclaration(
 					<span class="temp">
 						<?php if ($list->TX[$forecastIndex] !== '-') : ?>
 							<?php echo round($list->TX[$forecastIndex] - 273.15); ?>°C
+						<?php elseif ($list->TTT[$forecastIndex] !== '-') : ?>
+							<?php echo round($list->TTT[$forecastIndex] - 273.15); ?>°C
 						<?php else: ?>
 							--
 							<?php ModDwdwetterHelper::logError($forecastIndex, $day0, $time, $timeSteps, $list, 'minimal'); ?>

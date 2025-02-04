@@ -47,7 +47,9 @@ Factory::getDocument()->addStyleDeclaration(
 			<tr>
 				<td class="text-center">
 					<span class="temp">
-						<?php if ($list->TTT[$forecastIndex]) : ?>
+						<?php if ($list->TX[$forecastIndex] !== '-') : ?>
+							<?php echo round($list->TX[$forecastIndex] - 273.15); ?>°C
+						<?php elseif ($list->TTT[$forecastIndex] !== '-') : ?>
 							<?php echo round($list->TTT[$forecastIndex] - 273.15); ?>°C
 						<?php else: ?>
 							--

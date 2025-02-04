@@ -95,6 +95,8 @@ $count = count($days);
 				<span class="temp">
 					<?php if ($list->TX[$forecastIndex] !== '-') : ?>
 						<?php echo round($list->TX[$forecastIndex] - 273.15); ?>°C
+					<?php elseif ($list->TTT[$forecastIndex] !== '-') : ?>
+						<?php echo round($list->TTT[$forecastIndex] - 273.15); ?>°C
 					<?php else: ?>
 						--
 						<?php ModDwdwetterHelper::logError($forecastIndex, $day, $time, $timeSteps, $list, 'horizontal'); ?>
