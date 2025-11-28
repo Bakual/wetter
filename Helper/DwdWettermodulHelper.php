@@ -1,10 +1,12 @@
 <?php
 /**
- * @package         Wettermodul
- * @author          Thomas Hunziker <admin@bakual.net>
- * @copyright   (C) 2022 - Thomas Hunziker
- * @license         http://www.gnu.org/licenses/gpl.html
+ * @package     Wettermodul
+ * @author      Thomas Hunziker <admin@bakual.net>
+ * @copyright   © 2025 - Thomas Hunziker
+ * @license     https://www.gnu.org/licenses/gpl.html
  **/
+
+namespace Bakual\Module\Wetter\Site\Helper;
 
 // DWD Wettervorhersage Modul
 // filedata:(c) DWD - Deutscher Wetterdienst, Offenbach
@@ -16,30 +18,36 @@
 // Die filedata der Grundversorgung dürfen frei verwendet werden, sind jedoch urheberrechtlich geschützt.
 // **************************************************************************
 
-defined('_JEXEC') or die('Restricted access');
-
-use Joomla\CMS\Factory;
-use Joomla\CMS\Filesystem\File;
-use Joomla\CMS\Filesystem\Folder;
-use Joomla\CMS\Http\HttpFactory;
+use Joomla\CMS\Application\SiteApplication;
+use Joomla\Filesystem\File;
+use Joomla\Filesystem\Folder;
+use Joomla\Http\HttpFactory;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Log\Log;
+use Joomla\Database\DatabaseAwareInterface;
+use Joomla\Database\DatabaseAwareTrait;
+use Joomla\Registry\Registry;
+use ZipArchive;
+
+defined('_JEXEC') or die('Restricted access');
 
 /**
  * Helper class for DWD Wettermodul
  *
  * @since  1.0
  */
-class ModDwdwetterHelper
+class DwdWettermodulHelper implements DatabaseAwareInterface
 {
+	use DatabaseAwareTrait;
+
 	/**
 	 * @param $params \Joomla\Registry\Registry Module Params
+	 * @param $app
 	 *
-	 * @return \stdClass
-	 * @throws \Exception
+	 * @return \stdClass|null
 	 * @since  1.0
 	 */
-	public static function getList($params)
+	public function getList(Registry $params, $app): ?\stdClass
 	{
 		$url     = 'https://opendata.dwd.de/weather/local_forecasts/mos/MOSMIX_L/single_stations/';
 		$station = $params->get('station');
@@ -54,15 +62,19 @@ class ModDwdwetterHelper
 		// Read file
 		try
 		{
-			$response  = HttpFactory::getHttp()->get($url);
-			$tmpFolder = Factory::getApplication()->get('tmp_path');
-			$tmpFile   = $tmpFolder . '/mod_dwd_wettermodul.kmz';
+			$httpFactory = new HttpFactory();
+			$response    = $httpFactory->getHttp()->get($url);
+			$tmpFolder   = $app->get('tmp_path');
+			$tmpFile     = $tmpFolder . '/mod_dwd_wettermodul.kmz';
 
-			if (File::write($tmpFile, $response->body))
+			if (File::write($tmpFile, $response->getBody()))
 			{
 				$zip = new ZipArchive;
 
-				Folder::delete($tmpFolder . '/mod_dwd_wettermodul_kmz');
+				if (is_dir($tmpFolder . '/mod_dwd_wettermodul_kmz'))
+				{
+					Folder::delete($tmpFolder . '/mod_dwd_wettermodul_kmz');
+				}
 
 				if ($zip->open($tmpFile) === true)
 				{
@@ -88,10 +100,10 @@ class ModDwdwetterHelper
 		{
 			Log::add(Text::sprintf('JLIB_INSTALLER_ERROR_DOWNLOAD_SERVER_CONNECT', $exception->getMessage()), Log::WARNING, 'dwd_wetter');
 
-			return new stdClass;
+			return null;
 		}
 
-		$forecast = new stdClass;
+		$forecast = new \stdClass;
 
 		foreach ($dwd as $i)
 		{
@@ -108,15 +120,15 @@ class ModDwdwetterHelper
 	/**
 	 * Returns the weather icon for a condition
 	 *
-	 * @param   object  $list
-	 * @param   int     $index
-	 * @param   int     $hour
+	 * @param object $list
+	 * @param int    $index
+	 * @param int    $hour
 	 *
 	 * @return string
 	 *
 	 * @since 1.0
 	 */
-	public static function getIcon($list, $index, $hour = 12)
+	public function getIcon(object $list, int $index, int $hour = 12): string
 	{
 		$day  = ($hour > 4 && $hour < 19);
 		$code = $list->ww[$index];
@@ -184,7 +196,7 @@ class ModDwdwetterHelper
 	 *
 	 * @since 5.0.0
 	 */
-	public static function getUnits()
+	public function getUnits(): array
 	{
 		$units = array(
 			'TTT'   => 'K',
@@ -317,9 +329,9 @@ class ModDwdwetterHelper
 	 * @return array
 	 * @since 5.0.0
 	 */
-	public static function getStation($id)
+	public function getStation($id): array
 	{
-		$db    = Factory::getDbo();
+		$db    = $this->getDatabase();
 		$query = $db->getQuery(true);
 		$query->select('*');
 		$query->from('#__dwd_wetter_sites');
@@ -338,7 +350,7 @@ class ModDwdwetterHelper
 	 * @return string
 	 * @since 5.0.0
 	 */
-	public static function getDirection($grad)
+	public function getDirection(int $grad): string
 	{
 		$index = (int) round($grad / 22.5);
 		$index = ($index === 16) ? 0 : $index;
@@ -349,11 +361,18 @@ class ModDwdwetterHelper
 	/**
 	 * Logs an error into logs/dwd_wetter.php
 	 *
+	 * @param $forecastIndex
+	 * @param $day0
+	 * @param $time
+	 * @param $timeSteps
+	 * @param $list
+	 * @param $layout
+	 *
 	 * @return void
 	 *
 	 * @since 5.1.2
 	 */
-	public static function logError($forecastIndex, $day0, $time, $timeSteps, $list, $layout)
+	public function logError($forecastIndex, $day0, $time, $timeSteps, $list, $layout): void
 	{
 		$errorstring = 'Temperature not found at "' . $day0 . ' ' . $time . ':00".';
 		$errorstring .= "\nSelected ForecastIndex was " . $forecastIndex . '", Layout in use was "' . $layout . '".';

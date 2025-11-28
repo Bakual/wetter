@@ -2,18 +2,20 @@
 <extension type="module" version="4.0" client="site" method="upgrade">
 	<name>MOD_DWD_WETTERMODUL</name>
 	<author>Thomas Hunziker</author>
-	<creationDate>2023-12-08</creationDate>
-	<copyright>(C) 2023</copyright>
+	<creationDate>2025-11-28</creationDate>
+	<copyright>(C) 2025</copyright>
 	<authorEmail>admin@bakual.net</authorEmail>
-	<authorUrl>http://www.bakual.net</authorUrl>
-	<version>6.0.3</version>
-	<license>http://www.gnu.org/licenses/gpl.html</license>
+	<authorUrl>https://www.bakual.net</authorUrl>
+	<version>7.0.0</version>
+	<license>https://www.gnu.org/licenses/gpl.html</license>
 	<description>MOD_DWD_WETTERMODUL_XML_DESCRIPTION</description>
+	<namespace path="/">Bakual\Module\Wetter</namespace>
 	<files>
-		<filename module="mod_dwd_wettermodul">mod_dwd_wettermodul.php</filename>
-		<filename>helper.php</filename>
+		<folder>Dispatcher</folder>
+		<folder>Helper</folder>
 		<folder>language</folder>
 		<folder>icons</folder>
+		<folder module="mod_dwd_wettermodul">services</folder>
 		<folder>sql</folder>
 		<folder>tmpl</folder>
 	</files>

@@ -1,19 +1,44 @@
 <?php
 /**
- * @package    Wettermodul
- * @author     Thomas Hunziker <admin@bakual.net>
- * @copyright  (C) 2022 - T. Hunziker / M.Bollmann
- * @license    http://www.gnu.org/licenses/gpl.html
+ * @package     Wettermodul
+ * @author      Thomas Hunziker <admin@bakual.net>
+ * @copyright   © 2025 - Thomas Hunziker
+ * @license     https://www.gnu.org/licenses/gpl.html
  **/
 
-defined('_JEXEC') or die();
-
+use Bakual\Module\Wetter\Site\Helper\DwdWettermodulHelper;
 use Joomla\CMS\Factory;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Language\Text;
 
-Factory::getDocument()->addStyleDeclaration(
-	'.dwd_wettermodul.vertikal .row_header {
+defined('_JEXEC') or die();
+
+/**
+ * @var array                     $list
+ * @var \Joomla\Registry\Registry $params
+ * @var stdClass                  $module
+ * @var array                     $units
+ * @var array                     $timeSteps
+ * @var string                    $time
+ * @var string                    $day0
+ * @var string                    $day1
+ * @var array                     $days
+ * @var string                    $titel
+ * @var string                    $farbe
+ * @var string                    $zweitfarbe
+ * @var string                    $heutehohe
+ * @var string                    $heuteluft
+ * @var string                    $heuteregen
+ * @var string                    $heutewindrichtung
+ * @var string                    $heutewind
+ * @var string                    $heutewindspitze
+ * @var string                    $datumtitel
+ */
+
+$helper = new DwdWettermodulHelper();
+
+Factory::getApplication()->getDocument()->addStyleDeclaration(
+		'.dwd_wettermodul.vertikal .row_header {
 		border-top: 1px solid ' . $farbe . ';
 	}
 	.dwd_wettermodul.vertikal .color_text {
@@ -53,20 +78,20 @@ Factory::getDocument()->addStyleDeclaration(
 							<?php echo round($list->TTT[$forecastIndex] - 273.15); ?>°C
 						<?php else: ?>
 							--
-							<?php ModDwdwetterHelper::logError($forecastIndex, $day0, $time, $timeSteps, $list, 'vertikal'); ?>
+							<?php $helper->logError($forecastIndex, $day0, $time, $timeSteps, $list, 'vertikal'); ?>
 						<?php endif; ?>
 					</span>
 				</td>
 				<td class="text-center">
 					<img alt=""
-						 src="modules/mod_dwd_wettermodul/icons/<?php echo ModDwdwetterHelper::getIcon($list, $forecastIndex, $time); ?>"
+						 src="modules/mod_dwd_wettermodul/icons/<?php echo $helper->getIcon($list, $forecastIndex, $time); ?>"
 						 width="50" height="50"/>
 				</td>
 			</tr>
 			<?php if ($heutehohe) : ?>
 				<tr>
 					<td><?php echo Text::_('MOD_DWD_WETTERMODUL_HOEHE'); ?></td>
-					<td nowrap="nowrap"><?php echo ModDwdwetterHelper::getStation($params->get('station'))->alt; ?> m
+					<td nowrap="nowrap"><?php echo $helper->getStation($params->get('station'))->alt; ?> m
 					</td>
 				</tr>
 			<?php endif; ?>
@@ -85,7 +110,7 @@ Factory::getDocument()->addStyleDeclaration(
 			<?php if ($heutewindrichtung) : ?>
 				<tr>
 					<td><?php echo Text::_('MOD_DWD_WETTERMODUL_WINDRICHTUNG'); ?></td>
-					<td><?php echo ModDwdwetterHelper::getDirection($list->DD[$forecastIndex]); ?></td>
+					<td><?php echo $helper->getDirection($list->DD[$forecastIndex]); ?></td>
 				</tr>
 			<?php endif; ?>
 			<?php if ($heutewind) : ?>
@@ -120,7 +145,7 @@ Factory::getDocument()->addStyleDeclaration(
 				</td>
 				<td class="text-center">
 					<img alt=""
-						 src="modules/mod_dwd_wettermodul/icons/<?php echo ModDwdwetterHelper::getIcon($list, $forecastIndex, $time); ?>"
+						 src="modules/mod_dwd_wettermodul/icons/<?php echo $helper->getIcon($list, $forecastIndex, $time); ?>"
 						 width="50"
 						 height="50"/>
 				</td>
@@ -128,7 +153,7 @@ Factory::getDocument()->addStyleDeclaration(
 		<?php endforeach; ?>
 		<tr>
 			<td colspan="2" class="row_header text-right">
-				<small><a href="http://www.dwd.de/">&copy; Deutscher Wetterdienst</a></small>
+				<small><a href="https://www.dwd.de/">&copy; Deutscher Wetterdienst</a></small>
 			</td>
 		</tr>
 	</table>
