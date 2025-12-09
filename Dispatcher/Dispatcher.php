@@ -52,16 +52,16 @@ class Dispatcher extends AbstractModuleDispatcher implements HelperFactoryAwareI
 			array('dwd_wetter')
 		);
 
-		$helper = $this->getHelperFactory()->getHelper('DwdWettermodulHelper');
+		$data['helper'] = $this->getHelperFactory()->getHelper('DwdWettermodulHelper');
 
-		$data['list'] = $helper->getList($data['params'], $this->getApplication());
+		$data['list'] = $data['helper']->getList($data['params'], $this->getApplication());
 
 		if (!$data['list'])
 		{
 			return false;
 		}
 
-		$data['units']     = $helper->getUnits();
+		$data['units']     = $data['helper']->getUnits();
 		$data['timeSteps'] = $data['list']->timeSteps;
 
 		$timestamp    = time();

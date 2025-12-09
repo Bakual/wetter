@@ -18,7 +18,6 @@ namespace Bakual\Module\Wetter\Site\Helper;
 // Die filedata der Grundversorgung dürfen frei verwendet werden, sind jedoch urheberrechtlich geschützt.
 // **************************************************************************
 
-use Joomla\CMS\Application\SiteApplication;
 use Joomla\Filesystem\File;
 use Joomla\Filesystem\Folder;
 use Joomla\Http\HttpFactory;
@@ -326,10 +325,10 @@ class DwdWettermodulHelper implements DatabaseAwareInterface
 	 *
 	 * @param $id
 	 *
-	 * @return array
+	 * @return \stdClass
 	 * @since 5.0.0
 	 */
-	public function getStation($id): array
+	public function getStation($id): \stdClass
 	{
 		$db    = $this->getDatabase();
 		$query = $db->getQuery(true);

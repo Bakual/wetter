@@ -14,6 +14,7 @@ use Joomla\CMS\Language\Text;
 defined('_JEXEC') or die();
 
 /**
+ * @var DwdWettermodulHelper      $helper
  * @var array                     $list
  * @var \Joomla\Registry\Registry $params
  * @var stdClass                  $module
@@ -34,8 +35,6 @@ defined('_JEXEC') or die();
  * @var string                    $heutewindspitze
  * @var string                    $datumtitel
  */
-
-$helper = new DwdWettermodulHelper();
 
 Factory::getApplication()->getDocument()->addStyleDeclaration(
 		'.dwd_wettermodul.horizontal table {
@@ -167,7 +166,7 @@ $count = count($days);
 			<?php if ($heutewindrichtung) : ?>
 				<tr>
 					<td><?php echo Text::_('MOD_DWD_WETTERMODUL_WINDRICHTUNG'); ?></td>
-					<td><?php echo DwdWettermodulHelper::getDirection($list->DD[$forecastIndex]); ?></td>
+					<td><?php echo $helper->getDirection($list->DD[$forecastIndex]); ?></td>
 					<?php for ($i = 2; $i <= $count; $i++) : ?>
 						<td class="border d-none d-md-table-cell"></td>
 					<?php endfor; ?>

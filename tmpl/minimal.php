@@ -14,6 +14,7 @@ use Joomla\CMS\Language\Text;
 defined('_JEXEC') or die();
 
 /**
+ * @var DwdWettermodulHelper      $helper
  * @var array                     $list
  * @var \Joomla\Registry\Registry $params
  * @var stdClass                  $module
@@ -34,8 +35,6 @@ defined('_JEXEC') or die();
  * @var string                    $heutewindspitze
  * @var string                    $datumtitel
  */
-
-$helper = new DwdWettermodulHelper();
 
 Factory::getApplication()->getDocument()->addStyleDeclaration(
 		'.dwd_wettermodul.minimal table {
