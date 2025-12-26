@@ -2,11 +2,11 @@
 <extension type="module" version="4.0" client="site" method="upgrade">
 	<name>MOD_DWD_WETTERMODUL</name>
 	<author>Thomas Hunziker</author>
-	<creationDate>2025-12-09</creationDate>
+	<creationDate>2025-12-26</creationDate>
 	<copyright>(C) 2025</copyright>
 	<authorEmail>admin@bakual.net</authorEmail>
 	<authorUrl>https://www.bakual.net</authorUrl>
-	<version>7.0.0</version>
+	<version>7.0.1</version>
 	<license>https://www.gnu.org/licenses/gpl.html</license>
 	<description>MOD_DWD_WETTERMODUL_XML_DESCRIPTION</description>
 	<namespace path="/">Bakual\Module\Wetter</namespace>
