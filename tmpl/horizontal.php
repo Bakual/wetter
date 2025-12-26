@@ -148,7 +148,7 @@ $count = count($days);
 			<?php if ($heuteluft) : ?>
 				<tr>
 					<td><?php echo Text::_('MOD_DWD_WETTERMODUL_LUFTDRUCK'); ?></td>
-					<td nowrap="nowrap"><?php echo round($list->PPPP[$forecastIndex] / 100) . ' hPa'; ?></td>
+					<td nowrap="nowrap"><?php echo (is_numeric($list->PPPP[$forecastIndex]) ? round($list->PPPP[$forecastIndex] / 100) : $list->PPPP[$forecastIndex]) . ' hPa'; ?></td>
 					<?php for ($i = 2; $i <= $count; $i++) : ?>
 						<td class="border d-none d-md-table-cell"></td>
 					<?php endfor; ?>
