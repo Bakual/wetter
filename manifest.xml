@@ -39,6 +39,6 @@
 			<downloadurl type="full" format="zip">https://github.com/Bakual/wetter/archive/refs/tags/7.0.1.zip</downloadurl>
 		</downloads>
 		<targetplatform name="joomla" version="6.[012345]"/>
-		<sha256>b364e59372a360c36e0030382b02243003fe1c4e3f9092d51b7d5d5fbc4de7e0</sha256>
+		<sha256>29bcbde3bf6938fc625349c7b8ec1cf3cbdcf5374c5c864ccc7640165b27d0a2</sha256>
 	</update>
 </updates>
